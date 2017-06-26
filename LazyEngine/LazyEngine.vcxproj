@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="GeneralMacros\GeneralMacros.h" />
     <ClInclude Include="Includes\LazyIncludes.h" />
+    <ClInclude Include="Log\Logger.h" />
     <ClInclude Include="MainFunctions\Main.h" />
     <ClInclude Include="Math\LEVector.h" />
     <ClInclude Include="Math\MathHelpers.h" />

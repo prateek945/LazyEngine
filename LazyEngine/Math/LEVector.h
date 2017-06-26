@@ -31,7 +31,7 @@ public:
 	void operator += (const LEVector3<T> &v1) { m_x += v1.m_x; m_y += v1.m_y; m_z += v1.m_z; }
 	void operator -= (const LEVector3<T> &v1) { m_x -= v1.m_x; m_y -= v1.m_y; m_z -= v1.m_z; }
 	void operator *= (const T &val) { m_x *= val; m_y *= val; m_z *= val; }
-	void operator /= (const T &val) { m_x /= val; m_y /= val; m_z /= val; }
+	void operator /= (const T &val) { LAZYASSERT((val != 0)) m_x /= val; m_y /= val; m_z /= val; }
 	
 };
 template <typename T>
