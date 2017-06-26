@@ -10,6 +10,12 @@
     <Filter Include="GeneralMacros">
       <UniqueIdentifier>{ab552f83-3cf2-41b3-97ce-5907171212de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainFunctions">
+      <UniqueIdentifier>{8dfc0326-c9b6-4d9a-8885-345b84df1fe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes">
+      <UniqueIdentifier>{f92804c5-e425-44af-b355-e63227061823}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -24,5 +30,16 @@
     <ClInclude Include="GeneralMacros\GeneralMacros.h">
       <Filter>GeneralMacros</Filter>
     </ClInclude>
+    <ClInclude Include="MainFunctions\Main.h">
+      <Filter>MainFunctions</Filter>
+    </ClInclude>
+    <ClInclude Include="Includes\LazyIncludes.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MainFunctions\Main.cpp">
+      <Filter>MainFunctions</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

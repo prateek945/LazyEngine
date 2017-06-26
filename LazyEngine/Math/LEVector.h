@@ -23,49 +23,54 @@ public:
 
 	//magnitude operations
 
-	T length(const LEVector3<T> &v) { return (T)sqrt(v.m_x*v.m_x + v.m_y*v.m_y + v.m_z*v.m_z); }
+	T length() { return (T)sqrt(m_x*m_x + m_y*m_y + m_z*m_z); }
 
-	T lengthSqrd(const LEVector3<T> &v) { return (T)(v.m_x*v.m_x + v.m_y*v.m_y + v.m_z*v.m_z); }
+	T lengthSqrd() { return (T)(m_x*m_x + m_y*m_y + m_z*m_z); }
 
 	//Vector operations =,+,-,/,*
 	void operator += (const LEVector3<T> &v1) { m_x += v1.m_x; m_y += v1.m_y; m_z += v1.m_z; }
 	void operator -= (const LEVector3<T> &v1) { m_x -= v1.m_x; m_y -= v1.m_y; m_z -= v1.m_z; }
 	void operator *= (const T &val) { m_x *= val; m_y *= val; m_z *= val; }
 	void operator /= (const T &val) { m_x /= val; m_y /= val; m_z /= val; }
-	inline LEVector3<T> operator * (const T &val, const LEVector3<T> &v1) { return LEVector3<T>(v1.m_x*val, v1.m_y*val, v1.m_z*val); }
-	inline LEVector3<T> operator / (const LEVector3<T> &v1, const T &val) { return LEVector3<T>(v1.m_x / val, v1.m_y / val, v1.m_z / val); }
-	inline LEVector3<T> operator + (const LEVector3<T> &v1, const LEVector3<T> &v2) 
-	{ 
-		return LEVector3<T>(v1.m_x + v2.m_x,
-			v1.m_y + v2.m_y,
-			v1.m_z + v2.m_z);
-	}
-	inline LEVector3<T> operator - (const LEVector3<T> &v1, const LEVector3<T> &v2)
-	{
-		return LEVector3<T>(v1.m_x - v2.m_x,
-			v1.m_y - v2.m_y,
-			v1.m_z - v2.m_z);
-	}
-	//bool operations == , > , <
-	inline bool operator == (const LEVector3<T> &v1, const LEVector3<T> &v2) 
-	{
-		return (compareFloats(v1.m_x, v2.m_x)
-			&& compareFloats(v1.m_y, v2.m_y)
-			&& compareFloats(v1.m_z, v2.m_z)
-			);
-	}
-
-	inline bool operator > (const LEVector3<T> &v1, const LEVector3<T> &v2) {
-		return ((v1.m_x > v2.m_x)
-			&& (v1.m_y > v2.m_y)
-			&& (v1.m_z > v2.m_z));
-	}
-
-	inline bool operator < (const LEVector3<T> &v1, const LEVector3<T> &v2) {
-		return ((v1.m_x < v2.m_x)
-			&& (v1.m_y < v2.m_y)
-			&& (v1.m_z < v2.m_z));
-	}
+	
 };
-
+template <typename T>
+inline LEVector3<T> operator * (const T &val, const LEVector3<T> &v1) { return LEVector3<T>(v1.m_x*val, v1.m_y*val, v1.m_z*val); }
+template <typename T>
+inline LEVector3<T> operator / (const LEVector3<> &v1, const T &val) { return LEVector3<>(v1.m_x / val, v1.m_y / val, v1.m_z / val); }
+template <typename T>
+inline LEVector3<T> operator + (const LEVector3<T> &v1, const LEVector3<T> &v2)
+{
+	return LEVector3<T>(v1.m_x + v2.m_x,
+		v1.m_y + v2.m_y,
+		v1.m_z + v2.m_z);
+}
+template <typename T>
+inline LEVector3<T> operator - (const LEVector3<T> &v1, const LEVector3<T> &v2)
+{
+	return LEVector3<T>(v1.m_x - v2.m_x,
+		v1.m_y - v2.m_y,
+		v1.m_z - v2.m_z);
+}
+//bool operations == , > , <
+template <typename T>
+inline bool operator == (const LEVector3<T> &v1, const LEVector3<T> &v2)
+{
+	return (compareVals(v1.m_x, v2.m_x)
+		&& compareVals(v1.m_y, v2.m_y)
+		&& compareVals(v1.m_z, v2.m_z)
+		);
+}
+template <typename T>
+inline bool operator > (const LEVector3<T> &v1, const LEVector3<T> &v2) {
+	return ((v1.m_x > v2.m_x)
+		&& (v1.m_y > v2.m_y)
+		&& (v1.m_z > v2.m_z));
+}
+template <typename T>
+inline bool operator < (const LEVector3<T> &v1, const LEVector3<T> &v2) {
+	return ((v1.m_x < v2.m_x)
+		&& (v1.m_y < v2.m_y)
+		&& (v1.m_z < v2.m_z));
+}
 #endif // File Guard
