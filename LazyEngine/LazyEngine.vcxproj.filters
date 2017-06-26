@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Math">
+      <UniqueIdentifier>{a59b4b18-3f11-4a89-b228-940b75c3fe5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitives">
+      <UniqueIdentifier>{fa687559-e4ee-4ccd-8287-22455af16c7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneralMacros">
+      <UniqueIdentifier>{ab552f83-3cf2-41b3-97ce-5907171212de}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Math\LEVector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathHelpers.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitives\Primitives.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralMacros\GeneralMacros.h">
+      <Filter>GeneralMacros</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
