@@ -3,5 +3,5 @@
 #define MAIN_H_
 #include "../Includes/LazyIncludes.h"
 #include "../Math/LEVector.h"
-
+#include "../Singleton/SingletonClasses.h"
 #endif

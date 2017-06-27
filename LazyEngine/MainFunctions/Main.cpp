@@ -9,8 +9,13 @@ int main(int argc, char* argv[]) {
 	cout << V1.m_values[0]<<"\nlength : "<<V1.length()<<"\nlength squared : "<<V1.lengthSqrd();
 	cout << "\n\n";
 	LEVector3<Primitives::Int32> VI1(1,2,3), VI2(4,5,6),VI3(1,2,3);
-	VI1 /= 0;
+	
 	cout << (VI1 == VI2) << "\t" << (VI1 < VI2) << "\t" << (VI1 == VI3) << "\n";
+	LAZYASSERT(gLogManager.get())
+	gLogManager.startUp();
+	
+	gLogManager.get()->Log("%0.2f", V1.length());
+
 	while (true) {
 		continue;
 	}

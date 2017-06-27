@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #ifndef LEVECTOR_H_
 #define LEVECTOR_H_
 #include "MathHelpers.h"

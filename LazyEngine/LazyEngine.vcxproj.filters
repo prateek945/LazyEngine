@@ -16,8 +16,11 @@
     <Filter Include="Includes">
       <UniqueIdentifier>{f92804c5-e425-44af-b355-e63227061823}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Logger">
+    <Filter Include="LazyLogger">
       <UniqueIdentifier>{e3b3f51e-5df3-495e-91c1-bd3b78699f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{a2b43bf4-1e12-42e6-9d1c-d13d99c968ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -39,13 +42,19 @@
     <ClInclude Include="Includes\LazyIncludes.h">
       <Filter>Includes</Filter>
     </ClInclude>
-    <ClInclude Include="Log\Logger.h">
-      <Filter>Logger</Filter>
+    <ClInclude Include="Singleton\SingletonClasses.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="LazyLogger\Logger.h">
+      <Filter>LazyLogger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
       <Filter>MainFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="LazyLogger\Logger.cpp">
+      <Filter>LazyLogger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
