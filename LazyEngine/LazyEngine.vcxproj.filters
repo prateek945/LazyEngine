@@ -27,9 +27,6 @@
     <ClInclude Include="Math\LEVector.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\MathHelpers.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="Primitives\Primitives.h">
       <Filter>Primitives</Filter>
     </ClInclude>
@@ -47,6 +44,12 @@
     </ClInclude>
     <ClInclude Include="LazyLogger\Logger.h">
       <Filter>LazyLogger</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathHelpers.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix3X3.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
