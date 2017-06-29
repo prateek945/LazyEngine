@@ -5,6 +5,7 @@
 #include "../Primitives/Primitives.h"
 #include "../Includes/LazyIncludes.h"
 #include <math.h>
+using namespace std;
 template <typename T>
 inline bool compareVals(const T &f0, const T &f1)
 {

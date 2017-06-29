@@ -22,6 +22,9 @@
     <Filter Include="Singleton">
       <UniqueIdentifier>{a2b43bf4-1e12-42e6-9d1c-d13d99c968ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{d21f11b6-35aa-4568-9838-7517e75bd206}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -50,6 +53,9 @@
     </ClInclude>
     <ClInclude Include="Math\Matrix3X3.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryPool.h">
+      <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

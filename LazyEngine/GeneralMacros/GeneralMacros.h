@@ -11,7 +11,7 @@
 			public:\
 			managerclass_() {} \
 			~managerclass_() {} \
-			class_* get() {return m_singletonReference;} \
+			class_* get() const {return m_singletonReference;} \
 			void startUp() { m_singletonReference = new class_(); }\
 			void shutDown();\
 			\

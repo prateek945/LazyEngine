@@ -3,7 +3,8 @@
 #define MATRIX3X3_H_
 #include "MathHelpers.h"
 #include "LEVector.h"
-#include <math.h>
+#include <iostream>
+//using namespace std;
 enum RotateAxis {
 	XAxis = 0,
 	YAxis,
@@ -30,7 +31,7 @@ public:
 	}
 
 	Matrix3X3<T>(const Matrix3X3<T> &copy) {
-		memcpy(*this, copy, sizeof(Matrix3X3<T>));
+		memcpy(this, &copy, sizeof(Matrix3X3<T>));
 	}
 	Matrix3X3<T>(RotateAxis axis, float angle) {
 		float sintheta = sinf(angle);
@@ -69,15 +70,17 @@ public:
 	}
 
 	Matrix3X3<T>(LEVector3<T> u, LEVector3<T> v, LEVector3<T> n) {
-
+		//XAxis
 		m_values[0][0] = u.m_x;
-		m_values[1][0] = v.m_x;
-		m_values[2][0] = n.m_x;
-		m_values[0][1] = u.m_y;
+		m_values[0][1] = v.m_x;
+		m_values[0][2] = n.m_x;
+		//YAxis
+		m_values[1][0] = u.m_y;
 		m_values[1][1] = v.m_y;
-		m_values[2][1] = n.m_y;
-		m_values[0][2] = u.m_z;
-		m_values[1][2] = v.m_z;
+		m_values[1][2] = n.m_y;
+		//ZAxis
+		m_values[2][0] = u.m_z;
+		m_values[2][1] = v.m_z;
 		m_values[2][2] = n.m_z;
 
 	}
@@ -98,15 +101,32 @@ public:
 		
 	}
 
-	friend Matrix3X3<T> operator * (Matrix3X3<T> m0, Matrix3X3<T> m1) {
+	friend Matrix3X3<T> operator * (Matrix3X3<T> &m0, Matrix3X3<T> &m1) {
 		Matrix3X3<T> returnMat = Matrix3X3<T>();
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				for (int k = 0; k < 3; k++)
-					m_values[i][k] += m0.m_values[i][j] * m1.m_values[j][k];
+					returnMat.m_values[i][k] += m0.m_values[i][j] * m1.m_values[j][k];
 		return returnMat;
 	}
+	friend LEVector3<T> operator * (LEVector3<T> v, Matrix3X3<T> m) {
+		LEVector3<T> retVector;
 
+		retVector.m_values[0] = v.m_x * (m.m_values[0][0]) + v.m_y * (m.m_values[1][0]) + v.m_z * (m.m_values[2][0]);
+		retVector.m_values[1] = v.m_x * (m.m_values[0][1]) + v.m_y * (m.m_values[1][1]) + v.m_z * (m.m_values[2][1]);
+		retVector.m_values[2] = v.m_x * (m.m_values[0][2]) + v.m_y * (m.m_values[1][2]) + v.m_z * (m.m_values[2][2]);
+		return retVector;
+
+	}
+	friend ostream &operator << (ostream &output,const Matrix3X3<T> &m) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				output << m.m_values[i][j] << "\t";
+			}
+			output << "\n";
+		}
+		return output;
+	}
 	void clearMatrix() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -135,6 +155,15 @@ public:
 		return n;
 	}
 
+	T det() {
+
+		T retValue;
+		retValue = m_values[0][0] * ((m_values[1][1] * m_values[2][2]) - (m_values[1][2] * m_values[2][1]))
+			+ m_values[0][1] * ((m_values[1][0] * m_values[2][2]) - (m_values[1][2] * m_values[2][0]))
+			+ m_values[0][2] * ((m_values[1][0] * m_values[2][1]) - (m_values[1][1] * m_values[2][0]));
+		return retValue;
+
+	}
 	
 	
 

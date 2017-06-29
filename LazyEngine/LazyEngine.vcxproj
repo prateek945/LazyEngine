@@ -26,6 +26,7 @@
     <ClInclude Include="Math\LEVector.h" />
     <ClInclude Include="Math\MathHelpers.h" />
     <ClInclude Include="Math\Matrix3X3.h" />
+    <ClInclude Include="Memory\MemoryPool.h" />
     <ClInclude Include="Primitives\Primitives.h" />
     <ClInclude Include="Singleton\SingletonClasses.h" />
   </ItemGroup>
