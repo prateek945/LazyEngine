@@ -57,12 +57,30 @@
     <ClInclude Include="Memory\MemoryPool.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\StackAllocator.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="LazyLogger\LogManager.h">
+      <Filter>LazyLogger</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryManager.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
       <Filter>MainFunctions</Filter>
     </ClCompile>
     <ClCompile Include="LazyLogger\Logger.cpp">
+      <Filter>LazyLogger</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\StackAllocator.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryManager.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="LazyLogger\LogManager.cpp">
       <Filter>LazyLogger</Filter>
     </ClCompile>
   </ItemGroup>

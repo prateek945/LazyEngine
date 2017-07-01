@@ -7,14 +7,16 @@
 #endif
 #include <windows.h>
 #include "../GeneralMacros/GeneralMacros.h"
-class Logger {
-public:
-	Logger();
-	//~Logger();
+namespace LE {
+	class Logger {
+	public:
+		Logger();
+		//~Logger();
 
-	int Log(const char* format,...);
-	bool bIsActive;
-private:
-	int DebugLog(const char* format, va_list arglist);
+		int Log(const char* format, ...);
+		bool bIsActive;
+	private:
+		int DebugLog(const char* format, va_list arglist);
+	};
 };
 #endif

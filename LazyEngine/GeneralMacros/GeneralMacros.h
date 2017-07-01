@@ -1,23 +1,22 @@
 #pragma once
 #ifndef GENERAL_MACROS_H_
 #define GENERAL_MACROS_H_
+
 #define DebugPause _asm {int 3}
-#define LAZYASSERT(truth) {if(!truth) {DebugPause} }
+
+#define LAZYASSERT(truth,format,...) {if(!(truth)){\
+LogManager::getInstance()->get()->Log(format "\n",##__VA_ARGS__);\
+DebugPause} }\
+
 #define MAX_DEBUG_CHAR 1024
+
+#define MB * (1048576)
+
+#define ALLIGNMENT 16
 // Class definition Macros
 
-#define CLASS_SINGLETON(managerclass_,class_) \
-		class managerclass_{ \
-			public:\
-			managerclass_() {} \
-			~managerclass_() {} \
-			class_* get() const {return m_singletonReference;} \
-			void startUp() { m_singletonReference = new class_(); }\
-			void shutDown();\
-			\
-			class_ *m_singletonReference; \
-		};\
-		managerclass_ g##managerclass_;\
+
+		
 		
 #endif
 //#define IFNDEF(className) #ifndef classname/
