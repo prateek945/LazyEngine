@@ -66,6 +66,12 @@
     <ClInclude Include="Memory\MemoryManager.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\AllignedAllocator.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -82,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="LazyLogger\LogManager.cpp">
       <Filter>LazyLogger</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\AllignedAllocator.cpp">
+      <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

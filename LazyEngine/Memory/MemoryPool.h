@@ -4,6 +4,7 @@
 #include "../Includes/LazyIncludes.h"
 #include "../Primitives/Primitives.h"
 #include "StackAllocator.h"
+
 #include <malloc.h>
 
 namespace LE {
@@ -29,9 +30,11 @@ namespace LE {
 		}
 
 		StackAllocator* getStackAllocator() { return stackAllocatorRef; }
+		
 	private:
 		void* CurrentAllocPtr;
 		StackAllocator* stackAllocatorRef;
+		
 
 	};
 };

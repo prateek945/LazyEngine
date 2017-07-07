@@ -2,6 +2,7 @@
 #ifndef LEVECTOR_H_
 #define LEVECTOR_H_
 #include "MathHelpers.h"
+using namespace std;
 namespace LE {
 	template <class T = Primitives::Float32>
 	class LEVector3 {
@@ -27,11 +28,26 @@ namespace LE {
 
 		T lengthSqrd() { return (T)(m_x*m_x + m_y*m_y + m_z*m_z); }
 
+		T dotProduct(const LEVector3<T> &v) {
+			return (m_x*v.m_x + m_y*v.m_y + m_z*v.m_z);
+		}
+		void crossProduct(const LEVector3<T> &v) {
+			Primitives::Float32 copyX, copyY, copyZ;
+			copyX = (m_y*v.m_z - m_z*v.m_y);
+			copyY = (m_z*v.m_x - m_x*v.m_z);
+			copyZ = (m_x*v.m_y - m_y*v.m_x);
+			m_x = copyX; m_y = copyY; m_z = copyZ;
+		}
 		//Vector operations =,+,-,/,*
 		void operator += (const LEVector3<T> &v1) { m_x += v1.m_x; m_y += v1.m_y; m_z += v1.m_z; }
 		void operator -= (const LEVector3<T> &v1) { m_x -= v1.m_x; m_y -= v1.m_y; m_z -= v1.m_z; }
 		void operator *= (const T &val) { m_x *= val; m_y *= val; m_z *= val; }
 		void operator /= (const T &val) { LAZYASSERT((val != 0)) m_x /= val; m_y /= val; m_z /= val; }
+
+		friend ostream &operator << (ostream &output, LEVector3<T> &v) {
+			output << "X : " << v.m_values[0] << ", Y : " << v.m_values[1] << ", Z : " << v.m_values[2] << "\n";
+			return output;
+		}
 
 	};
 	template <typename T>
@@ -60,6 +76,10 @@ namespace LE {
 			&& compareVals(v1.m_y, v2.m_y)
 			&& compareVals(v1.m_z, v2.m_z)
 			);
+	}
+	template <typename T>
+	inline LEVector3<T> operator - (const LEVector3<T> &v) {
+		return (LEVector3<T>(-v.m_values[0], -v.m_values[1], -v.m_values[2]));
 	}
 	template <typename T>
 	inline bool operator > (const LEVector3<T> &v1, const LEVector3<T> &v2) {

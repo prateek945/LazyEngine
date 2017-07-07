@@ -4,6 +4,9 @@
 
 #define DebugPause _asm {int 3}
 
+#define DEGTORAD(deg) (((Primitives::Constants::PI)*(deg))/(180.0f))
+#define RADTODEG(rad) (((180.0f)*(rad))/(Primitives::Constants::PI))
+
 #define LAZYASSERT(truth,format,...) {if(!(truth)){\
 LogManager::getInstance()->get()->Log(format "\n",##__VA_ARGS__);\
 DebugPause} }\

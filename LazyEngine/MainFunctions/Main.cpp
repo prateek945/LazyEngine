@@ -12,12 +12,16 @@ namespace LE {
 		gMemoryManager->startUp();
 		LAZYASSERT(gMemoryManager->get(), "Memory Manager Not Set")
 
-		gLogManager->get()->Log("%u\n%u\n",sizeof(Matrix3X3<>),sizeof(LEVector3<>));
-		for (int i = 0; i < 100000; i++) {
-			LEVector3<>* vecPtr = (LEVector3<>*) gMemoryManager->get()->getStackAllocator()->Alloc(sizeof(LEVector3<>));
-			Matrix3X3<>* matPtr = (Matrix3X3<>*) gMemoryManager->get()->getStackAllocator()->Alloc(sizeof(Matrix3X3<>));
-		}
-		gLogManager->get()->Log("Done");
+	
+
+		Quaternion q1, q2;
+		q1 = Quaternion(1, 1, 1, 1);
+		q2 = Quaternion(2, 2, 2, 2);
+		Quaternion q3 = q1*q2;
+		Quaternion q4(q3);
+		q4.normalise();
+		cout << q3;
+		cout << q4 <<*q4;
 		//matPtr->identityMatrix();
 		//cout << *matPtr;
 		

@@ -27,6 +27,8 @@
     <ClInclude Include="Math\LEVector.h" />
     <ClInclude Include="Math\MathHelpers.h" />
     <ClInclude Include="Math\Matrix3X3.h" />
+    <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Memory\AllignedAllocator.h" />
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\MemoryPool.h" />
     <ClInclude Include="Memory\StackAllocator.h" />
@@ -37,6 +39,7 @@
     <ClCompile Include="LazyLogger\Logger.cpp" />
     <ClCompile Include="LazyLogger\LogManager.cpp" />
     <ClCompile Include="MainFunctions\Main.cpp" />
+    <ClCompile Include="Memory\AllignedAllocator.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\StackAllocator.cpp" />
   </ItemGroup>

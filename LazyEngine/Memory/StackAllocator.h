@@ -9,11 +9,12 @@ namespace LE {
 		StackAllocator();
 		StackAllocator(void* ptr, Primitives::UInt32 space);
 		void* Alloc(Primitives::UInt32 size);
-		void free(void* ptr);
+		void free();
 		void* getCurrentPtr() { return currentPtr; }
 	private:
 		void *currentPtr,*startPtr;
-		Primitives::UInt32 StackSize,spaceLeft;
+		Primitives::UInt32 StackSize;
+		Primitives::Int32 spaceLeft;
 
 	};
 }; // LE
