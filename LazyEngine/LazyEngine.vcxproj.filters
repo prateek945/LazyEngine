@@ -25,6 +25,12 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{d21f11b6-35aa-4568-9838-7517e75bd206}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LazyFiling">
+      <UniqueIdentifier>{38c78e75-39b0-4e45-ba83-d366aa71401b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{e2d95da0-a4e5-4478-9296-2dff15ced70e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -72,6 +78,15 @@
     <ClInclude Include="Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Matrix4X4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="LazyFiling\FileHandler.h">
+      <Filter>LazyFiling</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFunctions\Win32Main.h">
+      <Filter>MainFunctions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -91,6 +106,12 @@
     </ClCompile>
     <ClCompile Include="Memory\AllignedAllocator.cpp">
       <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="LazyFiling\FileHandler.cpp">
+      <Filter>LazyFiling</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFunctions\Win32Main.cpp">
+      <Filter>MainFunctions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -74,15 +74,15 @@ namespace LE {
 		Matrix3X3<T>(LEVector3<T> u, LEVector3<T> v, LEVector3<T> n) {
 			//XAxis
 			m_values[0][0] = u.m_x;
-			m_values[0][1] = v.m_x;
-			m_values[0][2] = n.m_x;
+			m_values[0][1] = u.m_y;
+			m_values[0][2] = u.m_z;
 			//YAxis
-			m_values[1][0] = u.m_y;
+			m_values[1][0] = v.m_x;
 			m_values[1][1] = v.m_y;
-			m_values[1][2] = n.m_y;
+			m_values[1][2] = v.m_z;
 			//ZAxis
-			m_values[2][0] = u.m_z;
-			m_values[2][1] = v.m_z;
+			m_values[2][0] = n.m_x;
+			m_values[2][1] = n.m_y;
 			m_values[2][2] = n.m_z;
 
 		}
@@ -92,13 +92,13 @@ namespace LE {
 			const T m20, const T m21, const T m22) {
 
 			m_values[0][0] = m00;
-			m_values[1][0] = m01;
-			m_values[2][0] = m02;
-			m_values[0][1] = m10;
+			m_values[0][1] = m01;
+			m_values[0][2] = m02;
+			m_values[1][0] = m10;
 			m_values[1][1] = m11;
-			m_values[2][1] = m12;
-			m_values[0][2] = m20;
-			m_values[1][2] = m21;
+			m_values[1][2] = m12;
+			m_values[2][0] = m20;
+			m_values[2][1] = m21;
 			m_values[2][2] = m22;
 
 		}
@@ -161,7 +161,7 @@ namespace LE {
 
 			T retValue;
 			retValue = m_values[0][0] * ((m_values[1][1] * m_values[2][2]) - (m_values[1][2] * m_values[2][1]))
-				+ m_values[0][1] * ((m_values[1][0] * m_values[2][2]) - (m_values[1][2] * m_values[2][0]))
+				- m_values[0][1] * ((m_values[1][0] * m_values[2][2]) - (m_values[1][2] * m_values[2][0]))
 				+ m_values[0][2] * ((m_values[1][0] * m_values[2][1]) - (m_values[1][1] * m_values[2][0]));
 			return retValue;
 

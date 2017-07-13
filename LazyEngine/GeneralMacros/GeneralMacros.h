@@ -3,12 +3,14 @@
 #define GENERAL_MACROS_H_
 
 #define DebugPause _asm {int 3}
-
+#define global_variable static
+#define internal_function static
+#define internal_variable static
 #define DEGTORAD(deg) (((Primitives::Constants::PI)*(deg))/(180.0f))
 #define RADTODEG(rad) (((180.0f)*(rad))/(Primitives::Constants::PI))
 
 #define LAZYASSERT(truth,format,...) {if(!(truth)){\
-LogManager::getInstance()->get()->Log(format "\n",##__VA_ARGS__);\
+LE::LogManager::getInstance()->get()->Log(format "\n",##__VA_ARGS__);\
 DebugPause} }\
 
 #define MAX_DEBUG_CHAR 1024
@@ -16,6 +18,10 @@ DebugPause} }\
 #define MB * (1048576)
 
 #define ALLIGNMENT 16
+
+#define CREATEOBJ(var,obj,...)/
+
+#define DEBUGLOG(format,...) LE::LogManager::getInstance()->get()->Log(format,##__VA_ARGS__);
 // Class definition Macros
 
 

@@ -111,6 +111,15 @@ namespace LE {
 		inline void operator /= (Primitives::Float32 f) {
 			w /= f; x /= f; y /= f; z /= f;
 		}
+		inline void operator *= (Primitives::Float32 f) {
+			w *= f; x *= f; y *= f; z *= f;
+		}
+		inline void operator += (Quaternion &q) {
+			w += q.getW(); x += q.getX(); y += q.getY(); z += q.getZ();
+		}
+		inline void operator -= (Quaternion &q) {
+			w -= q.getW(); x -= q.getX(); y -= q.getY(); z -= q.getZ();
+		}
 		void normalise() {
 			Primitives::Float32 length = sqrtf(w*w + x*x + y*y + z*z);
 			
@@ -138,9 +147,9 @@ namespace LE {
 
 		LEVector3<> rotateCCW(Quaternion &q, LEVector3<> &v) {
 			Quaternion pure(v), axis(q);
-			Quaternion ret;
-			ret = (axis * pure)*(*axis);
-			return ret.getVector();
+			
+			pure = (axis * pure)*(*axis);
+			return pure.getVector();
 		}
 
 		LEVector3<> rotateCW(Quaternion &q, LEVector3<> &v) {
@@ -149,6 +158,7 @@ namespace LE {
 			pure = ((*axis) * pure)*(axis);
 			return pure.getVector();
 		}
+
 	private: 
 
 		Primitives::Float32 w, x, y, z;

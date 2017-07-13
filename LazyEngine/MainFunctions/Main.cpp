@@ -12,16 +12,14 @@ namespace LE {
 		gMemoryManager->startUp();
 		LAZYASSERT(gMemoryManager->get(), "Memory Manager Not Set")
 
-	
+		/*Matrix4X4<> mat(3,0,2,-1,1,2,0,-2,4,0,6,-3,5,0,2,0);
+		Matrix3X3<> mat3(1, 2, 3, 4, 5, 6, 7, 8, 9);
+		cout << mat3;
+		cout << mat3.det() << "\n";
 
-		Quaternion q1, q2;
-		q1 = Quaternion(1, 1, 1, 1);
-		q2 = Quaternion(2, 2, 2, 2);
-		Quaternion q3 = q1*q2;
-		Quaternion q4(q3);
-		q4.normalise();
-		cout << q3;
-		cout << q4 <<*q4;
+		cout << mat;
+		cout << "Det: " << mat.det();
+		cout << mat.inverse();*/
 		//matPtr->identityMatrix();
 		//cout << *matPtr;
 		
@@ -39,15 +37,13 @@ namespace LE {
 //		gLogManager->get()->Log("%0.2f", V1.length());
 
 
-		while (true) {
-			continue;
-		}
+		
 		return 0;
 	}
 };
 
 using namespace std;
-int main(int argc, char* argv) {
-
-	LE::MainWrapper();
-}
+//int main(int argc, char* argv) {
+//
+//	LE::MainWrapper();
+//}
