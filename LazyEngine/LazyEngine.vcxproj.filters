@@ -31,6 +31,12 @@
     <Filter Include="String">
       <UniqueIdentifier>{e2d95da0-a4e5-4478-9296-2dff15ced70e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{71c71a36-0272-443b-bc5a-a4ee86073278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PrimitiveShapes">
+      <UniqueIdentifier>{f64d8ec5-eb8f-4aae-8d1f-49c608dac439}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -87,6 +93,15 @@
     <ClInclude Include="MainFunctions\Win32Main.h">
       <Filter>MainFunctions</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\PhysicsManager.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Physics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PrimitiveShapes\Ray.h">
+      <Filter>Physics\PrimitiveShapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -112,6 +127,15 @@
     </ClCompile>
     <ClCompile Include="MainFunctions\Win32Main.cpp">
       <Filter>MainFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsManager.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Physics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PrimitiveShapes\Ray.cpp">
+      <Filter>Physics\PrimitiveShapes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

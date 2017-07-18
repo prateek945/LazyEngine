@@ -19,7 +19,7 @@ namespace LE {
 
 		namespace Constants {
 			const Float32 c_Pi_F32 = 3.1415926535897932384626433832795f;
-			const Float64 c_Pi_F64 = 3.1415926535897932384626433832795f;
+			const Float64 c_Pi_F64 = 3.1415926535897932384626433832795;
 			const Float32 c_Epsilon_F32 = 0.00001f;
 
 			const Float32 c_MaxFloat32 = 1000000000.0f;

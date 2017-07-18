@@ -35,6 +35,9 @@
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\MemoryPool.h" />
     <ClInclude Include="Memory\StackAllocator.h" />
+    <ClInclude Include="Physics\Physics.h" />
+    <ClInclude Include="Physics\PhysicsManager.h" />
+    <ClInclude Include="Physics\PrimitiveShapes\Ray.h" />
     <ClInclude Include="Primitives\Primitives.h" />
     <ClInclude Include="Singleton\SingletonClasses.h" />
   </ItemGroup>
@@ -47,6 +50,9 @@
     <ClCompile Include="Memory\AllignedAllocator.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\StackAllocator.cpp" />
+    <ClCompile Include="Physics\Physics.cpp" />
+    <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Physics\PrimitiveShapes\Ray.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7C47CF92-9A20-4B29-80A2-7A0AB534F4E8}</ProjectGuid>

@@ -1,74 +1,70 @@
 
 #include "Win32Main.h"
 global_variable const CHAR CLASS_NAME[] = "LazyEngineClass";
+//Input defines
 
-global_variable BITMAPINFO bminfo;
-global_variable void *BitMapMemory;
-global_variable LE::Primitives::Int32 BitmapWidth;
-global_variable LE::Primitives::Int32 BitmapHeight;
-
-global_variable LE::Primitives::Int32 BytesPerPixel = 4;
+global_variable win32_buffer_info BackBuffer;
 
 internal_function void
-RenderWeirdGradient(int BlueOffset, int GreenOffset)
+RenderWeirdGradient(win32_buffer_info Buffer, int BlueOffset, int GreenOffset, int RedOffset)
 {
-	int Width = BitmapWidth;
-	int Height = BitmapHeight;
+	int Width = Buffer.BitmapWidth;
+	int Height = Buffer.BitmapHeight;
 
-	int Pitch = Width*BytesPerPixel;
-	UCHAR *Row = (UCHAR *)BitMapMemory;
+	int Pitch = Width*Buffer.BytesPerPixel;
+	UCHAR *Row = (UCHAR *)Buffer.BitMapMemory;
 	for (int Y = 0;
-		Y < BitmapHeight;
+		Y < Buffer.BitmapHeight;
 		++Y)
 	{
 		LE::Primitives::UInt32 *Pixel = (LE::Primitives::UInt32 *)Row;
 		for (int X = 0;
-			X < BitmapWidth;
+			X < Buffer.BitmapWidth;
 			++X)
 		{
-			UCHAR Blue = (X + BlueOffset);
-			UCHAR Green = (Y + GreenOffset);
-
-			*Pixel++ = ((Green << 8) | Blue);
+			UCHAR Blue = sin(Y + BlueOffset) * 255;
+			UCHAR Green = cos(X + GreenOffset) * 255 ;
+			UCHAR Red = sin(X+RedOffset)*255;
+			*Pixel++ = ((Red << 16)|(Green << 8) | Blue);
 		}
 
 		Row += Pitch;
 	}
 }
 	internal_function void
-	ResizeDIBSection(LE::Primitives::Int32 Width,
+	ResizeDIBSection(win32_buffer_info *Buffer,LE::Primitives::Int32 Width,
 		LE::Primitives::Int32 Height) {
 		
-		if (BitMapMemory) {
-			VirtualFree(&BitMapMemory, 0, MEM_RELEASE);
+		if (Buffer->BitMapMemory) {
+			VirtualFree(&Buffer->BitMapMemory, 0, MEM_RELEASE);
 		}
-		BitmapWidth = Width;
-		BitmapHeight = Height;
+		Buffer->BitmapWidth = Width;
+		Buffer->BitmapHeight = Height;
 		
 
 		//BITMAPINFO bminfo = {};
-		bminfo.bmiHeader.biSize = sizeof(bminfo.bmiHeader);
-		bminfo.bmiHeader.biPlanes = 1;
-		bminfo.bmiHeader.biWidth = BitmapWidth;
-		bminfo.bmiHeader.biHeight = -BitmapHeight;
-		bminfo.bmiHeader.biBitCount = 32;
-		bminfo.bmiHeader.biCompression = BI_RGB;
+		Buffer->bminfo.bmiHeader.biSize = sizeof(Buffer->bminfo.bmiHeader);
+		Buffer->bminfo.bmiHeader.biPlanes = 1;
+		Buffer->bminfo.bmiHeader.biWidth = Buffer->BitmapWidth;
+		Buffer->bminfo.bmiHeader.biHeight = -(Buffer->BitmapHeight);
+		Buffer->bminfo.bmiHeader.biBitCount = 32;
+		Buffer->bminfo.bmiHeader.biCompression = BI_RGB;
 
 	
-		LE::Primitives::Int32 BitmapMemSize = (BitmapWidth*BitmapHeight)*BytesPerPixel;
-		BitMapMemory = VirtualAlloc(0, BitmapMemSize, MEM_COMMIT, PAGE_READWRITE);
+		LE::Primitives::Int32 BitmapMemSize = (Buffer->BitmapWidth*Buffer->BitmapHeight)*Buffer->BytesPerPixel;
+		Buffer->BitMapMemory = VirtualAlloc(0, BitmapMemSize, MEM_COMMIT, PAGE_READWRITE);
 		
 		
 	}
 
 	internal_function void
-	Win32UpdateWindow(HDC DeviceContext,RECT* ClientRect, LE::Primitives::Int32 X,
+	Win32UpdateWindow(win32_buffer_info Buffer,HDC DeviceContext,RECT* ClientRect, LE::Primitives::Int32 X,
 		LE::Primitives::Int32 Y, LE::Primitives::Int32 Width,
 		LE::Primitives::Int32 Height) {
 		int WindowHeight = ClientRect->bottom - ClientRect->top;
 		int WindowWidth = ClientRect->right - ClientRect->left;
-			StretchDIBits(DeviceContext, 0, 0, BitmapWidth, BitmapHeight,
-				0, 0, WindowWidth, WindowHeight, BitMapMemory, &bminfo, DIB_RGB_COLORS, SRCCOPY);
+			StretchDIBits(DeviceContext, 0, 0, Buffer.BitmapWidth, Buffer.BitmapHeight,
+				0, 0, WindowWidth, WindowHeight, Buffer.BitMapMemory, &Buffer.bminfo, DIB_RGB_COLORS, SRCCOPY);
 	}
 	LRESULT CALLBACK
 		clientWindowProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
@@ -83,7 +79,7 @@ RenderWeirdGradient(int BlueOffset, int GreenOffset)
 			Height = clientRect.bottom - clientRect.top;
 			int WindowWidth = Width;
 			int WindowHeight = Height;
-			ResizeDIBSection(Width,Height);
+			ResizeDIBSection(&BackBuffer,Width,Height);
 			return 0;
 		}break;
 
@@ -99,7 +95,7 @@ RenderWeirdGradient(int BlueOffset, int GreenOffset)
 			RECT ClientRect;
 			GetClientRect(hwnd, &ClientRect);
 			
-			Win32UpdateWindow(DeviceContext,&ClientRect, X, Y, Width, Height);
+			Win32UpdateWindow(BackBuffer,DeviceContext,&ClientRect, X, Y, Width, Height);
 			EndPaint(hwnd, &Paint);
 			
 		}break;
@@ -155,14 +151,14 @@ RenderWeirdGradient(int BlueOffset, int GreenOffset)
 				TranslateMessage(&msg);
 				DispatchMessageA(&msg);
 			}
-			RenderWeirdGradient(Xoffset,Yoffset);
+			RenderWeirdGradient(BackBuffer,Xoffset,Yoffset,Xoffset);
 			Xoffset++; Yoffset++;
 			HDC DeviceContext = GetDC(clientWindowHandle);
 			RECT ClientRect;
 			GetClientRect(clientWindowHandle, &ClientRect);
 			 int WindowWidth = ClientRect.right - ClientRect.left;
 			 int WindowHeight = ClientRect.bottom - ClientRect.top;
-			Win32UpdateWindow(DeviceContext,&ClientRect, 0, 0, WindowWidth, WindowHeight);
+			Win32UpdateWindow(BackBuffer,DeviceContext,&ClientRect, 0, 0, WindowWidth, WindowHeight);
 			ReleaseDC(clientWindowHandle, DeviceContext);
 		
 		}
