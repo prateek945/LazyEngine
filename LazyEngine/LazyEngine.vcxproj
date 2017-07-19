@@ -37,6 +37,9 @@
     <ClInclude Include="Memory\StackAllocator.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
+    <ClInclude Include="Physics\PrimitiveShapes\Frustrum.h" />
+    <ClInclude Include="Physics\PrimitiveShapes\Plane.h" />
+    <ClInclude Include="Physics\PrimitiveShapes\Point.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Ray.h" />
     <ClInclude Include="Primitives\Primitives.h" />
     <ClInclude Include="Singleton\SingletonClasses.h" />
@@ -52,6 +55,9 @@
     <ClCompile Include="Memory\StackAllocator.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Physics\PrimitiveShapes\Frustrum.cpp" />
+    <ClCompile Include="Physics\PrimitiveShapes\Plane.cpp" />
+    <ClCompile Include="Physics\PrimitiveShapes\Point.cpp" />
     <ClCompile Include="Physics\PrimitiveShapes\Ray.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

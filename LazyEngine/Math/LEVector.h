@@ -21,7 +21,7 @@ namespace LE {
 		LEVector3<T>(const T &val) : m_x(*val), m_y(*val), m_z(*val) {}
 		LEVector3<T>(const T val) : m_x(val), m_y(val), m_z(val) {}
 		LEVector3<T>(const LEVector3<T> &copy) : m_x(copy.m_x), m_y(copy.m_y), m_z(copy.m_z) {}
-
+	
 		//magnitude operations
 
 		T length() { return (T)sqrt(m_x*m_x + m_y*m_y + m_z*m_z); }
@@ -30,6 +30,12 @@ namespace LE {
 
 		T dotProduct(const LEVector3<T> &v) {
 			return (m_x*v.m_x + m_y*v.m_y + m_z*v.m_z);
+		}
+		void Normalize() {
+			T length = length();
+			m_x /= length;
+			m_y /= length;
+			m_z /= length;
 		}
 		void crossProduct(const LEVector3<T> &v) {
 			Primitives::Float32 copyX, copyY, copyZ;
