@@ -8,9 +8,10 @@ namespace LE {
 	public:
 		PhysicsManager();
 		~PhysicsManager();
-		void startUp(void);
+		void startUp(Primitives::Int16);
 		void shutDown(void);
 		Physics* get() const;
+		static PhysicsManager* getInstance(void) { return gPhysicsManager; }
 	private:
 		static PhysicsManager *gPhysicsManager;
 		Physics *m_singletonReference;

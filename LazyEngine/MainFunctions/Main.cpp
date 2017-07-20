@@ -13,6 +13,9 @@ namespace LE {
 		gMemoryManager->startUp();
 		LAZYASSERT(gMemoryManager->get(), "Memory Manager Not Set")
 
+		PhysicsManager *gPhysicsManager = PhysicsManager::getInstance();
+		gPhysicsManager->startUp((Primitives::Int16) 100);
+		LAZYASSERT(gPhysicsManager->get(),"Physics Manager Not Set")
 
 		PrimitiveShapes::Frustrum<> viewFrust = PrimitiveShapes::Frustrum<>(PrimitiveShapes::Point<>(), LEVector3<>(1.f, 0.f, 0.f),LEVector3<>(0.f,1.f,0.f), 60.f, 10.f, 100.f);
 

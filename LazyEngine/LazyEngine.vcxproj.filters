@@ -111,9 +111,6 @@
     <ClInclude Include="Physics\PrimitiveShapes\Frustrum.h">
       <Filter>Physics\PrimitiveShapes</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\PrimitiveShapes\Cube.h">
-      <Filter>Physics\PrimitiveShapes</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">

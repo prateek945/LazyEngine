@@ -37,7 +37,6 @@
     <ClInclude Include="Memory\StackAllocator.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
-    <ClInclude Include="Physics\PrimitiveShapes\Cube.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Frustrum.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Plane.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Point.h" />

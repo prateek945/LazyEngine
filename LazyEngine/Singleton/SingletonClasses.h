@@ -4,7 +4,7 @@
 #include "../Includes/LazyIncludes.h"
 #include "../LazyLogger/LogManager.h"
 #include "../Memory/MemoryManager.h"
-
+#include "../Physics/PhysicsManager.h"
 
 #endif // !1
 

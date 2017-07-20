@@ -4,8 +4,8 @@ namespace LE {
 	PhysicsManager::PhysicsManager() {}
 	PhysicsManager::~PhysicsManager() {}
 
-	void PhysicsManager::startUp() {
-		//m_singletonReference = new Physics();		
+	void PhysicsManager::startUp(Primitives::Int16 collidables) {
+		m_singletonReference = new Physics(collidables);		
 	}
 	void PhysicsManager::shutDown() {
 		delete m_singletonReference;
