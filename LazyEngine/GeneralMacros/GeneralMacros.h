@@ -6,7 +6,7 @@
 #define global_variable static
 #define internal_function static
 #define internal_variable static
-#define DEGTORAD(deg) (((Primitives::Constants::PI)*(deg))/(180.0f))
+#define DEGTORAD(deg) (((Primitives::Constants::c_Pi_F32)*(deg))/(180.0f))
 #define RADTODEG(rad) (((180.0f)*(rad))/(Primitives::Constants::PI))
 
 #define LAZYASSERT(truth,format,...) {if(!(truth)){\

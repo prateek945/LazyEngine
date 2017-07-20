@@ -5,7 +5,7 @@ namespace LE {
 	PhysicsManager::~PhysicsManager() {}
 
 	void PhysicsManager::startUp() {
-		m_singletonReference = new Physics();		
+		//m_singletonReference = new Physics();		
 	}
 	void PhysicsManager::shutDown() {
 		delete m_singletonReference;

@@ -1,5 +1,6 @@
 #include "Main.h"
 #include <time.h>
+#include "../Physics/PrimitiveShapes/Frustrum.h"
 namespace LE {
 	int MainWrapper() {
 		cout << "Hello\n";
@@ -11,6 +12,9 @@ namespace LE {
 		MemoryManager *gMemoryManager = MemoryManager::getInstance();
 		gMemoryManager->startUp();
 		LAZYASSERT(gMemoryManager->get(), "Memory Manager Not Set")
+
+
+		PrimitiveShapes::Frustrum<> viewFrust = PrimitiveShapes::Frustrum<>(PrimitiveShapes::Point<>(), LEVector3<>(1.f, 0.f, 0.f),LEVector3<>(0.f,1.f,0.f), 60.f, 10.f, 100.f);
 
 		/*Matrix4X4<> mat(3,0,2,-1,1,2,0,-2,4,0,6,-3,5,0,2,0);
 		Matrix3X3<> mat3(1, 2, 3, 4, 5, 6, 7, 8, 9);

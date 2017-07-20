@@ -32,16 +32,23 @@ namespace LE {
 			return (m_x*v.m_x + m_y*v.m_y + m_z*v.m_z);
 		}
 		void Normalize() {
-			T length = length();
-			m_x /= length;
-			m_y /= length;
-			m_z /= length;
+			T lengthnorm = length();
+			m_x /= lengthnorm;
+			m_y /= lengthnorm;
+			m_z /= lengthnorm;
 		}
 		void crossProduct(const LEVector3<T> &v) {
 			Primitives::Float32 copyX, copyY, copyZ;
 			copyX = (m_y*v.m_z - m_z*v.m_y);
 			copyY = (m_z*v.m_x - m_x*v.m_z);
 			copyZ = (m_x*v.m_y - m_y*v.m_x);
+			m_x = copyX; m_y = copyY; m_z = copyZ;
+		}
+		void crossProduct(const LEVector3<T> &v1, const LEVector3<T> &v2) {
+			Primitives::Float32 copyX, copyY, copyZ;
+			copyX = (v1.m_y*v2.m_z - v1.m_z*v2.m_y);
+			copyY = (v1.m_z*v2.m_x - v1.m_x*v2.m_z);
+			copyZ = (v1.m_x*v2.m_y - v1.m_y*v2.m_x);
 			m_x = copyX; m_y = copyY; m_z = copyZ;
 		}
 		//Vector operations =,+,-,/,*
@@ -58,6 +65,7 @@ namespace LE {
 	};
 	template <typename T>
 	inline LEVector3<T> operator * (const T &val, const LEVector3<T> &v1) { return LEVector3<T>(v1.m_x*val, v1.m_y*val, v1.m_z*val); }
+
 	template <typename T>
 	inline LEVector3<T> operator / (const LEVector3<> &v1, const T &val) { return LEVector3<>(v1.m_x / val, v1.m_y / val, v1.m_z / val); }
 	template <typename T>

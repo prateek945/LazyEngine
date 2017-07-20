@@ -111,6 +111,9 @@
     <ClInclude Include="Physics\PrimitiveShapes\Frustrum.h">
       <Filter>Physics\PrimitiveShapes</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\PrimitiveShapes\Cube.h">
+      <Filter>Physics\PrimitiveShapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -142,18 +145,6 @@
     </ClCompile>
     <ClCompile Include="Physics\Physics.cpp">
       <Filter>Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PrimitiveShapes\Ray.cpp">
-      <Filter>Physics\PrimitiveShapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PrimitiveShapes\Plane.cpp">
-      <Filter>Physics\PrimitiveShapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PrimitiveShapes\Point.cpp">
-      <Filter>Physics\PrimitiveShapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PrimitiveShapes\Frustrum.cpp">
-      <Filter>Physics\PrimitiveShapes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

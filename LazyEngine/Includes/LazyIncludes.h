@@ -5,7 +5,6 @@
 
 #include "..\GeneralMacros\GeneralMacros.h"
 #include "..\Primitives\Primitives.h"
-
 #include <iostream>
 
 #endif

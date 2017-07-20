@@ -37,6 +37,7 @@
     <ClInclude Include="Memory\StackAllocator.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
+    <ClInclude Include="Physics\PrimitiveShapes\Cube.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Frustrum.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Plane.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Point.h" />
@@ -55,10 +56,6 @@
     <ClCompile Include="Memory\StackAllocator.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
-    <ClCompile Include="Physics\PrimitiveShapes\Frustrum.cpp" />
-    <ClCompile Include="Physics\PrimitiveShapes\Plane.cpp" />
-    <ClCompile Include="Physics\PrimitiveShapes\Point.cpp" />
-    <ClCompile Include="Physics\PrimitiveShapes\Ray.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7C47CF92-9A20-4B29-80A2-7A0AB534F4E8}</ProjectGuid>
