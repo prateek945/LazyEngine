@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="GeneralMacros\GeneralMacros.h" />
     <ClInclude Include="Includes\LazyIncludes.h" />
     <ClInclude Include="LazyFiling\FileHandler.h" />
@@ -35,9 +36,14 @@
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\MemoryPool.h" />
     <ClInclude Include="Memory\StackAllocator.h" />
+    <ClInclude Include="Physics\Algorithms\GJK.h" />
+    <ClInclude Include="Physics\Colliders\ColliderMeta.h" />
+    <ClInclude Include="Physics\Colliders\CollisionVolume.h" />
+    <ClInclude Include="Physics\Colliders\Cube.h" />
+    <ClInclude Include="Physics\Colliders\Frustrum.h" />
+    <ClInclude Include="Physics\Colliders\Sphere.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
-    <ClInclude Include="Physics\PrimitiveShapes\Frustrum.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Plane.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Point.h" />
     <ClInclude Include="Physics\PrimitiveShapes\Ray.h" />

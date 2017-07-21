@@ -3,6 +3,9 @@
 #define PHYSICS_H_
 #include "../Includes/LazyIncludes.h"
 #include "../Memory/MemoryManager.h"
+#include "../Physics/Colliders/Frustrum.h"
+#include "../Physics/Colliders/Cube.h"
+#include "../Physics/Colliders/Sphere.h"
 namespace LE {
 	class Physics {
 		Primitives::Int16 *Collidables;

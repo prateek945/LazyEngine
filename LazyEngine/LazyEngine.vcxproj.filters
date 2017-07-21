@@ -37,6 +37,15 @@
     <Filter Include="Physics\PrimitiveShapes">
       <UniqueIdentifier>{f64d8ec5-eb8f-4aae-8d1f-49c608dac439}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics\Colliders">
+      <UniqueIdentifier>{714eebb5-30fe-49a2-8307-c93797cc846f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Algorithms">
+      <UniqueIdentifier>{49c70b0c-70a8-4125-a2aa-3a87da0abea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{14802382-d86e-4e40-a503-bb3c4da6c671}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -108,8 +117,26 @@
     <ClInclude Include="Physics\PrimitiveShapes\Point.h">
       <Filter>Physics\PrimitiveShapes</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\PrimitiveShapes\Frustrum.h">
-      <Filter>Physics\PrimitiveShapes</Filter>
+    <ClInclude Include="Physics\Colliders\Cube.h">
+      <Filter>Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Colliders\Frustrum.h">
+      <Filter>Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Colliders\ColliderMeta.h">
+      <Filter>Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Colliders\Sphere.h">
+      <Filter>Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Colliders\CollisionVolume.h">
+      <Filter>Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Algorithms\GJK.h">
+      <Filter>Physics\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObject.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

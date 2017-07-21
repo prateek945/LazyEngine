@@ -11,7 +11,7 @@ namespace LE {
 		void startUp(Primitives::Int16);
 		void shutDown(void);
 		Physics* get() const;
-		static PhysicsManager* getInstance(void) { return gPhysicsManager; }
+		static PhysicsManager* getInstance();
 	private:
 		static PhysicsManager *gPhysicsManager;
 		Physics *m_singletonReference;

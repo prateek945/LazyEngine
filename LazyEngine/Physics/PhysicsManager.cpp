@@ -1,6 +1,7 @@
 #include "PhysicsManager.h"
 
 namespace LE {
+	PhysicsManager* PhysicsManager::gPhysicsManager = new PhysicsManager();
 	PhysicsManager::PhysicsManager() {}
 	PhysicsManager::~PhysicsManager() {}
 
@@ -13,4 +14,5 @@ namespace LE {
 	Physics* PhysicsManager::get() const{
 		return m_singletonReference;
 	}
+	PhysicsManager* PhysicsManager::getInstance() { return PhysicsManager::gPhysicsManager; }
 };
