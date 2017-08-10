@@ -8,26 +8,24 @@
 #include "Quaternion.h"
 using namespace std;
 namespace LE {
-	template <class T = Primitives::Float32>
-	class Matrix4X4 {
+	
+	struct Matrix4X4 {
+	public:
 		union {
 			struct {
-				T m00, m01, m02, m03, 
-					m10, m11, m12, m13, 
-					m20, m21, m22, m23, 
+				Primitives::Float32 m00, m01, m02, m03,
+					m10, m11, m12, m13,
+					m20, m21, m22, m23,
 					m30, m31, m32, m33;
 			};
-			T m_values[4][4];
+			Primitives::Float32 m_values[4][4];
 		};
-		
-		
-	public:
 		//set zero
-		Matrix4X4<T>() {
-			memset(m_values, 0, 16 * sizeof(T));
+		Matrix4X4() {
+			memset(m_values, 0, 16 * sizeof(Primitives::Float32));
 		}
 		//copy constructor
-		Matrix4X4<T>(Matrix4X4<T> &m) {
+		Matrix4X4(Matrix4X4 &m) {
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					m_values[i][j] = m.m_values[i][j];
@@ -35,10 +33,10 @@ namespace LE {
 			}
 		}
 		//from values
-		Matrix4X4<T>(T m00, T m01, T m02, T m03,
-			T m10, T m11, T m12, T m13,
-			T m20, T m21, T m22, T m23,
-			T m30, T m31, T m32, T m33) {
+		Matrix4X4(Primitives::Float32 m00, Primitives::Float32 m01, Primitives::Float32 m02, Primitives::Float32 m03,
+			Primitives::Float32 m10, Primitives::Float32 m11, Primitives::Float32 m12, Primitives::Float32 m13,
+			Primitives::Float32 m20, Primitives::Float32 m21, Primitives::Float32 m22, Primitives::Float32 m23,
+			Primitives::Float32 m30, Primitives::Float32 m31, Primitives::Float32 m32, Primitives::Float32 m33) {
 
 			m_values[0][0] = m00; m_values[0][1] = m01; m_values[0][2] = m02; m_values[0][3] = m03;
 			m_values[1][0] = m10; m_values[1][1] = m11; m_values[1][2] = m12; m_values[1][3] = m13;
@@ -47,28 +45,28 @@ namespace LE {
 			
 		}
 
-		Matrix4X4<T>(const Matrix3X3<T> &sr,const LEVector3<T> &t) {
+		Matrix4X4(const Matrix3X3 &sr,const LEVector3 &t) {
 
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 3; j++)
 					m_values[i][j] = sr.m_values[i][j];
 
 			m_values[3][0] = t.m_values[0]; m_values[3][1] = t.m_values[1]; m_values[3][2] = t.m_values[2];
-			m_values[0][3] = m_values[1][3] = m_values[2][3] = (T)0;
-			m_values[3][3] = (T)1;
+			m_values[0][3] = m_values[1][3] = m_values[2][3] = (Primitives::Float32)0;
+			m_values[3][3] = (Primitives::Float32)1;
 
 		}
 
-		Matrix4X4<T>(T &s, Quaternion &q, LEVector3<T> &t) {
-			this = Matrix4X4<T>(q, t);
+		Matrix4X4(Primitives::Float32 &s, Quaternion &q, LEVector3 &t) {
+			*this = Matrix4X4(q, t);
 			m_values[0][0] *= s; m_values[1][1] *= s; m_values[2][2] *= s;
 
 		}
-		Matrix4X4<T>(LEVector3<T> &s, Quaternion &q, LEVector3<T> &t) {
-			this = Matrix4X4<T>(q, t);
+		Matrix4X4(LEVector3 &s, Quaternion &q, LEVector3 &t) {
+			*this = Matrix4X4(q, t);
 			m_values[0][0] *= s.m_x; m_values[1][1] *= s.m_y; m_values[2][2] *= s.m_z;
 		}
-		Matrix4X4<T>(Quaternion &q, LEVector3<T> &translation) {
+		Matrix4X4(Quaternion &q, LEVector3 &translation) {
 			/*
 			1 - 2*qy2 - 2*qz2	2*qx*qy - 2*qz*qw	2*qx*qz + 2*qy*qw
 			2*qx*qy + 2*qz*qw	1 - 2*qx2 - 2*qz2	2*qy*qz - 2*qx*qw
@@ -92,87 +90,33 @@ namespace LE {
 			m_values[3][3] = 1.f;
 		}
 
-
-		friend Matrix4X4<T> operator * (const Matrix4X4<T> &m1, const Matrix4X4<T> &m2) {
-
-			Matrix4X4<T> ret();
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					for (int k = 0; k < 4; k++) {
-						ret.m_values[i][k] += m1.m_values[i][j] * m2.m_values[j][k];
-					}
-				}
-			}
-			return ret;
+		LEVector3 getU() {
+			return LEVector3(m_values[0][0], m_values[0][1], m_values[0][2]);
 		}
-		friend Matrix4X4<T> operator * (const Matrix4X4<T> &m1, const T val) {
-
-			Matrix4X4<T> ret = Matrix4X4<T> ();
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					ret.m_values[i][j] = m1.m_values[i][j] * val;
-				}
-			}
-			return ret;
+		LEVector3 getV() {
+			return LEVector3(m_values[1][0], m_values[1][1], m_values[1][2]);
 		}
-		friend Matrix4X4<T> operator / (const Matrix4X4<T> &m1, const T val) {
-
-			Matrix4X4<T> ret = Matrix4X4<T>();
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					ret.m_values[i][j] = m1.m_values[i][j] / val;
-				}
-			}
-			return ret;
+		LEVector3 getN() {
+			return LEVector3(m_values[2][0], m_values[2][1], m_values[2][2]);
 		}
-		friend Matrix4X4<T> operator + (const Matrix4X4<T> &m1, const Matrix4X4<T> &m2) {
-			Matrix4X4<T> ret();
-			for (int i = 0; i < 4; i++) 
-				for (int j = 0; j < 4; j++) 
-					ret.m_values[i][j] = m1.m_values[i][j] + m2.m_values[i][j];
-				
-			return ret;
+		LEVector3 getTranslation() {
+			return LEVector3(m_values[0][3], m_values[1][3], m_values[2][3]);
+		}
+		void setRotation(Matrix3X3 &m) {
+			
+		}
+		void setTranslation(LEVector3 t) {
+			m_values[0][3] = t.m_x;
+			m_values[1][3] = t.m_y;
+			m_values[2][3] = t.m_z;
 		}
 
-		friend Matrix4X4<T> operator - (const Matrix4X4<T> &m1, const Matrix4X4<T> &m2) {
-			Matrix4X4<T> ret();
-			for (int i = 0; i < 4; i++)
-				for (int j = 0; j < 4; j++)
-					ret.m_values[i][j] = m1.m_values[i][j] - m2.m_values[i][j];
-
-			return ret;
-		}
-
-		inline void operator *= (T val) {
-			for (int i = 0; i < 4; i++)
-				for (int j = 0; j < 4; j++)
-					m_values[i][j] *= val;
-		}
-
-		inline void operator /= (T val) {
-			for (int i = 0; i < 4; i++)
-				for (int j = 0; j < 4; j++)
-					m_values[i][j] /= val;
-		}
-
-		inline void operator += (Matrix4X4<T> &m) {
-			for (int i = 0; i < 4; i++)
-				for (int j = 0; j < 4; j++)
-					m_values[i][j] += m.m_values[i][j];
-		}
-
-		inline void operator -= (Matrix4X4<T> &m) {
-			for (int i = 0; i < 4; i++)
-				for (int j = 0; j < 4; j++)
-					m_values[i][j] -= m.m_values[i][j];
-		}
-
-		friend ostream &operator << (ostream &output,const Matrix4X4<T> &m) {
+		friend ostream &operator << (ostream &output,const Matrix4X4 &m) {
 			output << "Matrix4X4 : ";
 			for (int i = 0; i < 4; i++) {
 				output << "\n";
 				for (int j = 0; j < 4; j++)
-					output << m.m_values[i][j] << "\t";
+					output << m.m_values[i][j] << "\Primitives::Float32";
 			}
 			output << "\n";
 			return output;
@@ -217,9 +161,9 @@ namespace LE {
 			
 			return ret;
 		}
-		Matrix3X3<T> getMinorMat(Primitives::Int16 x, Primitives::Int16 y) {
+		Matrix3X3 getMinorMat(Primitives::Int16 x, Primitives::Int16 y) {
 			Primitives::Int16 i,j;
-			Matrix3X3<T> ret;
+			Matrix3X3 ret;
 			Primitives::Int16 retX = 0, retY = 0;
 			ret.clearMatrix();
 			for (i = 0; i < 4; i++) {
@@ -236,16 +180,16 @@ namespace LE {
 			}
 			return ret;
 		}
-		T det() {
-			Matrix3X3<T> detMat00 = getMinorMat(0, 0);
-			Matrix3X3<T> detMat01 = getMinorMat(0, 1);
-			Matrix3X3<T> detMat02 = getMinorMat(0, 2);
-			Matrix3X3<T> detMat03 = getMinorMat(0, 3);
+		Primitives::Float32 det() {
+			Matrix3X3 detMat00 = getMinorMat(0, 0);
+			Matrix3X3 detMat01 = getMinorMat(0, 1);
+			Matrix3X3 detMat02 = getMinorMat(0, 2);
+			Matrix3X3 detMat03 = getMinorMat(0, 3);
 			
 			return (m00*(detMat00.det()) - m01*(detMat01.det()) + m02*(detMat02.det()) - m03*(detMat03.det()));
 		}
-		Matrix4X4<T> getTranspose() {
-			Matrix4X4<T> ret = Matrix4X4<T> ();
+		Matrix4X4 getTranspose() {
+			Matrix4X4 ret = Matrix4X4 ();
 			Primitives::Int16 i, j;
 			for (i = 0; i < 4; i++) {
 				for (j = 0; j < 4; j++) {
@@ -254,28 +198,123 @@ namespace LE {
 			}
 			return ret;
 		}
-		Matrix4X4<T> furfiller() {
-			Matrix4X4<T> ret = Matrix4X4<T>();
+		Matrix4X4 furfiller() {
+			Matrix4X4 ret = Matrix4X4();
 			Primitives::Int16 i, j;
 			for (i = 0; i < 4; i++) {
 				for (j = 0; j < 4; j++) {
-					T minordet = getMinorMat(i, j).det();
+					Primitives::Float32 minordet = getMinorMat(i, j).det();
 					ret.m_values[i][j] = minordet * powf(-1.f, (float)i + (float)j);
 				}
 			}
 			return ret;
 		}
-		Matrix4X4<T> inverse() {
-			Matrix4X4<T> ret = Matrix4X4<T>();
-			Matrix4X4<T> transpose = getTranspose();
-			T matDet = det();
-			if(!(matDet ==(T)0)){
-				ret = transpose.furfiller()*(1.f/ matDet);
+		Matrix4X4 inverse() {
+			Matrix4X4 ret = Matrix4X4();
+			Matrix4X4 transpose = getTranspose();
+			Primitives::Float32 matDet = det();
+			if(!(matDet ==(Primitives::Float32)0)){
+				Primitives::Float32 frac = 1.f / matDet;
+				for (int i = 0; i < 4; i++) {
+					for (int j = 0; j < 4; j++) {
+						ret.m_values[i][j] = transpose.furfiller().m_values[i][j] * frac;
+					}
+				}
 			}
 		
 			return ret;
 		}
+
+		inline void operator *= (Primitives::Float32 val) {
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					m_values[i][j] *= val;
+		}
+
+		inline void operator /= (Primitives::Float32 val) {
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					m_values[i][j] /= val;
+		}
+
+		inline void operator += (Matrix4X4 &m) {
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					m_values[i][j] += m.m_values[i][j];
+		}
+
+		inline void operator -= (Matrix4X4 &m) {
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					m_values[i][j] -= m.m_values[i][j];
+		}
+		
 	};
+	inline Matrix4X4 operator *(const Matrix4X4 &m0, const float &f)
+	{
+		Matrix4X4 res = Matrix4X4();
+		
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				res.m_values[i][j] = m0.m_values[i][j] * f;
+
+			}
+		}
+		return res;
+	}
+	inline Matrix4X4 operator / (const Matrix4X4 &m1, const Primitives::Float32 val) {
+
+		Matrix4X4 ret = Matrix4X4();
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				ret.m_values[i][j] = m1.m_values[i][j] / val;
+			}
+		}
+		return ret;
+	}
+	inline Matrix4X4 operator + (const Matrix4X4 &m1, const Matrix4X4 &m2) {
+		Matrix4X4 ret = Matrix4X4();
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				ret.m_values[i][j] = m1.m_values[i][j] + m2.m_values[i][j];
+
+		return ret;
+	}
+
+	inline Matrix4X4 operator - (const Matrix4X4 &m1, const Matrix4X4 &m2) {
+		Matrix4X4 ret = Matrix4X4();
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				ret.m_values[i][j] = m1.m_values[i][j] - m2.m_values[i][j];
+
+		return ret;
+	}
+
+	inline LEVector3 operator * (const LEVector3 &v, const Matrix4X4 &m) {
+		LEVector3 ret;
+		ret.m_values[0] = v.m_x * m.m00 + v.m_y * m.m01 + v.m_z * m.m02 + m.m03;
+		ret.m_values[1] = v.m_x * m.m10 + v.m_y * m.m11 + v.m_z * m.m12 + m.m13;
+		ret.m_values[2] = v.m_x * m.m20 + v.m_y * m.m21 + v.m_z * m.m22 + m.m23;
+
+		return ret;
+
+	}
+
+
+	inline Matrix4X4 operator * (const Matrix4X4 &m1, const Matrix4X4 &m2) {
+
+		Matrix4X4 ret = Matrix4X4();
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				for (int k = 0; k < 4; k++) {
+					ret.m_values[i][k] += m1.m_values[i][j] * m2.m_values[j][k];
+				}
+			}
+		}
+		return ret;
+	}
+
+	
 
 };
 #endif

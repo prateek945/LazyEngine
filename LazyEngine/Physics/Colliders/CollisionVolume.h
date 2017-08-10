@@ -1,28 +1,36 @@
 #pragma once
 #ifndef COLLISION_VOLUME_H_
 #define COLLISION_VOLUME_H_
-#include "../PrimitiveShapes/Point.h"
 #include "../PrimitiveShapes/Plane.h"
 #include "../../Includes/LazyIncludes.h"
-#include "ColliderMeta.h"
+#include "ColliderBase.h"
+
 namespace LE {
 	namespace Colliders {
 		//The class holds a set of points to be read in counter clockwise order.
 		//Second implementation can hold both vertex Data as well as index buffer.
-		class CollisionVolume {
-			ColliderMeta metaData;
-			PrimitiveShapes::Point<> *vertexData;
+		class CollisionVolume : public Collider{
+			//ColliderMeta metaData;
+			PrimitiveShapes::Point *vertexData;
 			Primitives::Int16 *indexData;
+			Primitives::Int16 vertexCount;
 
 		public:
 			
-			CollisionVolume(PrimitiveShapes::Point<> *vertexData,
-				Primitives::Int16 *indexData, Primitives::Int16 vertexCount) {
-				this->vertexData = (PrimitiveShapes::Point<>*)calloc(vertexCount, sizeof(PrimitiveShapes::Point<>));
+			CollisionVolume(PrimitiveShapes::Point *vertexData,
+				Primitives::Int16 *indexData, Primitives::Int16 vertexCount,ColliderMeta metaData):Collider(metaData),vertexCount(vertexCount) {
+				setColliderType(ColliderType::TypeCollisionVolume);
+				this->vertexData = (PrimitiveShapes::Point*)calloc(vertexCount, sizeof(PrimitiveShapes::Point));
 				this->indexData = (Primitives::Int16*)calloc(vertexCount, sizeof(Primitives::Int16));
-				memcpy(this->vertexData, vertexData, vertexCount * sizeof(PrimitiveShapes::Point<>));
+				memcpy(this->vertexData, vertexData, vertexCount * sizeof(PrimitiveShapes::Point));
 				memcpy(this->indexData, indexData, vertexCount * sizeof(Primitives::Int16));
-				this->metaData.type = ColliderType::CollisionVolume;
+				
+			}
+			PrimitiveShapes::Point getFurthestInDir(LEVector3 *Dir) override {
+				Primitives::Float32 maxDist = 0.f;
+				for (int i = 0; i < vertexCount; i++) {
+					
+				}
 			}
 		};
 	};

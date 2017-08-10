@@ -1,0 +1,63 @@
+3
+BeginObject
+Name
+Cube
+Matrix
+1.0 0.0 0.0 0.0 
+0.0 1.0 0.0 0.0 
+0.0 0.0 1.0 0.0 
+0.0 0.0 0.0 1.0 
+BeginObjectPhysics
+IsMovable
+0
+Gravity
+0
+Mass
+10.0
+Velocity
+0.1 1.0 0.0 0.0
+EndObjectPhysics
+EndObject
+BeginObject
+Name
+Cube
+Matrix
+1.0 0.0 0.0 -1.5 
+0.0 1.0 0.0 0.0 
+0.0 0.0 1.0 0.0 
+0.0 0.0 0.0 1.0
+BeginObjectPhysics
+IsMovable
+0
+Gravity
+0
+Mass
+10.0
+Velocity
+0.1 1.0 0.0 0.0
+EndObjectPhysics
+EndObject
+BeginObject
+Name
+Sphere
+Matrix
+1.0 0.0 0.0 1.5 
+0.0 1.0 0.0 0.0 
+0.0 0.0 1.0 0.0 
+0.0 0.0 0.0 1.0
+BeginObjectPhysics
+IsMovable
+1
+Gravity
+1
+Mass
+10.0
+Velocity
+0.1 1.0 0.0 0.0
+EndObjectPhysics
+EndObject
+
+BeginGlobalPhysics
+Gravity
+0.5 0.0 -1.0 0.0
+EndGlobalPhysics

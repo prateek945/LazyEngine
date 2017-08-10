@@ -1,6 +1,6 @@
 #pragma once
 #ifndef MATRIX3X3_H_
-#define MATRIX3X3_H_
+
 #include "MathHelpers.h"
 #include "LEVector.h"
 #include <iostream>
@@ -17,29 +17,29 @@ namespace LE {
 		ZYX
 
 	};
-	template <class T = Primitives::Float32>
-	class Matrix3X3 {
+	
+	struct Matrix3X3 {
 	public:
 		union
 		{
-			T m_values[3][3];
-			T m09[9];
+			Primitives::Float32 m_values[3][3];
+			Primitives::Float32 m09[9];
 		};
 
-		Matrix3X3<T>() {
-			m_values[0][0] = m_values[0][1] = m_values[0][2] = (T) 0.f;
-			m_values[1][0] = m_values[1][1] = m_values[1][2] = (T) 0.f;
-			m_values[2][0] = m_values[2][1] = m_values[2][2] = (T) 0.f;
+		Matrix3X3() {
+			m_values[0][0] = m_values[0][1] = m_values[0][2] = (Primitives::Float32) 0.f;
+			m_values[1][0] = m_values[1][1] = m_values[1][2] = (Primitives::Float32) 0.f;
+			m_values[2][0] = m_values[2][1] = m_values[2][2] = (Primitives::Float32) 0.f;
 		}
 
-		Matrix3X3<T>(const Matrix3X3<T> &copy) {
-			memcpy(this, &copy, sizeof(Matrix3X3<T>));
+		Matrix3X3(const Matrix3X3 &copy) {
+			memcpy(this, &copy, sizeof(Matrix3X3));
 		}
-		Matrix3X3<T>(RotateAxis axis, float angle) {
+		Matrix3X3(RotateAxis axis, float angle) {
 			float sintheta = sinf(angle);
 			float costheta = cosf(angle);
-			Matrix3X3<T>();
-			switch axis{
+			Matrix3X3();
+			switch (axis){
 				case XAxis: m_values[1][1] = costheta;
 					m_values[1][2] = sintheta;
 					m_values[2][1] = -sintheta;
@@ -58,11 +58,11 @@ namespace LE {
 			}
 		}
 
-		Matrix3X3<T>(const LEVector3<T>& angles, RotationOrder rotOrder = XYZ) {
-			Matrix3X3<T> xRotate, yRotate, zRotate;
-			xRotate = Matrix3X3<T>(XAxis, angle.m_x);
-			yRotate = Matrix3X3<T>(YAxis, angle.m_y);
-			zRotate = Matrix3X3<T>(ZAxis, angle.m_z);
+		Matrix3X3(const LEVector3& angles, RotationOrder rotOrder = XYZ) {
+			Matrix3X3 xRotate, yRotate, zRotate;
+			xRotate = Matrix3X3(XAxis, angles.m_x);
+			yRotate = Matrix3X3(YAxis, angles.m_y);
+			zRotate = Matrix3X3(ZAxis, angles.m_z);
 			switch (rotOrder) {
 			case XYZ: *this = xRotate*yRotate*zRotate;
 				break;
@@ -71,7 +71,7 @@ namespace LE {
 			}
 		}
 
-		Matrix3X3<T>(LEVector3<T> u, LEVector3<T> v, LEVector3<T> n) {
+		Matrix3X3(LEVector3 u, LEVector3 v, LEVector3 n) {
 			//XAxis
 			m_values[0][0] = u.m_x;
 			m_values[0][1] = u.m_y;
@@ -87,9 +87,9 @@ namespace LE {
 
 		}
 
-		Matrix3X3<T>(const T m00, T m01, const T m02,
-			const T m10, const T m11, const T m12,
-			const T m20, const T m21, const T m22) {
+		Matrix3X3(const Primitives::Float32 m00, Primitives::Float32 m01, const Primitives::Float32 m02,
+			const Primitives::Float32 m10, const Primitives::Float32 m11, const Primitives::Float32 m12,
+			const Primitives::Float32 m20, const Primitives::Float32 m21, const Primitives::Float32 m22) {
 
 			m_values[0][0] = m00;
 			m_values[0][1] = m01;
@@ -103,16 +103,16 @@ namespace LE {
 
 		}
 
-		friend Matrix3X3<T> operator * (Matrix3X3<T> &m0, Matrix3X3<T> &m1) {
-			Matrix3X3<T> returnMat = Matrix3X3<T>();
+		friend Matrix3X3 operator * (Matrix3X3 &m0, Matrix3X3 &m1) {
+			Matrix3X3 returnMat = Matrix3X3();
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 3; j++)
 					for (int k = 0; k < 3; k++)
 						returnMat.m_values[i][k] += m0.m_values[i][j] * m1.m_values[j][k];
 			return returnMat;
 		}
-		friend LEVector3<T> operator * (LEVector3<T> v, Matrix3X3<T> m) {
-			LEVector3<T> retVector;
+		friend LEVector3 operator * (LEVector3 &v, Matrix3X3 &m) {
+			LEVector3 retVector;
 
 			retVector.m_values[0] = v.m_x * (m.m_values[0][0]) + v.m_y * (m.m_values[1][0]) + v.m_z * (m.m_values[2][0]);
 			retVector.m_values[1] = v.m_x * (m.m_values[0][1]) + v.m_y * (m.m_values[1][1]) + v.m_z * (m.m_values[2][1]);
@@ -120,10 +120,10 @@ namespace LE {
 			return retVector;
 
 		}
-		friend ostream &operator << (ostream &output, const Matrix3X3<T> &m) {
+		friend ostream &operator << (ostream &output, const Matrix3X3 &m) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					output << m.m_values[i][j] << "\t";
+					output << m.m_values[i][j] << "\Primitives::Float32";
 				}
 				output << "\n";
 			}
@@ -142,24 +142,24 @@ namespace LE {
 			m_values[0][0] = m_values[1][1] = m_values[2][2] = 1.f;
 		}
 
-		LEVector3<T> getU() {
-			LEVector3<T> u = LEVector3(m_values[0][0], m_values[1][0], m_values[2][0]);
+		LEVector3 getU() {
+			LEVector3 u = LEVector3(m_values[0][0], m_values[1][0], m_values[2][0]);
 			return u;
 		}
 
-		LEVector3<T> getV() {
-			LEVector3<T> v = LEVector3<T>(m_values[0][1], m_values[1][1], m_values[2][1]);
+		LEVector3 getV() {
+			LEVector3 v = LEVector3(m_values[0][1], m_values[1][1], m_values[2][1]);
 			return v;
 		}
 
-		LEVector3<T> getN() {
-			LEVector3<T> n = LEVector3(m_values[0][2], m_values[1][2], m_values[2][2]);
+		LEVector3 getN() {
+			LEVector3 n = LEVector3(m_values[0][2], m_values[1][2], m_values[2][2]);
 			return n;
 		}
 
-		T det() {
+		Primitives::Float32 det() {
 
-			T retValue;
+			Primitives::Float32 retValue;
 			retValue = m_values[0][0] * ((m_values[1][1] * m_values[2][2]) - (m_values[1][2] * m_values[2][1]))
 				- m_values[0][1] * ((m_values[1][0] * m_values[2][2]) - (m_values[1][2] * m_values[2][0]))
 				+ m_values[0][2] * ((m_values[1][0] * m_values[2][1]) - (m_values[1][1] * m_values[2][0]));

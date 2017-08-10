@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DX11\DeviceManager.h" />
+    <ClInclude Include="DX11\MainWindow.h" />
+    <ClInclude Include="DX11\Renderer.h" />
     <ClInclude Include="Game\GameObject.h" />
+    <ClInclude Include="Game\LevelLoader.h" />
     <ClInclude Include="GeneralMacros\GeneralMacros.h" />
     <ClInclude Include="Includes\LazyIncludes.h" />
     <ClInclude Include="LazyFiling\FileHandler.h" />
@@ -36,7 +40,9 @@
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\MemoryPool.h" />
     <ClInclude Include="Memory\StackAllocator.h" />
+    <ClInclude Include="Physics\Algorithms\BasicCollisons.h" />
     <ClInclude Include="Physics\Algorithms\GJK.h" />
+    <ClInclude Include="Physics\Colliders\ColliderBase.h" />
     <ClInclude Include="Physics\Colliders\ColliderMeta.h" />
     <ClInclude Include="Physics\Colliders\CollisionVolume.h" />
     <ClInclude Include="Physics\Colliders\Cube.h" />
@@ -51,6 +57,10 @@
     <ClInclude Include="Singleton\SingletonClasses.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DX11\DeviceManager.cpp" />
+    <ClCompile Include="DX11\MainWindow.cpp" />
+    <ClCompile Include="DX11\Renderer.cpp" />
+    <ClCompile Include="Game\LevelLoader.cpp" />
     <ClCompile Include="LazyFiling\FileHandler.cpp" />
     <ClCompile Include="LazyLogger\Logger.cpp" />
     <ClCompile Include="LazyLogger\LogManager.cpp" />
@@ -59,8 +69,12 @@
     <ClCompile Include="Memory\AllignedAllocator.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\StackAllocator.cpp" />
+    <ClCompile Include="Physics\Algorithms\BasicCollisions.cpp" />
+    <ClCompile Include="Physics\Colliders\ColliderBase.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Physics\PrimitiveShapes\Plane.cpp" />
+    <ClCompile Include="Physics\PrimitiveShapes\Point.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7C47CF92-9A20-4B29-80A2-7A0AB534F4E8}</ProjectGuid>
@@ -118,12 +132,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(DXSDK_DIR)Lib\x86</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);d3d11.lib;D3DCompiler.lib</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -133,6 +155,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);d3d11.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

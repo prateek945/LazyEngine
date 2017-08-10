@@ -1,22 +1,25 @@
 #pragma once
 #ifndef COLLIDER_META_H_
 #define COLLIDER_META_H_
-#include "../../Includes/LazyIncludes.h"
 #include "../../Math/Matrix4X4.h"
 namespace LE {
 	namespace Colliders {
 		enum ColliderType {
-			Cube = 1,
-			Sphere,
-			Frustrum,
-			CollisionVolume,
-			Invalid
+			TypeCube = 1,
+			TypeSphere,
+			TypeFrustrum,
+			TypeCollisionVolume,
+			TypeInvalid
 		};
 		struct ColliderMeta {
 			Primitives::Int16 ObjId;
 			ColliderType type;
 			Primitives::Bool bisMovable;
-			Matrix4X4<> objMat;
+			Matrix4X4 objMat;
+			Primitives::Bool Gravity;
+			Primitives::Float32 mass;
+			LEVector3 velocityDir;
+			Primitives::Float32 velocityMagnitude;
 		};
 	};
 };

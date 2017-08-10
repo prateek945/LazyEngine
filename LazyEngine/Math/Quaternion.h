@@ -1,11 +1,10 @@
 #pragma once
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
-#include "../Includes/LazyIncludes.h"
 #include "../Math/LEVector.h"
 using namespace std;
 namespace LE {
-	class Quaternion {
+	struct Quaternion {
 	public:
 		//constructors
 		//Null Quaternion
@@ -16,7 +15,7 @@ namespace LE {
 		Quaternion(Primitives::Float32 w, Primitives::Float32 x
 			, Primitives::Float32 y, Primitives::Float32 z) :w(w), x(x), y(y), z(z) {}
 		//Pure Quaternion from LEVector3
-		Quaternion(const LEVector3<> &v) {
+		Quaternion(const LEVector3 &v) {
 			w = 0.f;
 			x = v.m_x;
 			y = v.m_y;
@@ -28,7 +27,7 @@ namespace LE {
 			x = y = z = 0.f;
 		}
 		// Quaternion given axis angle
-		Quaternion(const LEVector3<> &v, const Primitives::Float32 rad) {
+		Quaternion(const LEVector3 &v, const Primitives::Float32 rad) {
 			Primitives::Float32 halfangle = rad / 2.f;
 			Primitives::Float32 sinehalfangle = sinf(halfangle);
 			w = cosf(halfangle);
@@ -43,19 +42,19 @@ namespace LE {
 		Primitives::Float32 getY() const { return y; }
 		Primitives::Float32 getZ() const { return z; }
 
-		LEVector3<> getVector() {
-			return LEVector3<>(getX(),getY(),getZ());
+		LEVector3 getVector() {
+			return LEVector3(getX(),getY(),getZ());
 		}
-		void setVector(LEVector3<> &v){
+		void setVector(LEVector3 &v){
 			x = v.m_values[0]; y = v.m_values[1]; z = v.m_values[2];
 		}
 		//operator overlaods
-		void setVector(const LEVector3<> &v) {
+		void setVector(const LEVector3 &v) {
 			x = v.m_x;
 			y = v.m_y;
 			z = v.m_z;
 		}
-		Quaternion fromEuler(LEVector3<> Eulerangles) {
+		Quaternion fromEuler(LEVector3 Eulerangles) {
 			Quaternion ret;
 			Primitives::Float32 halfPitch = Eulerangles.m_values[0] / 2.f;
 			Primitives::Float32 halfYaw = Eulerangles.m_values[1] / 2.f;
@@ -80,7 +79,7 @@ namespace LE {
 
 		friend Quaternion operator * ( Quaternion &q1,  Quaternion &q2) {
 			
-			LEVector3<> copyvector(LEVector3<>(q1.getX(),q1.getY(),q1.getZ()));
+			LEVector3 copyvector(LEVector3(q1.getX(),q1.getY(),q1.getZ()));
 			Primitives::Float32 dotProduct = copyvector.dotProduct(q2.getVector());
 			Quaternion ret = Quaternion();
 			ret.w = q1.getW() + q2.getW() + dotProduct;
@@ -128,7 +127,7 @@ namespace LE {
 		}
 		Quaternion conjugate() {
 			Quaternion ret(*this);
-			LEVector3<> v = -ret.getVector();
+			LEVector3 v = -ret.getVector();
 			ret.setVector(v);
 			return ret;
 		}
@@ -145,21 +144,21 @@ namespace LE {
 
 		}
 
-		LEVector3<> rotateCCW(Quaternion &q, LEVector3<> &v) {
+		LEVector3 rotateCCW(Quaternion &q, LEVector3 &v) {
 			Quaternion pure(v), axis(q);
 			
 			pure = (axis * pure)*(*axis);
 			return pure.getVector();
 		}
 
-		LEVector3<> rotateCW(Quaternion &q, LEVector3<> &v) {
+		LEVector3 rotateCW(Quaternion &q, LEVector3 &v) {
 			Quaternion pure(v), axis(q);
 			axis.normalise();
 			pure = ((*axis) * pure)*(axis);
 			return pure.getVector();
 		}
 
-	private: 
+	 
 
 		Primitives::Float32 w, x, y, z;
 

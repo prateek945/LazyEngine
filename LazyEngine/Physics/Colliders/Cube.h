@@ -2,56 +2,67 @@
 #ifndef CUBE_H_
 #define CUBE_H_
 
-#include "../../Includes/LazyIncludes.h"
-#include "ColliderMeta.h"
-#include "../PrimitiveShapes/Point.h"
-#include "../PrimitiveShapes/Plane.h"
+
+#include "ColliderBase.h"
+
 namespace LE {
 	namespace Colliders {
-		class Cube {
-			ColliderMeta metaData;
-			PrimitiveShapes::Point<> min, max,center;
+		class Cube : public Collider {
+			
 		public :
+			union {
+				struct {
+					PrimitiveShapes::Point min, max, center;
+				};
+				PrimitiveShapes::Point points[3];
+			};
 			//Unit cube centered at <0,0,0>
-			Cube();
+			Cube(ColliderMeta meta) : Collider(meta) {
+				center = PrimitiveShapes::Point(meta.objMat.m30, meta.objMat.m31, meta.objMat.m32);
+				min = PrimitiveShapes::Point(-1.f, -1.f, -1.f);
+				max = PrimitiveShapes::Point(1.f, 1.f, 1.f);
+				setColliderType(ColliderType::TypeCube);
+				
+			}
 			//Center min and max.
-			Cube(PrimitiveShapes::Point<>, PrimitiveShapes::Point<>, PrimitiveShapes::Point<>);
+			Cube(PrimitiveShapes::Point c, PrimitiveShapes::Point mi, PrimitiveShapes::Point ma, ColliderMeta meta) : Collider(meta){
+				center = c;
+				min = mi;
+				max = ma;
+				setColliderType(ColliderType::TypeCube);
+			}
 			//Center, length, breadth,height
-			Cube(PrimitiveShapes::Point<>, Primitives::Float32, Primitives::Float32,Primitives::Float32);
+			Cube(PrimitiveShapes::Point c, Primitives::Float32 length, Primitives::Float32 breadth, Primitives::Float32 height, ColliderMeta meta) : Collider(meta){
+				center = c;
+				min = PrimitiveShapes::Point(center.x - breadth * 0.5f, center.y - height *0.5f, center.z - length * 0.5f);
+				max = PrimitiveShapes::Point(center.x + breadth * 0.5f, center.y + height *0.5f, center.z + length * 0.5f);
+				setColliderType(ColliderType::TypeCube);
+			}
 			//Center <0,0,0> length,breadth,height
-			Cube(Primitives::Float32, Primitives::Float32, Primitives::Float32);
-		
-			//get Meta Data
-			ColliderMeta getMetaData() { return metaData; }
+			Cube(Primitives::Float32 length, Primitives::Float32 breadth, Primitives::Float32 height, ColliderMeta meta) : Collider(meta) {
+				center = PrimitiveShapes::Point(meta.objMat.m30, meta.objMat.m31, meta.objMat.m32);
+				min = PrimitiveShapes::Point(center.x - breadth * 0.5f, center.y - height *0.5f, center.z - length * 0.5f);
+				max = PrimitiveShapes::Point(center.x + breadth * 0.5f, center.y + height *0.5f, center.z + length * 0.5f);
+				setColliderType(ColliderType::TypeCube);
+				
+			}
+
+			PrimitiveShapes::Point getFurthestInDir(LEVector3 *Dir) override
+			{
+
+				//LEVector3 point();
+				LEVector3 localDir = *Dir * getMetaData().objMat;
+				Primitives::Float32 l, b, h;
+				b =( max.x >= min.x)?(max.x - min.x) / 2.0f : -(max.x - min.x) / 2.0f;
+				h =(max.y >= min.y) ? (max.y - min.y) / 2.0f : -(max.y - min.y) / 2.0f;
+				l = (max.z >= min.z)? (max.z - min.z) / 2.0f : -(max.z - min.z) / 2.0f;
+				
+				return (PrimitiveShapes::Point(LEVector3(localDir.m_x*b,localDir.m_y*h,localDir.m_z*l)));
+
+			}
+			
 		};
 
-		Cube::Cube() {
-			this->center = PrimitiveShapes::Point<>(0.f, 0.f, 0.f);
-			this->min = PrimitiveShapes::Point<>(-1.f, -1.f, -1.f);
-			this->max = PrimitiveShapes::Point<>(1.f, 1.f, 1.f);
-			this->metaData.type = ColliderType::Cube;
-		}
-
-		Cube::Cube(PrimitiveShapes::Point<> center, PrimitiveShapes::Point<> min, PrimitiveShapes::Point<> max) {
-			this->center = center;
-			this->min = min;
-			this->max = max;
-			this->metaData.type = ColliderType::Cube;
-		}
-
-		Cube::Cube(PrimitiveShapes::Point<> center, Primitives::Float32 length, Primitives::Float32 breadth,Primitives::Float32 height) {
-			this->center = center;
-			this->min = PrimitiveShapes::Point<>(center.x - breadth * 0.5f,center.y - height *0.5f,center.z - length * 0.5f);
-			this->max = PrimitiveShapes::Point<>(center.x + breadth * 0.5f, center.y + height *0.5f, center.z + length * 0.5f);
-			this->metaData.type = ColliderType::Cube;
-		}
-
-		Cube::Cube(Primitives::Float32 length, Primitives::Float32 breadth, Primitives::Float32 height) {
-			this->center = PrimitiveShapes::Point<>(0.f, 0.f, 0.f);
-			this->min = PrimitiveShapes::Point<>(center.x - breadth * 0.5f, center.y - height *0.5f, center.z - length * 0.5f);
-			this->max = PrimitiveShapes::Point<>(center.x + breadth * 0.5f, center.y + height *0.5f, center.z + length * 0.5f);
-			this->metaData.type = ColliderType::Cube;
-		}
 
 
 	};

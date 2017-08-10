@@ -1,5 +1,7 @@
 
 #include "Win32Main.h"
+
+//#include "../Physics/Colliders/Frustrum.h"
 global_variable const CHAR CLASS_NAME[] = "LazyEngineClass";
 //Input defines
 
@@ -70,54 +72,6 @@ RenderWeirdGradient(win32_buffer_info Buffer, int BlueOffset, int GreenOffset, i
 		clientWindowProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 
-		switch (Message) {
-		case WM_SIZE: {
-			RECT clientRect;
-			GetClientRect(hwnd, &clientRect);
-			LE::Primitives::Int32 Width, Height;
-			Width = clientRect.right - clientRect.left;
-			Height = clientRect.bottom - clientRect.top;
-			int WindowWidth = Width;
-			int WindowHeight = Height;
-			ResizeDIBSection(&BackBuffer,Width,Height);
-			return 0;
-		}break;
-
-		case WM_PAINT: {
-			
-			PAINTSTRUCT Paint;
-			HDC DeviceContext = BeginPaint(hwnd, &Paint);
-			int X = Paint.rcPaint.left;
-			int Y = Paint.rcPaint.top;
-			int Width = Paint.rcPaint.right - Paint.rcPaint.left;
-			int Height = Paint.rcPaint.bottom - Paint.rcPaint.top;
-			bool erase = Paint.fErase;
-			RECT ClientRect;
-			GetClientRect(hwnd, &ClientRect);
-			
-			Win32UpdateWindow(BackBuffer,DeviceContext,&ClientRect, X, Y, Width, Height);
-			EndPaint(hwnd, &Paint);
-			
-		}break;
-
-		case WM_CLOSE: {
-			PostQuitMessage(0);
-			return 0;
-		}break;
-		case WM_ACTIVATEAPP:
-		{
-			OutputDebugStringA("WM_ACTIVATEAPP\n");
-		} break;
-
-		case WM_DESTROY: {
-			PostQuitMessage(0);
-			return 0;
-		}break;
-
-		default: {
-			return DefWindowProcA(hwnd, Message, wParam, lParam);
-		}break;
-		}
 		return 0;
 	}
 	int WINAPI
@@ -125,44 +79,39 @@ RenderWeirdGradient(win32_buffer_info Buffer, int BlueOffset, int GreenOffset, i
 			PSTR commandLine, INT commandShow)
 	{
 		LE::MainWrapper();
-		WNDCLASS clientWindowClass = {};
-		clientWindowClass.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
-		clientWindowClass.hbrBackground = NULL;
-		clientWindowClass.lpfnWndProc = clientWindowProc;
-		clientWindowClass.hInstance = Instance;
-		clientWindowClass.lpszClassName = "LazyEngineClass";
+		std::shared_ptr<LE::LevelLoader> levelLoader = std::shared_ptr<LE::LevelLoader>(new LE::LevelLoader("testLevel1.lvl"));
+		levelLoader->loadLevelGameObjs();
+		std::string windowName = "LazyEngine";
+		std::shared_ptr<LE::MainWindow> winMain = std::shared_ptr<LE::MainWindow>(new LE::MainWindow(windowName,Instance));
+		HRESULT hr = S_OK;
+		std::string windowClassName = "LazyEngineClass";
+		hr = winMain->CreateDesktopWindow(windowClassName);
+		if (SUCCEEDED(hr)) {
+			std::shared_ptr<LE::DeviceResources> deviceResources = std::shared_ptr<LE::DeviceResources>(new LE::DeviceResources());
+			// Create device resources.
+			deviceResources->CreateDeviceResources();
 
+			// Instantiate the renderer.
+			std::shared_ptr<LE::Renderer> renderer = std::shared_ptr<LE::Renderer>(new LE::Renderer(deviceResources));
+			renderer->CreateDeviceDependentResources(levelLoader);
 
+			// We have a window, so initialize window size-dependent resources.
+			deviceResources->CreateWindowResources(winMain->getWindowHandle());
+			renderer->CreateWindowSizeDependentResources();
 
-		LAZYASSERT(RegisterClass(&clientWindowClass),"Class Registration Failed");
-		HWND clientWindowHandle = CreateWindowEx(0, clientWindowClass.lpszClassName,"LAZY ENGINE",WS_OVERLAPPEDWINDOW|WS_VISIBLE,
-			CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,0,0,Instance,0);
-		LAZYASSERT(clientWindowHandle,"Create Window Failed.") 
-		//ShowWindow(clientWindowHandle, SW_SHOWMINIMIZED);
-		MSG msg;
-		LE::Primitives::Bool Running = true;
-		LE::Primitives::Int32 Xoffset = 0, Yoffset = 0;
-		while (Running)
-		{
-			while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
-			{
+			// Go full-screen.
+			//deviceResources->GoFullScreen();
 
-				if (msg.message == WM_QUIT) Running = false;
-				TranslateMessage(&msg);
-				DispatchMessageA(&msg);
-			}
-			RenderWeirdGradient(BackBuffer,Xoffset,Yoffset,Xoffset);
-			Xoffset++; Yoffset++;
-			HDC DeviceContext = GetDC(clientWindowHandle);
-			RECT ClientRect;
-			GetClientRect(clientWindowHandle, &ClientRect);
-			 int WindowWidth = ClientRect.right - ClientRect.left;
-			 int WindowHeight = ClientRect.bottom - ClientRect.top;
-			Win32UpdateWindow(BackBuffer,DeviceContext,&ClientRect, 0, 0, WindowWidth, WindowHeight);
-			ReleaseDC(clientWindowHandle, DeviceContext);
-		
+			// Whoops! We resized the "window" when we went full-screen. Better
+			// tell the renderer.
+			//renderer->CreateWindowSizeDependentResources();
+
+			// Run the program.
+			renderer->Update(levelLoader);
+			hr = winMain->RUN(deviceResources, renderer,levelLoader);
+
 		}
-
+	
 		return 0;
 	}
 

@@ -46,6 +46,9 @@
     <Filter Include="Game">
       <UniqueIdentifier>{14802382-d86e-4e40-a503-bb3c4da6c671}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DX11">
+      <UniqueIdentifier>{90111ff0-2e49-4705-8d07-5ddabb2c151f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -138,6 +141,24 @@
     <ClInclude Include="Game\GameObject.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\Colliders\ColliderBase.h">
+      <Filter>Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\MainWindow.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\DeviceManager.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\Renderer.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Algorithms\BasicCollisons.h">
+      <Filter>Physics\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\LevelLoader.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -169,6 +190,30 @@
     </ClCompile>
     <ClCompile Include="Physics\Physics.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\MainWindow.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\DeviceManager.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\Renderer.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\LevelLoader.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PrimitiveShapes\Point.cpp">
+      <Filter>Physics\PrimitiveShapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PrimitiveShapes\Plane.cpp">
+      <Filter>Physics\PrimitiveShapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Colliders\ColliderBase.cpp">
+      <Filter>Physics\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Algorithms\BasicCollisions.cpp">
+      <Filter>Physics\Algorithms</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

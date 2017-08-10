@@ -1,63 +1,64 @@
 #pragma once
 #ifndef RAY_H_
 #define RAY_H_
-#include "../../Includes/LazyIncludes.h"
-#include "../../Math/LEVector.h"
+
+
 #include "../../Math/Quaternion.h"
 #include "Point.h"
 namespace LE {
 	namespace PrimitiveShapes {
-		template<class T = Primitives::Float32>
+		
 		class Ray {
 		private:
-			Point<T> startPoint;
-			LEVector3<T> direction;
+			Point startPoint;
+			LEVector3 direction;
 
 		public:
 			//Default Direction is world space X axis
-			Ray<T>();
-			Ray<T>(const Point<T> *point, const LEVector3<T> *dir);
-			Ray<T>(const Ray* ray);
-			Point<T> getStartPoint();
-			LEVector3<T> getDirection();
-			void setStartPoint(Point<T> *startpoint);
-			void setDirection(LEVector3<T> *direction);
+			Ray();
+			Ray(const Point *point, const LEVector3 *dir);
+			Ray(const Ray* ray);
+			Point getStartPoint() const;
+			LEVector3 getDirection() const;
+			void setStartPoint(Point *startpoint);
+			void setDirection(LEVector3 *direction);
 		};
-		template<class T>
-		Ray<T>::Ray() {
-			*this.startPoint = new Point<T>();
-			*this.direction = new LEVector3<T>(1, 0, 0);
+		
+		Ray::Ray() {
+			startPoint = Point();
+			direction =  LEVector3(1, 0, 0);
 		}
-		template<class T>
-		Ray<T>::Ray(const Point<T> *point, const LEVector3<T> *dir)
+		
+		Ray::Ray(const Point *point, const LEVector3 *dir)
 		{
-			*this.startPoint(*point);
-			*this.direction = *dir;
+			startPoint = *point;
+			direction = *dir;
 		}
-		template<class T>
-		Ray<T>::Ray(const Ray* ray) {
-			setStartPoint(ray->getStartPoint());
-			setDirection(ray->getDirection());
+		
+		Ray::Ray(const Ray* ray) {
+			setStartPoint(&ray->getStartPoint());
+			setDirection(&ray->getDirection());
 		}
 
-		template <class T>
-		Point<T> Ray<T>::getStartPoint() {
+		Point Ray::getStartPoint() const{
 			return startPoint;
 		}
 
-		template <class T>
-		LEVector3<T> Ray<T>::getDirection() {
+		
+		LEVector3 Ray::getDirection() const {
 			return direction;
 		}
 
-		template <class T>
-		void Ray<T>::setStartPoint(Point<T> *point) {
-			point->copyCoordinates(&(*this.startPoint));
+		
+		void Ray::setStartPoint(Point *point) {
+			startPoint.x = point->x;
+			startPoint.y = point->y;
+			startPoint.z = point->z;
 		}
 
-		template <class T>
-		void Ray<T>::setDirection(LEVector3<T> *dir) {
-			*this.direction = *dir;
+		
+		void Ray::setDirection(LEVector3 *dir) {
+			this->direction = *dir;
 		}
 	};
 };

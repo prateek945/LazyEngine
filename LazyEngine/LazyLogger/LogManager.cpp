@@ -1,5 +1,4 @@
 #include "LogManager.h"
-
 namespace LE {
 	LogManager* LogManager::gLogManager = new LogManager();
 	LogManager::LogManager() {}
