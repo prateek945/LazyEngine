@@ -55,6 +55,9 @@ namespace LE {
 			&compiledCodeBlob,
 			&errorBlob
 		);
+		if (errorBlob) {
+			OutputDebugStringA((LPCSTR)errorBlob->GetBufferPointer());
+		}
 		hr = device->CreateVertexShader(
 			compiledCodeBlob->GetBufferPointer(),
 			compiledCodeBlob->GetBufferSize(),
@@ -69,6 +72,9 @@ namespace LE {
 
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT,
 			0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+			{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,
+			0,24,D3D11_INPUT_PER_VERTEX_DATA,0}
 		};
 
 		hr = device->CreateInputLayout(
@@ -204,25 +210,28 @@ namespace LE {
 
 		// Use the Direct3D device to load resources into graphics memory.
 		ID3D11Device* device = m_deviceResources->GetDevice();
-		vector<Primitives::Float32> allVerts ;
+		vector<VertexPositionColor> allVerts ;
 		// Create cube geometry.
 		int numgpuverts = ((levelLoader.get()->gpubuffer.m_vertices.size()*4) / sizeof(VertexPositionColor));
 		int vertsize = sizeof(VertexPositionColor) / 4;
 		for (unsigned int i = 0; i < numgpuverts; i++) {
-			//VertexPositionColor vpc = {};
-			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i));
-			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+1));
-			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+2));
-			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+3));
-			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+4));
-			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+5));
-			
+			VertexPositionColor vpc = {};
+			vpc.pos.x = levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i);
+			vpc.pos.y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+1));
+			vpc.pos.z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+2));
+			vpc.color.x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+3));
+			vpc.color.y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+4));
+			vpc.color.z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+5));
+			vpc.normal.x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 6));
+			vpc.normal.y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 7));
+			vpc.normal.z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 8));
+			allVerts.push_back(vpc);
 		}
 
 		// Create vertex buffer:
 		
 		CD3D11_BUFFER_DESC vDesc(
-			allVerts.size()*sizeof(Primitives::Float32),
+			allVerts.size()*sizeof(VertexPositionColor),
 			D3D11_BIND_VERTEX_BUFFER
 		);
 		vDesc.ByteWidth;
@@ -276,8 +285,8 @@ namespace LE {
 	{
 		// Use DirectXMath to create view and perspective matrices.
 
-		DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.7f, 5.0f, 0.f);
-		DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, -0.5f, -1.0f, 0.f);
+		DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 1.0f, 6.5f, 0.f);
+		DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 1.0f, -1.0f, 0.f);
 		DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
 
 		DirectX::XMStoreFloat4x4(
@@ -297,7 +306,7 @@ namespace LE {
 			&m_constantBufferData.projection,
 			DirectX::XMMatrixTranspose(
 				DirectX::XMMatrixPerspectiveFovRH(
-					DirectX::XMConvertToRadians(90),
+					DirectX::XMConvertToRadians(85),
 					aspectRatio,
 					0.01f,
 					100.0f
@@ -341,12 +350,15 @@ namespace LE {
 			DirectX::XMMatrixIdentity());*/
 
 		UINT size = levelLoader->g_gameObjs.size();
-		if (m_frameCount == MAXINT32) m_frameCount = 0;
-		m_frameCount++;
-		m_constantBufferData.framecount.x = m_frameCount;
-		//PhysicsManager::getInstance()->get()->UpdateCollisions(m_frameCount);
-		PhysicsManager::getInstance()->get()->ResolveCollisions(m_frameCount);
-		UpdateMatricesPostPhysics(levelLoader,m_frameCount);
+		if (g_frameCount == MAXINT32) g_frameCount = 0;
+		
+		m_constantBufferData.framecount.x = g_frameCount;
+		if (g_runPhysics) {
+			PhysicsManager::getInstance()->get()->UpdateCollisions(g_frameCount);
+			PhysicsManager::getInstance()->get()->ResolveCollisions(g_frameCount);
+			UpdateMatricesPostPhysics(levelLoader, g_frameCount);
+		}
+		
 	}
 
 	//-----------------------------------------------------------------------------
@@ -358,7 +370,7 @@ namespace LE {
 		ID3D11DeviceContext* context = m_deviceResources->GetDeviceContext();
 		ID3D11RenderTargetView* renderTarget = m_deviceResources->GetRenderTargets();
 		ID3D11DepthStencilView* depthStencil = m_deviceResources->GetDepthStencil();
-		const float teal[] = { 0.098f, 0.439f, 0.439f, 1.000f };
+		const float teal[] = { 0.0f, 0.0f, 0.0f, 1.000f };
 
 		context->ClearRenderTargetView(
 			renderTarget,
@@ -392,10 +404,8 @@ namespace LE {
 			DXGI_FORMAT_R16_UINT,
 			0
 		);
-
-		context->IASetPrimitiveTopology(
-			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-		);
+		
+		
 		context->VSSetShader(
 			m_pVertexShader.Get(),
 			nullptr,
@@ -411,64 +421,68 @@ namespace LE {
 		context->IASetInputLayout(m_pInputLayout.Get());
 		for (unsigned int i = 0; i < levelLoader.get()->num_gameObjs; i++) {
 			//levelLoader.get()->g_gameObjs[i].objMatrix;
-			
-			
-			m_constantBufferData.world._11 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][0];
-			m_constantBufferData.world._12 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][1];
-			m_constantBufferData.world._13 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][2];
-			m_constantBufferData.world._14 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][3];
-			m_constantBufferData.world._21 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][0];
-			m_constantBufferData.world._22 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][1];
-			m_constantBufferData.world._23 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][2];
-			m_constantBufferData.world._24 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][3];
-			m_constantBufferData.world._31 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][0];
-			m_constantBufferData.world._32 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][1];
-			m_constantBufferData.world._33 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][2];
-			m_constantBufferData.world._34 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][3];
-			m_constantBufferData.world._41 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][0];
-			m_constantBufferData.world._42 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][1];
-			m_constantBufferData.world._43 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][2];
-			m_constantBufferData.world._44 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][3];
-			context->UpdateSubresource(
-				m_pConstantBuffer.Get(),
-				0,
-				nullptr,
-				&m_constantBufferData,
-				sizeof(ConstantBufferStruct),
-				0
-			);
+			if (levelLoader.get()->g_gameObjs[i].getObjId() == 2) {
+				context->IASetPrimitiveTopology(
+					D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+				);
+			}
+			else {
+				context->IASetPrimitiveTopology(
+					D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+				);
+			}
+			if (levelLoader.get()->g_gameObjs[i].isVisible) {
+				m_constantBufferData.world._11 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][0];
+				m_constantBufferData.world._12 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][1];
+				m_constantBufferData.world._13 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][2];
+				m_constantBufferData.world._14 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][3];
+				m_constantBufferData.world._21 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][0];
+				m_constantBufferData.world._22 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][1];
+				m_constantBufferData.world._23 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][2];
+				m_constantBufferData.world._24 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][3];
+				m_constantBufferData.world._31 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][0];
+				m_constantBufferData.world._32 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][1];
+				m_constantBufferData.world._33 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][2];
+				m_constantBufferData.world._34 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][3];
+				m_constantBufferData.world._41 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][0];
+				m_constantBufferData.world._42 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][1];
+				m_constantBufferData.world._43 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][2];
+				m_constantBufferData.world._44 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][3];
+				m_constantBufferData.color.x = levelLoader.get()->g_gameObjs[i].diffuseColor.m_x;
+				m_constantBufferData.color.y = levelLoader.get()->g_gameObjs[i].diffuseColor.m_y;
+				m_constantBufferData.color.z = levelLoader.get()->g_gameObjs[i].diffuseColor.m_z;
+				m_constantBufferData.color.w = levelLoader.get()->g_gameObjs[i].alpha;
+				context->UpdateSubresource(
+					m_pConstantBuffer.Get(),
+					0,
+					nullptr,
+					&m_constantBufferData,
+					sizeof(ConstantBufferStruct),
+					0
+				);
 
-			// Clear the render target and the z-buffer.
-			
-			// Set the render target.
-			
 
-			// Set up the IA stage by setting the input topology and layout.
-			
-		
+				context->VSSetConstantBuffers(
+					0,
+					1,
+					m_pConstantBuffer.GetAddressOf()
+				);
 
-			// Set up the vertex shader stage.
-			
-			context->VSSetConstantBuffers(
-				0,
-				1,
-				m_pConstantBuffer.GetAddressOf()
-			);
+				// Set up the pixel shader stage.
 
-			// Set up the pixel shader stage.
-			
-			string key = levelLoader.get()->g_gameObjs[i].objectName;
-			UINT startIndexLocation = levelLoader.get()->m_instances.at(key).second;
-			UINT startVertexLocation = levelLoader.get()->m_instances.at(key).first;
-			UINT index_count = levelLoader.get()->g_gameObjs[i].num_indices*3;
-			// Calling Draw tells Direct3D to start sending commands to the graphics device.
-			context->DrawIndexedInstanced(
-				index_count,
-				1,
-				startIndexLocation,
-				0,
-				0
-			);
+				string key = levelLoader.get()->g_gameObjs[i].objectName;
+				UINT startIndexLocation = levelLoader.get()->m_instances.at(key).second;
+				UINT startVertexLocation = levelLoader.get()->m_instances.at(key).first/(sizeof(VertexPositionColor)*0.25f);
+				UINT index_count = levelLoader.get()->g_gameObjs[i].num_indices * 3;
+				// Calling Draw tells Direct3D to start sending commands to the graphics device.
+				context->DrawIndexedInstanced(
+					index_count,
+					1,
+					startIndexLocation,
+					startVertexLocation,
+					0
+				);
+			}
 			
 		}
 	}

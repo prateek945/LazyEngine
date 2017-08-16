@@ -1,0 +1,61 @@
+2
+BeginObject
+Name
+Sphere
+Matrix
+0.5 0.0 0.0 -2.0 
+0.0 0.5 0.0 3.0 
+0.0 0.0 0.5 0.0 
+0.0 0.0 0.0 1.0
+isVisible
+1
+Color
+0.0 1.0 0.0 1.0
+BeginObjectPhysics
+Collider
+Sphere
+IsMovable
+1
+Gravity
+0
+Momentum
+1
+Mass
+10.0
+Velocity
+1.0 0.0 0.0
+EndObjectPhysics
+EndObject
+
+BeginObject
+Name
+Sphere
+Matrix
+0.5 0.0 0.0 2.0 
+0.0 0.5 0.0 3.0 
+0.0 0.0 0.5 0.0 
+0.0 0.0 0.0 1.0
+isVisible
+1
+Color
+1.0 0.0 0.0 1.0
+BeginObjectPhysics
+Collider
+Sphere
+IsMovable
+1
+Gravity
+0
+Momentum
+1
+Mass
+10.0
+Velocity
+-1.0 0.0 0.0
+EndObjectPhysics
+EndObject
+
+BeginGlobalPhysics
+Gravity
+0.5 0.0 -1.0 0.0
+EndGlobalPhysics

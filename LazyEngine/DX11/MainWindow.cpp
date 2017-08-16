@@ -90,7 +90,36 @@ namespace LE {
 			PostQuitMessage(0);
 			return 0;
 		}break;
-
+		case WM_KEYDOWN: {
+			switch (wParam) {
+			case VK_LEFT: {
+				int prevFrame = !(g_frameCount % 2);
+				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x =-1.0f;
+				}break;
+			case VK_RIGHT: {
+				int prevFrame = !(g_frameCount % 2);
+				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x =1.0f;
+				}break;
+			case 'P': {
+				g_runPhysics = true;
+				}break;
+			}
+		}break;
+		case WM_KEYUP: {
+			switch (wParam) {
+			case VK_LEFT: {
+				int prevFrame = !(g_frameCount % 2);
+				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x = 0.0f;
+				}break;
+			case VK_RIGHT: {
+				int prevFrame = !(g_frameCount % 2);
+				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x = 0.0f;
+				}break;
+			case 'P': {
+				g_runPhysics = false;
+				}break;
+			}
+		}break;
 		default: {
 			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 		}break;
@@ -106,6 +135,8 @@ namespace LE {
 		LE::Primitives::Int32 Xoffset = 0, Yoffset = 0;
 		while (Running)
 		{
+			if(g_runPhysics)
+				g_frameCount++;
 			while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);

@@ -7,6 +7,8 @@
 #include <wrl\client.h>
 #include <dxgi.h>
 #include <DXGI1_3.h>
+extern int g_frameCount;
+extern LE::Primitives::Bool g_runPhysics;
 namespace LE {
 	class DeviceResources {
 	public:

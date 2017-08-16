@@ -7,8 +7,7 @@
 
 namespace LE {
 	namespace Colliders {
-		//The class holds a set of points to be read in counter clockwise order.
-		//Second implementation can hold both vertex Data as well as index buffer.
+	
 		class CollisionVolume : public Collider{
 			//ColliderMeta metaData;
 			PrimitiveShapes::Point *vertexData;

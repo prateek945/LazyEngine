@@ -24,6 +24,7 @@
     <ClInclude Include="DX11\Renderer.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\LevelLoader.h" />
+    <ClInclude Include="Game\LightObject.h" />
     <ClInclude Include="GeneralMacros\GeneralMacros.h" />
     <ClInclude Include="Includes\LazyIncludes.h" />
     <ClInclude Include="LazyFiling\FileHandler.h" />

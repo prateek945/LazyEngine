@@ -16,16 +16,16 @@ namespace LE {
 		void Collider::incrementCollisionCount() {
 			collisionCount++;
 		}
-		void Collider::addColliderId(Primitives::Int16 index) {
-			collidedObjs.push_back(index);
+		void Collider::addColliderIdNormal(Primitives::Int16 id,LEVector3 normal) {
+			collidedObjs.push_back(std::make_pair(id,normal));
 		}
-		 Primitives::Int16 Collider::getColliderId(Primitives::Int16 index)const {
+		std::pair<Primitives::Int16, LEVector3> Collider::getColliderId(Primitives::Int16 index)const {
 			return collidedObjs.at(index);
 		}
 		 Primitives::Int16 Collider::getCollisionCount() const {
 			return collisionCount;
 		}
-		 std::vector<Primitives::Int16> Collider::getCollidedObjs() const {
+		 std::vector<std::pair<Primitives::Int16,LEVector3>> Collider::getCollidedObjs() const {
 			return collidedObjs;
 		}
 		

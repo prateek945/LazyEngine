@@ -60,6 +60,29 @@ namespace LE {
 				return (PrimitiveShapes::Point(LEVector3(localDir.m_x*b,localDir.m_y*h,localDir.m_z*l)));
 
 			}
+			void generateValuesFromBuffer(vector<Primitives::Float32> vertices) override 
+			{
+				Primitives::Float32 min_x = Primitives::Constants::c_MaxFloat32;
+				Primitives::Float32 max_x = 0.f;
+				Primitives::Float32 min_y = Primitives::Constants::c_MaxFloat32;
+				Primitives::Float32 max_y = 0.f;
+				Primitives::Float32 min_z = Primitives::Constants::c_MaxFloat32;
+				Primitives::Float32 max_z = 0.f;
+				for (unsigned int i = 0; i < vertices.size()/3; i++) {
+					if (vertices.at(3 * i) > max_x) max_x = vertices.at(3 * i);
+					if (vertices.at(3 * i) < min_x) min_x = vertices.at(3 * i);
+					if (vertices.at(3 * i + 1) > max_y) max_y = vertices.at(3 * i + 1);
+					if (vertices.at(3 * i + 1) < min_y) min_y = vertices.at(3 * i + 1);
+					if (vertices.at(3 * i + 2) > max_z) max_z = vertices.at(3 * i + 2);
+					if (vertices.at(3 * i + 2) < min_z) min_z = vertices.at(3 * i + 2);
+				}
+				min.x = min_x;
+				min.y = min_y;
+				min.z = min_z;
+				max.x = max_x;
+				max.y = max_y;
+				max.z = max_z;
+			}
 			
 		};
 

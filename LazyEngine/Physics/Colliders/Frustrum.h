@@ -148,6 +148,7 @@ namespace LE {
 
 
 			}
+			void generateValuesFromBuffer(vector<Primitives::Float32> vertices){}
 			Frustrum(Frustrum const&) {}
 
 		};

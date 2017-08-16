@@ -33,9 +33,11 @@ namespace LE {
 		}
 		void Normalize() {
 			Primitives::Float32 lengthnorm = length();
-			m_x /= lengthnorm;
-			m_y /= lengthnorm;
-			m_z /= lengthnorm;
+			if (lengthnorm != 0.f) {
+				m_x /= lengthnorm;
+				m_y /= lengthnorm;
+				m_z /= lengthnorm;
+			}
 		}
 		void crossProduct(const LEVector3 &v) {
 			Primitives::Float32 copyX, copyY, copyZ;
@@ -55,6 +57,7 @@ namespace LE {
 		void operator += (const LEVector3 &v1) { m_x += v1.m_x; m_y += v1.m_y; m_z += v1.m_z; }
 		void operator -= (const LEVector3 &v1) { m_x -= v1.m_x; m_y -= v1.m_y; m_z -= v1.m_z; }
 		void operator *= (const Primitives::Float32 &val) { m_x *= val; m_y *= val; m_z *= val; }
+		void operator *= (const LEVector3 &val) { m_x *= val.m_x; m_y *= val.m_y; m_z *= val.m_z; }
 		void operator /= (const Primitives::Float32 &val) { 
 			 
 			m_x /= val; m_y /= val; m_z /= val; }
@@ -67,7 +70,7 @@ namespace LE {
 		
 	};
 	inline LEVector3 operator * (const Primitives::Float32 &val, const LEVector3 &v1) { return LEVector3(v1.m_x*val, v1.m_y*val, v1.m_z*val); }
-
+	inline LEVector3 operator * (const LEVector3 &val, const LEVector3 &v1) { return LEVector3(v1.m_x*val.m_x, v1.m_y*val.m_y, v1.m_z*val.m_z); }
 
 	inline LEVector3 operator / (const LEVector3 &v1, const Primitives::Float32 &val) { return LEVector3(v1.m_x / val, v1.m_y / val, v1.m_z / val); }
 

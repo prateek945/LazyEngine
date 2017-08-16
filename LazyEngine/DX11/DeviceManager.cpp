@@ -1,5 +1,6 @@
 #include "DeviceManager.h"
-
+int g_frameCount = 0;
+LE::Primitives::Bool g_runPhysics = false;
 namespace LE {
 
 	DeviceResources::DeviceResources()

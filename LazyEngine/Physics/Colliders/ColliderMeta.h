@@ -15,11 +15,12 @@ namespace LE {
 			Primitives::Int16 ObjId;
 			ColliderType type;
 			Primitives::Bool bisMovable;
+			Primitives::Bool bhasMomentum;
 			Matrix4X4 objMat;
 			Primitives::Bool Gravity;
 			Primitives::Float32 mass;
-			LEVector3 velocityDir;
-			Primitives::Float32 velocityMagnitude;
+			LEVector3 Velocity;
+			Primitives::Float32 Energy;
 		};
 	};
 };

@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "../LazyFiling/FileHandler.h"
 #include "../Physics/PhysicsManager.h"
+#include "../Game/LightObject.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -18,14 +19,14 @@ namespace LE {
 	public:
 		string levelName;
 		vector<GameObject> g_gameObjs;
-		
+		vector<LightObject> g_lights;
 		Primitives::UInt32 num_gameObjs;
 		map<string, pair<Primitives::UInt32,Primitives::UInt32>> m_instances;
 		GPUBuffers gpubuffer;
 		
 		LevelLoader(string levelname): levelName(levelname){}
 		bool loadLevelGameObjs();
-		
+		void storeCPUVertDataForObj(GameObject &obj);
 		const char* getLevelName() { return levelName.c_str(); }
 
 	};

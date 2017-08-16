@@ -41,6 +41,7 @@ namespace LE {
 			DirectX::XMFLOAT4X4 view;
 			DirectX::XMFLOAT4X4 projection;
 			DirectX::XMFLOAT4 framecount;
+			DirectX::XMFLOAT4 color;
 		} ConstantBufferStruct;
 
 		// Assert that the constant buffer remains 16-byte aligned.
@@ -53,6 +54,7 @@ namespace LE {
 		{
 			DirectX::XMFLOAT3 pos;
 			DirectX::XMFLOAT3 color;
+			DirectX::XMFLOAT3 normal;
 		} VertexPositionColor;
 
 		//-----------------------------------------------------------------------------

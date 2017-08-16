@@ -79,6 +79,7 @@ RenderWeirdGradient(win32_buffer_info Buffer, int BlueOffset, int GreenOffset, i
 			PSTR commandLine, INT commandShow)
 	{
 		LE::MainWrapper();
+		
 		std::shared_ptr<LE::LevelLoader> levelLoader = std::shared_ptr<LE::LevelLoader>(new LE::LevelLoader("testLevel1.lvl"));
 		levelLoader->loadLevelGameObjs();
 		std::string windowName = "LazyEngine";

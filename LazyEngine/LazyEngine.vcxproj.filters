@@ -159,6 +159,9 @@
     <ClInclude Include="Game\LevelLoader.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Game\LightObject.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">

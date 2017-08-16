@@ -91,16 +91,29 @@ namespace LE {
 		}
 
 		LEVector3 getU() {
-			return LEVector3(m_values[0][0], m_values[0][1], m_values[0][2]);
+			LEVector3 retVec = LEVector3(m_values[0][0], m_values[0][1], m_values[0][2]);
+			//retVec.Normalize();
+			return retVec;
 		}
 		LEVector3 getV() {
-			return LEVector3(m_values[1][0], m_values[1][1], m_values[1][2]);
+			LEVector3 retVec = LEVector3(m_values[1][0], m_values[1][1], m_values[1][2]);
+			//retVec.Normalize();
+			return retVec;
 		}
 		LEVector3 getN() {
-			return LEVector3(m_values[2][0], m_values[2][1], m_values[2][2]);
+			LEVector3 retVec = LEVector3(m_values[2][0], m_values[2][1], m_values[2][2]);
+			//retVec.Normalize();
+			return retVec;
 		}
 		LEVector3 getTranslation() {
 			return LEVector3(m_values[0][3], m_values[1][3], m_values[2][3]);
+		}
+		LEVector3 getScale() {
+			Primitives::Float32 sX, sY, sZ;
+			sX = getU().length();
+			sY = getV().length();
+			sZ = getN().length();
+			return LEVector3(sX, sY, sZ);
 		}
 		void setRotation(Matrix3X3 &m) {
 			
