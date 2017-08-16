@@ -19,7 +19,6 @@ namespace LE {
 				LEVector3 newCenter = centerA.AsVector3() + moveBackDist*retNormal;
 				A->metaData.objMat.setTranslation(newCenter);
 			}
-			
 			return retNormal;
 		}
 		return  LEVector3(0, 0, 0);

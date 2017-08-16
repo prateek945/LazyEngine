@@ -124,86 +124,9 @@ namespace LE {
 			nullptr,
 			m_pConstantBuffer.GetAddressOf()
 		);
-
-		
-
-		// Load the extended shaders with lighting calculations.
-		/*
-		bytes = new BYTE[destSize];
-		bytesRead = 0;
-		fopen_s(&vShader, "CubeVertexShaderLighting.cso", "rb");
-		bytesRead = fread_s(bytes, destSize, 1, 4096, vShader);
-		hr = device->CreateVertexShader(
-		bytes,
-		bytesRead,
-		nullptr,
-		&m_pVertexShader
-		);
-
-		D3D11_INPUT_ELEMENT_DESC iaDescExtended[] =
-		{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-		0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-		0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-		0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-
-		hr = device->CreateInputLayout(
-		iaDesc,
-		ARRAYSIZE(iaDesc),
-		bytes,
-		bytesRead,
-		&m_pInputLayoutExtended
-		);
-
-		delete bytes;
-
-
-		bytes = new BYTE[destSize];
-		bytesRead = 0;
-		fopen_s(&pShader, "CubePixelShaderPhongLighting.cso", "rb");
-		bytesRead = fread_s(bytes, destSize, 1, 4096, pShader);
-		hr = device->CreatePixelShader(
-		bytes,
-		bytesRead,
-		nullptr,
-		m_pPixelShader.GetAddressOf()
-		);
-
-		delete bytes;
-
-		fclose(vShader);
-		fclose(pShader);
-
-
-		bytes = new BYTE[destSize];
-		bytesRead = 0;
-		fopen_s(&pShader, "CubePixelShaderTexelLighting.cso", "rb");
-		bytesRead = fread_s(bytes, destSize, 1, 4096, pShader);
-		hr = device->CreatePixelShader(
-		bytes,
-		bytesRead,
-		nullptr,
-		m_pPixelShader.GetAddressOf()
-		);
-
-		delete bytes;
-
-		fclose(pShader);
-		*/
-
 		return hr;
 	}
 
-	//-----------------------------------------------------------------------------
-	// Create the cube:
-	// Creates the vertex buffer and index buffer.
-	//-----------------------------------------------------------------------------
-	
 	HRESULT Renderer::CreateCube(std::shared_ptr<LevelLoader> levelLoader)
 	{
 		HRESULT hr = S_OK;
@@ -370,11 +293,11 @@ namespace LE {
 		ID3D11DeviceContext* context = m_deviceResources->GetDeviceContext();
 		ID3D11RenderTargetView* renderTarget = m_deviceResources->GetRenderTargets();
 		ID3D11DepthStencilView* depthStencil = m_deviceResources->GetDepthStencil();
-		const float teal[] = { 0.0f, 0.0f, 0.0f, 1.000f };
+		const float background[] = { 0.69f, 0.69f, 0.69f, 1.000f };
 
 		context->ClearRenderTargetView(
 			renderTarget,
-			teal
+			background
 		);
 
 		context->ClearDepthStencilView(
