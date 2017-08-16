@@ -40,14 +40,11 @@ namespace LE {
 		int x = CW_USEDEFAULT;
 		int y = CW_USEDEFAULT;
 
-		// No menu in this example.
-
-		// This example uses a non-resizable 640 by 480 viewport for simplicity.
+		
 		int nDefaultWidth = 640;
 		int nDefaultHeight = 480;
 		SetRect(&m_rc, 0, 0, nDefaultWidth, nDefaultHeight);
 
-		//SetRect(&m_rc, 0, 0, nDefaultWidth, nDefaultHeight);
 		AdjustWindowRect(
 			&m_rc,
 			WS_OVERLAPPEDWINDOW,
@@ -135,6 +132,7 @@ namespace LE {
 		LE::Primitives::Int32 Xoffset = 0, Yoffset = 0;
 		while (Running)
 		{
+			//Press and hold 'P' in order to run physics simulations (Only good for debugging can be removed later).
 			if(g_runPhysics)
 				g_frameCount++;
 			while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
