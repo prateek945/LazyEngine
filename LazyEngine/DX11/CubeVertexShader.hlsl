@@ -3,8 +3,8 @@ cbuffer ModelViewProjectionConstantBuffer : register(b0)
 	matrix mWorld;       // world matrix for object
 	matrix View;        // view matrix
 	matrix Projection;  // projection matrix
-	float4 framecount;
-	float4 color;
+	float3 color;
+	float alpha;
 };
 
 struct VS_INPUT
@@ -20,7 +20,6 @@ struct VS_OUTPUT
 	float3 Normal : NORMAL;
 	float3 PositionL : POSITION;
 	float4 Color    : COLOR0;
-	
 };
 
 VS_OUTPUT main(VS_INPUT input) // main is the default function name
@@ -31,18 +30,18 @@ VS_OUTPUT main(VS_INPUT input) // main is the default function name
 	float3 posL  = input.vPos;
 	float4 normal = float4(input.vNormal,0.0f);
 	// Transform the position from object space to homogeneous projection space
-	pos = mul(pos, mWorld);
+	pos = mul(mWorld,pos);
 	posL =  pos.xyz;
-	pos = mul(pos, View);
-	pos = mul(pos, Projection);
-	normal = mul(normal,mWorld);
+	pos = mul(View, pos);
+	pos = mul(Projection, pos);
+	normal = mul(mWorld,normal);
 	
 	Output.Position = pos;
 	Output.Normal = normal.xyz;
 	Output.PositionL = posL;
 
 	// Just pass through the color data
-	Output.Color = color;
+	Output.Color = float4(color,alpha);
 
 	return Output;
 }

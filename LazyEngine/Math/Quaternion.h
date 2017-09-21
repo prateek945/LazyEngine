@@ -144,6 +144,16 @@ namespace LE {
 
 		}
 
+		void importTurnAngle(const Primitives::Float32 angle)
+		{
+			Primitives::Float32 angleDiv2 = angle * 0.5f,
+				sinAngleDiv2 = sinf(angleDiv2);
+			w = cosf(angleDiv2);
+			x *= sinAngleDiv2;
+			y *= sinAngleDiv2;
+			z *= sinAngleDiv2;
+		}
+
 		LEVector3 rotateCCW(Quaternion &q, LEVector3 &v) {
 			Quaternion pure(v), axis(q);
 			
@@ -158,7 +168,13 @@ namespace LE {
 			return pure.getVector();
 		}
 
-	 
+		LEVector3 turnVectorAboutAxis(Primitives::Float32 angle, LEVector3 vector) {
+			Quaternion q(vector), axis(*this);
+			axis.normalise();
+			axis.importTurnAngle(angle);
+			q = ((*axis) * q) * axis;
+			return q.getVector();
+		}
 
 		Primitives::Float32 w, x, y, z;
 

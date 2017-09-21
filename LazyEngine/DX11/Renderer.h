@@ -3,6 +3,11 @@
 #define RENDERER_H_
 
 #include "DeviceManager.h"
+#include "CameraUtils/Camera.h"
+#include "../Memory/Handle.h"
+#include "../Math/Matrix4X4.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 #include <memory>
 #include <DirectXMath.h>
 namespace LE {
@@ -17,7 +22,9 @@ namespace LE {
 	public:
 		Renderer(std::shared_ptr<DeviceResources> deviceResources);
 		~Renderer();
-
+		Handle *m_hMainCamera;
+		std::unique_ptr<DirectX::Keyboard> m_keyboard;
+		std::unique_ptr<DirectX::Mouse> m_mouse;
 		void CreateDeviceDependentResources(std::shared_ptr<LevelLoader> levelLoader);
 		void CreateWindowSizeDependentResources();
 		void Update(std::shared_ptr<LevelLoader>);
@@ -27,7 +34,7 @@ namespace LE {
 		HRESULT CreateShaders();
 		HRESULT CreateCube(std::shared_ptr<LevelLoader> levelLoader);
 		void    CreateViewAndPerspective();
-
+		
 		//-----------------------------------------------------------------------------
 		// Pointer to device resource manager
 		//-----------------------------------------------------------------------------
@@ -37,11 +44,12 @@ namespace LE {
 		// Variables for rendering the cube
 		//-----------------------------------------------------------------------------
 		typedef struct _constantBufferStruct {
-			DirectX::XMFLOAT4X4 world;
-			DirectX::XMFLOAT4X4 view;
-			DirectX::XMFLOAT4X4 projection;
-			DirectX::XMFLOAT4 framecount;
-			DirectX::XMFLOAT4 color;
+			Matrix4X4 world;
+			Matrix4X4 view;
+			Matrix4X4 projection;
+			LEVector3 color;
+			float aplha;
+			
 		} ConstantBufferStruct;
 
 		// Assert that the constant buffer remains 16-byte aligned.
@@ -52,9 +60,9 @@ namespace LE {
 		//-----------------------------------------------------------------------------
 		typedef struct _vertexPositionColor
 		{
-			DirectX::XMFLOAT3 pos;
-			DirectX::XMFLOAT3 color;
-			DirectX::XMFLOAT3 normal;
+			LEVector3 pos;
+			LEVector3 color;
+			LEVector3 normal;
 		} VertexPositionColor;
 
 		//-----------------------------------------------------------------------------
@@ -62,9 +70,9 @@ namespace LE {
 		//-----------------------------------------------------------------------------
 		typedef struct _vertexPositionColorTangent
 		{
-			DirectX::XMFLOAT3 pos;
-			DirectX::XMFLOAT3 normal;
-			DirectX::XMFLOAT3 tangent;
+			LEVector3 pos;
+			LEVector3 normal;
+			LEVector3 tangent;
 		} VertexPositionColorTangent;
 
 		ConstantBufferStruct m_constantBufferData;

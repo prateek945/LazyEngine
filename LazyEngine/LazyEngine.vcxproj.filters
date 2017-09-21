@@ -49,6 +49,21 @@
     <Filter Include="DX11">
       <UniqueIdentifier>{90111ff0-2e49-4705-8d07-5ddabb2c151f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MeshDataCPU">
+      <UniqueIdentifier>{04c455aa-de70-4a18-b96b-528f943f0027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MeshDataCPU\VertexBufferCPU">
+      <UniqueIdentifier>{bf372676-487f-47f5-bc00-2c70bdb13921}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\CameraUtils">
+      <UniqueIdentifier>{b0842e17-8ce9-41c5-8a06-d199b69f3364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MeshDataCPU\NormalBufferCPU">
+      <UniqueIdentifier>{5e5622d6-3eb2-4d07-9f62-27a511a9e116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MeshDataCPU\TextureCoordBufferCPU">
+      <UniqueIdentifier>{84aeefe8-94eb-44a5-b25b-0fd0a67cb45a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -162,6 +177,24 @@
     <ClInclude Include="Game\LightObject.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="MeshCPU.h">
+      <Filter>MeshDataCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Handle.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\CameraUtils\Camera.h">
+      <Filter>DX11\CameraUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.h">
+      <Filter>MeshDataCPU\VertexBufferCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.h">
+      <Filter>MeshDataCPU\NormalBufferCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.h">
+      <Filter>MeshDataCPU\TextureCoordBufferCPU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -218,5 +251,20 @@
     <ClCompile Include="Physics\Algorithms\BasicCollisions.cpp">
       <Filter>Physics\Algorithms</Filter>
     </ClCompile>
+    <ClCompile Include="DX11\CameraUtils\Camera.cpp">
+      <Filter>DX11\CameraUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.cpp">
+      <Filter>MeshDataCPU\VertexBufferCPU</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.cpp">
+      <Filter>MeshDataCPU\NormalBufferCPU</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.cpp">
+      <Filter>MeshDataCPU\TextureCoordBufferCPU</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

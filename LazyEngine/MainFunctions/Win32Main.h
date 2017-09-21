@@ -4,6 +4,8 @@
 
 #include "Main.h"
 #include "../DX11/MainWindow.h"
+#include "../Memory/Handle.h"
+#include "../DX11/CameraUtils/Camera.h"
 #include <Xinput.h>
 
 struct win32_buffer_info {
@@ -13,4 +15,6 @@ struct win32_buffer_info {
 	LE::Primitives::Int32 BitmapHeight;
 	LE::Primitives::Int32 BytesPerPixel = 4;
 };
+
+
 #endif

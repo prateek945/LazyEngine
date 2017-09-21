@@ -10,6 +10,7 @@ namespace LE {
 		std::string m_windowname;
 		HWND m_WHND;
 		RECT m_rc;
+		
 		HINSTANCE m_Instance;
 	public:
 		MainWindow();
@@ -19,8 +20,9 @@ namespace LE {
 		HWND getWindowHandle() const { return m_WHND; }
 		RECT getWindowRect() const { return m_rc; }
 		std::string getWindowName() const { return m_windowname; }
-
+		static Handle *m_hMainCamera;
 		HRESULT CreateDesktopWindow(std::string);
+		
 		static LRESULT CALLBACK StaticWindowProc(
 			HWND hWnd,
 			UINT uMsg,

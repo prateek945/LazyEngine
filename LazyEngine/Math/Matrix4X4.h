@@ -89,6 +89,27 @@ namespace LE {
 			m_values[3][2] = translation.m_z;
 			m_values[3][3] = 1.f;
 		}
+		void setIdentity() {
+			m_values[0][0] = 1.f;
+			m_values[0][1] = 0.f;
+			m_values[0][2] = 0.f;
+			m_values[0][3] = 0.f;
+
+			m_values[1][0] = 0.f;
+			m_values[1][1] = 1.f;
+			m_values[1][2] = 0.f;
+			m_values[1][3] = 0.f;
+
+			m_values[2][0] = 0.f;
+			m_values[2][1] = 0.f;
+			m_values[2][2] = 1.f;
+			m_values[2][3] = 0.f;
+
+			m_values[3][0] = 0.f;
+			m_values[3][1] = 0.f;
+			m_values[3][2] = 0.f;
+			m_values[3][3] = 1.f;
+		}
 
 		LEVector3 getU() {
 			LEVector3 retVec = LEVector3(m_values[0][0], m_values[0][1], m_values[0][2]);
@@ -101,12 +122,27 @@ namespace LE {
 			return retVec;
 		}
 		LEVector3 getN() {
-			LEVector3 retVec = LEVector3(m_values[2][0], m_values[2][1], m_values[2][2]);
+			LEVector3 retVec  = LEVector3(m_values[2][0], m_values[2][1], m_values[2][2]);
 			//retVec.Normalize();
 			return retVec;
 		}
+		void setU(const LEVector3 &retVec) {
+			m_values[0][0] = retVec.m_x;
+			m_values[0][1] = retVec.m_y; 
+			m_values[0][2] = retVec.m_z;	
+		}
+		void setV(const LEVector3 &retVec) {
+			m_values[1][0] = retVec.m_x;
+			m_values[1][1] = retVec.m_y;
+			m_values[1][2] = retVec.m_z;
+		}
+		void setN(const LEVector3 &retVec) {
+			m_values[2][0] = retVec.m_x;
+			m_values[2][1] = retVec.m_y;
+			m_values[2][2] = retVec.m_z;	
+		}
 		LEVector3 getTranslation() {
-			return LEVector3(m_values[0][3], m_values[1][3], m_values[2][3]);
+			return LEVector3(m_values[3][0], m_values[3][1], m_values[3][2]);
 		}
 		LEVector3 getScale() {
 			Primitives::Float32 sX, sY, sZ;
@@ -119,9 +155,9 @@ namespace LE {
 			
 		}
 		void setTranslation(LEVector3 t) {
-			m_values[0][3] = t.m_x;
-			m_values[1][3] = t.m_y;
-			m_values[2][3] = t.m_z;
+			m_values[3][0] = t.m_x;
+			m_values[3][1] = t.m_y;
+			m_values[3][2] = t.m_z;
 		}
 
 		friend ostream &operator << (ostream &output,const Matrix4X4 &m) {
@@ -201,6 +237,7 @@ namespace LE {
 			
 			return (m00*(detMat00.det()) - m01*(detMat01.det()) + m02*(detMat02.det()) - m03*(detMat03.det()));
 		}
+
 		Matrix4X4 getTranspose() {
 			Matrix4X4 ret = Matrix4X4 ();
 			Primitives::Int16 i, j;
@@ -262,6 +299,26 @@ namespace LE {
 					m_values[i][j] -= m.m_values[i][j];
 		}
 		
+		void turnLeft(Primitives::Float32 angle) {
+			Quaternion axis(getV());
+			setU(axis.turnVectorAboutAxis(angle, getU()));
+			setN(axis.turnVectorAboutAxis(angle, getN()));
+		}
+		void turnRight(Primitives::Float32 angle) {
+			Quaternion axis(getV());
+			setU(axis.turnVectorAboutAxis(-angle, getU()));
+			setN(axis.turnVectorAboutAxis(-angle, getN()));
+		}
+		void turnUp(Primitives::Float32 angle) {
+			Quaternion axis(getU());
+			setV(axis.turnVectorAboutAxis(angle, getV()));
+			setN(axis.turnVectorAboutAxis(angle, getN()));
+		}
+		void turnDown(Primitives::Float32 angle) {
+			Quaternion axis(getU());
+			setV(axis.turnVectorAboutAxis(-angle, getV()));
+			setN(axis.turnVectorAboutAxis(-angle, getN()));
+		}
 	};
 	inline Matrix4X4 operator *(const Matrix4X4 &m0, const float &f)
 	{
@@ -326,6 +383,7 @@ namespace LE {
 		}
 		return ret;
 	}
+
 
 	
 

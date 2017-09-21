@@ -139,15 +139,15 @@ namespace LE {
 		int vertsize = sizeof(VertexPositionColor) / 4;
 		for (unsigned int i = 0; i < numgpuverts; i++) {
 			VertexPositionColor vpc = {};
-			vpc.pos.x = levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i);
-			vpc.pos.y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+1));
-			vpc.pos.z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+2));
-			vpc.color.x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+3));
-			vpc.color.y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+4));
-			vpc.color.z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+5));
-			vpc.normal.x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 6));
-			vpc.normal.y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 7));
-			vpc.normal.z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 8));
+			vpc.pos.m_x = levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i);
+			vpc.pos.m_y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+1));
+			vpc.pos.m_z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+2));
+			vpc.color.m_x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+3));
+			vpc.color.m_y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+4));
+			vpc.color.m_z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+5));
+			vpc.normal.m_x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 6));
+			vpc.normal.m_y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 7));
+			vpc.normal.m_z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 8));
 			allVerts.push_back(vpc);
 		}
 
@@ -208,34 +208,14 @@ namespace LE {
 	{
 		// Use DirectXMath to create view and perspective matrices.
 
-		DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 1.0f, 6.5f, 0.f);
-		DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 1.0f, -1.0f, 0.f);
-		DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
-
-		DirectX::XMStoreFloat4x4(
-			&m_constantBufferData.view,
-			DirectX::XMMatrixTranspose(
-				DirectX::XMMatrixLookAtRH(
-					eye,
-					at,
-					up
-				)
-			)
-		);
-
+		LEVector3 eye(0.0f, 2.0f, -5.0f);
+		LEVector3 at(0.0f, 0.0f, 1.0f);
+		LEVector3 up(0.0f, 1.0f, 0.0f);
 		float aspectRatio = m_deviceResources->GetAspectRatio();
-
-		DirectX::XMStoreFloat4x4(
-			&m_constantBufferData.projection,
-			DirectX::XMMatrixTranspose(
-				DirectX::XMMatrixPerspectiveFovRH(
-					DirectX::XMConvertToRadians(85),
-					aspectRatio,
-					0.01f,
-					100.0f
-				)
-			)
-		);
+		m_hMainCamera = new Handle(sizeof(Camera));
+		Camera *MainCamera = new(m_hMainCamera->getAddress()) Camera(eye, at, up, 90.0f, aspectRatio, 0.01f, 100.0f);
+		m_constantBufferData.view = MainCamera->getViewMatrix();//.getTranspose();
+		m_constantBufferData.projection = MainCamera->getProjectionMatrix();// .getTranspose();
 	}
 
 	//-----------------------------------------------------------------------------
@@ -244,6 +224,8 @@ namespace LE {
 	void Renderer::CreateDeviceDependentResources(std::shared_ptr<LevelLoader> levelLoader)
 	{
 		// Compile shaders using the Effects library.
+		m_keyboard = make_unique<DirectX::Keyboard>();
+		m_mouse = make_unique<DirectX::Mouse>();
 		CreateShaders();
 		CreateCube(levelLoader);
 	}
@@ -268,14 +250,69 @@ namespace LE {
 	}
 	void Renderer::Update(std::shared_ptr<LevelLoader> levelLoader)
 	{
-		 //Rotate the cube 1 degree per frame.
-		/*DirectX::XMStoreFloat4x4(&m_constantBufferData.world,
-			DirectX::XMMatrixIdentity());*/
+		Camera* mainCam = m_hMainCamera->getObject<Camera>();
+		
+		auto kb = DirectX::Keyboard::Get().GetState();
+		if (kb.NumPad4) {
+			int prevFrame = !(g_frameCount % 2);
+			PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x = -1.0f;
+		}
+		if (kb.NumPad6) {
+			int prevFrame = !(g_frameCount % 2);
+			PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x = 1.0f;
+		}
+		if (kb.P) {
+			g_runPhysics = true;
+		}
+		if (kb.Up) {
+			
+			mainCam->TurnUp(0.01f);
 
+		}
+		if (kb.Down) {
+		
+			mainCam->TurnDown(0.01f);
+
+		}
+		if (kb.Left) {
+			Camera *mainCam = m_hMainCamera->getObject<Camera>();
+			mainCam->TurnLeft(0.01f);
+
+		}
+		if (kb.Right) {
+			
+			mainCam->TurnRight(0.01f);
+
+		}
+		if (kb.W) {
+			
+			mainCam->MoveUp(1.f);
+
+		}
+		if (kb.S) {
+			
+			mainCam->MoveDown(1.f);
+
+		}
+		if (kb.A) {
+			
+			mainCam->MoveLeft(1.f);
+
+		}
+		if (kb.D) {
+			
+			mainCam->MoveRight(1.f);
+
+		}
+		if (kb.R) {
+			mainCam->Reset();
+		}
 		UINT size = levelLoader->g_gameObjs.size();
 		if (g_frameCount == MAXINT32) g_frameCount = 0;
 		
-		m_constantBufferData.framecount.x = g_frameCount;
+		//mainCam->TurnLeft(0.01f);
+		mainCam->ReCalculateView();
+		mainCam->ReCalculateProjection();
 		if (g_runPhysics) {
 			PhysicsManager::getInstance()->get()->UpdateCollisions(g_frameCount);
 			PhysicsManager::getInstance()->get()->ResolveCollisions(g_frameCount);
@@ -342,6 +379,8 @@ namespace LE {
 		);
 		
 		context->IASetInputLayout(m_pInputLayout.Get());
+		//m_constantBufferData.view = m_hMainCamera->getObject<Camera>()->getViewMatrix();
+		//m_constantBufferData.projection = m_hMainCamera->getObject<Camera>()->getProjectionMatrix();
 		for (unsigned int i = 0; i < levelLoader.get()->num_gameObjs; i++) {
 			//levelLoader.get()->g_gameObjs[i].objMatrix;
 			if (levelLoader.get()->g_gameObjs[i].getObjId() == 2) {
@@ -354,27 +393,13 @@ namespace LE {
 					D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 				);
 			}
+			m_constantBufferData.view = m_hMainCamera->getObject<Camera>()->getViewMatrix();
+			m_constantBufferData.projection = m_hMainCamera->getObject<Camera>()->getProjectionMatrix();
 			if (levelLoader.get()->g_gameObjs[i].isVisible) {
-				m_constantBufferData.world._11 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][0];
-				m_constantBufferData.world._12 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][1];
-				m_constantBufferData.world._13 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][2];
-				m_constantBufferData.world._14 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[0][3];
-				m_constantBufferData.world._21 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][0];
-				m_constantBufferData.world._22 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][1];
-				m_constantBufferData.world._23 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][2];
-				m_constantBufferData.world._24 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[1][3];
-				m_constantBufferData.world._31 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][0];
-				m_constantBufferData.world._32 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][1];
-				m_constantBufferData.world._33 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][2];
-				m_constantBufferData.world._34 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[2][3];
-				m_constantBufferData.world._41 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][0];
-				m_constantBufferData.world._42 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][1];
-				m_constantBufferData.world._43 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][2];
-				m_constantBufferData.world._44 = levelLoader.get()->g_gameObjs[i].objMatrix.m_values[3][3];
-				m_constantBufferData.color.x = levelLoader.get()->g_gameObjs[i].diffuseColor.m_x;
-				m_constantBufferData.color.y = levelLoader.get()->g_gameObjs[i].diffuseColor.m_y;
-				m_constantBufferData.color.z = levelLoader.get()->g_gameObjs[i].diffuseColor.m_z;
-				m_constantBufferData.color.w = levelLoader.get()->g_gameObjs[i].alpha;
+				
+				m_constantBufferData.world = levelLoader.get()->g_gameObjs[i].objMatrix;
+				m_constantBufferData.color = levelLoader.get()->g_gameObjs[i].diffuseColor;
+				m_constantBufferData.aplha = levelLoader.get()->g_gameObjs[i].alpha;
 				context->UpdateSubresource(
 					m_pConstantBuffer.Get(),
 					0,
@@ -391,7 +416,7 @@ namespace LE {
 					m_pConstantBuffer.GetAddressOf()
 				);
 
-				// Set up the pixel shader stage.
+			
 
 				string key = levelLoader.get()->g_gameObjs[i].objectName;
 				UINT startIndexLocation = levelLoader.get()->m_instances.at(key).second;

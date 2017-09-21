@@ -2,12 +2,11 @@
 #include "../LazyLogger/LogManager.h"
 
 namespace LE {
-	MainWindow::MainWindow() : m_windowname("LAZYENGINE"), m_WHND(NULL), m_Instance((HINSTANCE)GetModuleHandleA(NULL)) {}
+	Handle *MainWindow::m_hMainCamera = 0;
+	MainWindow::MainWindow() : m_windowname("LAZYENGINE"), m_WHND(NULL), m_Instance((HINSTANCE)GetModuleHandleA(NULL)) { m_hMainCamera = 0; }
 	MainWindow::MainWindow(std::string windowName, HINSTANCE instance) : m_windowname(windowName), m_WHND(NULL), m_Instance(instance) {}
 
 	HRESULT MainWindow::CreateDesktopWindow(std::string m_windowClassName) {
-
-
 
 		HICON hIcon = NULL;
 		CHAR szExePath[MAX_PATH];
@@ -29,6 +28,7 @@ namespace LE {
 		wndClass.lpszMenuName = NULL;
 		wndClass.lpszClassName = m_windowClassName.c_str();
 
+		
 		if (!RegisterClass(&wndClass))
 		{
 			DWORD dwError = GetLastError();
@@ -71,6 +71,7 @@ namespace LE {
 		WPARAM wParam,
 		LPARAM lParam) {
 
+		UINT con = WM_KEYDOWN;
 		switch (uMsg) {
 
 		case WM_CLOSE: {
@@ -80,6 +81,8 @@ namespace LE {
 		}break;
 		case WM_ACTIVATEAPP:
 		{
+			DirectX::Keyboard::ProcessMessage(uMsg, wParam, lParam);
+			DirectX::Mouse::ProcessMessage(uMsg, wParam, lParam);
 			OutputDebugStringA("WM_ACTIVATEAPP\n");
 		} break;
 
@@ -87,36 +90,17 @@ namespace LE {
 			PostQuitMessage(0);
 			return 0;
 		}break;
-		case WM_KEYDOWN: {
-			switch (wParam) {
-			case VK_LEFT: {
-				int prevFrame = !(g_frameCount % 2);
-				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x =-1.0f;
-				}break;
-			case VK_RIGHT: {
-				int prevFrame = !(g_frameCount % 2);
-				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x =1.0f;
-				}break;
-			case 'P': {
-				g_runPhysics = true;
-				}break;
-			}
-		}break;
-		case WM_KEYUP: {
-			switch (wParam) {
-			case VK_LEFT: {
-				int prevFrame = !(g_frameCount % 2);
-				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x = 0.0f;
-				}break;
-			case VK_RIGHT: {
-				int prevFrame = !(g_frameCount % 2);
-				PhysicsManager::getInstance()->get()->objects[prevFrame].at(0)->metaData.Velocity.m_x = 0.0f;
-				}break;
-			case 'P': {
-				g_runPhysics = false;
-				}break;
-			}
-		}break;
+		case WM_KEYDOWN:
+			DirectX::Keyboard::ProcessMessage(uMsg, wParam, lParam);
+			
+			break;
+		case WM_KEYUP:
+			DirectX::Keyboard::ProcessMessage(uMsg, wParam, lParam);
+			
+			break;
+		case WM_SYSKEYUP:
+			DirectX::Keyboard::ProcessMessage(uMsg, wParam, lParam);
+			break;
 		default: {
 			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 		}break;
@@ -130,25 +114,29 @@ namespace LE {
 		MSG msg;
 		LE::Primitives::Bool Running = true;
 		LE::Primitives::Int32 Xoffset = 0, Yoffset = 0;
+		m_hMainCamera = (renderer->m_hMainCamera);
 		while (Running)
 		{
 			//Press and hold 'P' in order to run physics simulations (Only good for debugging can be removed later).
+			
 			if(g_runPhysics)
 				g_frameCount++;
+			
+			
 			while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
 				DispatchMessageA(&msg);
-				
+
 				if (msg.message == WM_QUIT) {
 					Running = false;
 					TranslateMessage(&msg);
 					DispatchMessageA(&msg);
-					
+
 					DestroyWindow(getWindowHandle());
 				}
-				
-				
+
+
 			}
 			renderer->Update(levelLoader);
 			renderer->Render(levelLoader);
