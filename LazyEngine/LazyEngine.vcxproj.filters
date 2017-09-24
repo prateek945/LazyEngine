@@ -64,6 +64,12 @@
     <Filter Include="MeshDataCPU\TextureCoordBufferCPU">
       <UniqueIdentifier>{84aeefe8-94eb-44a5-b25b-0fd0a67cb45a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MeshDataCPU\MaterialBufferCPU">
+      <UniqueIdentifier>{a6afa3c0-5c5e-4bf1-ba0a-6bb5902be5ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MeshDataCPU\TextureCPU">
+      <UniqueIdentifier>{e64558a2-a15e-46de-9ab9-3004b4c2c005}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -177,9 +183,6 @@
     <ClInclude Include="Game\LightObject.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="MeshCPU.h">
-      <Filter>MeshDataCPU</Filter>
-    </ClInclude>
     <ClInclude Include="Memory\Handle.h">
       <Filter>Memory</Filter>
     </ClInclude>
@@ -194,6 +197,15 @@
     </ClInclude>
     <ClInclude Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.h">
       <Filter>MeshDataCPU\TextureCoordBufferCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataCPU\MeshCPU.h">
+      <Filter>MeshDataCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataCPU\MaterialBufferCPU\MaterialBufferCPU.h">
+      <Filter>MeshDataCPU\MaterialBufferCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataCPU\TextureCPU\Texture.h">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

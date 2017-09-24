@@ -16,8 +16,6 @@ namespace LE {
 		LEVector3 color;
 		Primitives::Float32 spec;
 		LightType type;
-
-
 	};
 };
 #endif

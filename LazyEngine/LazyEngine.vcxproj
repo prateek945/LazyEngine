@@ -44,9 +44,11 @@
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\MemoryPool.h" />
     <ClInclude Include="Memory\StackAllocator.h" />
-    <ClInclude Include="MeshCPU.h" />
+    <ClInclude Include="MeshDataCPU\MaterialBufferCPU\MaterialBufferCPU.h" />
+    <ClInclude Include="MeshDataCPU\MeshCPU.h" />
     <ClInclude Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.h" />
     <ClInclude Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.h" />
+    <ClInclude Include="MeshDataCPU\TextureCPU\Texture.h" />
     <ClInclude Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.h" />
     <ClInclude Include="Physics\Algorithms\BasicCollisons.h" />
     <ClInclude Include="Physics\Algorithms\GJK.h" />

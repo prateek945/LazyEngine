@@ -2,6 +2,7 @@
 #include "../../Includes/LazyIncludes.h"
 #include "../../Memory/Handle.h"
 #include "../../Math/LEVector.h"
+#include "../../LazyFiling/FileHandler.h"
 #include <vector>
 #include <string>
 namespace LE {
@@ -21,6 +22,6 @@ namespace LE {
 		std::string getMeshName();
 		//Function to set mesh name return 1 if successful else 0
 		Primitives::Int16 setMeshName(std::string name);
-
+		void ReadDataFromFile();
 	};
 };

@@ -3,7 +3,8 @@
 #define GAME_OBJECT_H_
 
 #include "../Physics/Colliders/ColliderMeta.h"
-
+#include "../MeshDataCPU/MeshCPU.h"
+#include "../Memory/Handle.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -19,6 +20,8 @@ namespace LE {
 		Primitives::UInt32 num_verts;
 		Primitives::UInt32 num_indices;
 		Primitives::Bool isVisible;
+		Handle* m_hMeshCPU;
+
 		vector<Primitives::Float32> m_vertices;
 		vector<Primitives::Float32> m_color;
 		vector<Primitives::Float32> m_normals;

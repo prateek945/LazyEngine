@@ -37,4 +37,20 @@ namespace LE {
 		if (name.empty()) return 0;
 		m_name = name; return 1;
 	}
+
+	void NormalBufferCPU::ReadDataFromFile() {
+		char base[1024];
+		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
+		strcat(base, m_name.c_str());
+		strcat(base, ".nb");
+		FileReader fr(base);
+
+
+		fr.readNextInt(m_count);
+		for (unsigned int j = 0; j < m_count * 3; j++) {
+			Primitives::Float32 temp;
+			fr.readNextFloat(temp);
+			addData(temp);
+		}
+	}
 };
