@@ -2,7 +2,7 @@
 #include "../../Includes/LazyIncludes.h"
 #include <string>
 #include <D3D11.h>
-#include <D3DX11tex.h>
+//#include <D3D11tex.h>
 namespace LE {
 	
 	class Texture {

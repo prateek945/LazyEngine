@@ -42,7 +42,7 @@ namespace LE {
 		
 		ID3DBlob* compiledCodeBlob = NULL;
 		ID3DBlob* errorBlob = NULL;
-		WCHAR *shaderFile = L"C:\\LazyEngine\\LazyEngine\\LazyEngine\\DX11\\CubeVertexShader.hlsl";
+		WCHAR *shaderFile = L"..\\LazyEngine\\DX11\\CubeVertexShader.hlsl";
 		
 		hr = D3DCompileFromFile(
 			shaderFile,
@@ -89,7 +89,7 @@ namespace LE {
 		errorBlob = NULL;
 
 
-		shaderFile = L"C:\\LazyEngine\\LazyEngine\\LazyEngine\\DX11\\CubePixelShader.hlsl";
+		shaderFile = L"..\\LazyEngine\\DX11\\CubePixelShader.hlsl";
 
 		hr = D3DCompileFromFile(
 			shaderFile,

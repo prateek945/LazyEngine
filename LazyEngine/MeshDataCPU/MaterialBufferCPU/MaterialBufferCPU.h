@@ -3,6 +3,7 @@
 #include "../TextureCPU/Texture.h"
 #include "../../Math/LEVector.h"
 #include "../../Memory/Handle.h"
+#include "../../LazyFiling/FileHandler.h"
 #include <string>
 #include <vector>
 namespace LE {
@@ -10,16 +11,18 @@ namespace LE {
 		LEVector3 color;
 		Primitives::Float32 alpha;
 		Primitives::Float32 specular;
-		Primitives::Float32 num_textures;
+		Primitives::Int32 num_textures;
 		Primitives::Float32 emissive;
 	};
 	class MaterialBufferCPU {
 
 		BaseParams m_baseParams;
 		std::vector<Handle*> m_hTextures;
-
+		ID3D11Device* m_context;
+		std::string m_name;
 	public:
-		MaterialBufferCPU();
+		MaterialBufferCPU(ID3D11Device* context,std::string name);
+		
 		void ReadDataFromFile();
 		
 

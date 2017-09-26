@@ -3,10 +3,10 @@
 #define MEMORY_MANAGER_H_
 #include "../GeneralMacros/GeneralMacros.h"
 #include "MemoryPool.h"
-//16B allignment
+//16B alignment
 #define ALLIGNMENT 16
 //Increase when number of pools is increased.
-#define NUM_MEM_POOLS 3
+#define NUM_MEM_POOLS 7
 #define INVALID_UINT 0xFFFFFFFF
 
 namespace LE {

@@ -7,6 +7,7 @@
 #include "../LazyLogger/LogManager.h"
 #include <fstream>
 #include <string>
+
 using namespace std;
 namespace LE {
 	class FileReader {

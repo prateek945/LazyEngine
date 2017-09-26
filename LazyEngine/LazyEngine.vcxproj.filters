@@ -275,6 +275,9 @@
     <ClCompile Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.cpp">
       <Filter>MeshDataCPU\TextureCoordBufferCPU</Filter>
     </ClCompile>
+    <ClCompile Include="MeshDataCPU\MaterialBufferCPU\MaterialBufferCPU.cpp">
+      <Filter>MeshDataCPU\MaterialBufferCPU</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
