@@ -21,7 +21,7 @@ namespace LE {
 		vector<GameObject> g_gameObjs;
 		vector<LightObject> g_lights;
 		Primitives::UInt32 num_gameObjs;
-		map<string, pair<Primitives::UInt32,Primitives::UInt32>> m_instances;
+		map<Handle*, pair<Primitives::UInt32,Primitives::UInt32>> m_instances;
 		GPUBuffers gpubuffer;
 		
 		LevelLoader(string levelname): levelName(levelname){}

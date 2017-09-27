@@ -2,6 +2,7 @@
 #include "../../Includes/LazyIncludes.h"
 #include "../../Memory/Handle.h"
 #include "../../Math/LEVector.h"
+#include "../../LazyFiling/FileHandler.h"
 #include <vector>
 #include <string>
 namespace LE {
@@ -10,8 +11,8 @@ namespace LE {
 		std::vector<Primitives::Float32> m_data;
 		std::string m_name;
 	public:
-		TextureCoordBufferCPU(Primitives::Int32 count, std::string name);
-		TextureCoordBufferCPU(Primitives::Int32 count);
+		TextureCoordBufferCPU(std::string name);
+		
 		void addData(Primitives::Float32 vert);
 		//Function to get back a vector3 of x,y,z verts given an index into the m_data (Index should be mod 3) returns 0 otherwise
 		Primitives::Int16 getVertAtIndex(Primitives::Int32 index, LEVector3& vert);
@@ -21,6 +22,7 @@ namespace LE {
 		std::string getMeshName();
 		//Function to set mesh name return 1 if successful else 0
 		Primitives::Int16 setMeshName(std::string name);
+		void ReadDataFromFile();
 
 	};
 };

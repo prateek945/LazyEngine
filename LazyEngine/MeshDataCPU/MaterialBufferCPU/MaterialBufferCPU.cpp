@@ -2,7 +2,7 @@
 
 namespace LE {
 
-	MaterialBufferCPU::MaterialBufferCPU(ID3D11Device* context,std::string name):m_context(context),m_name(name){}
+	MaterialBufferCPU::MaterialBufferCPU(ID3D11Device* context,std::string name):m_context(context),m_name(name),m_bUseNormalMap(false){}
 
 	void MaterialBufferCPU::ReadDataFromFile() {
 
@@ -29,16 +29,27 @@ namespace LE {
 		m_baseParams.emissive = Emissive;
 
 		fr.readNextInt(m_baseParams.num_textures);
-
+		
 		char texturePath[1024] = "..\\LazyEngine\\meshes\\Textures\\";
+		char textureType[256];
 		char texFileName[256];
 		for (unsigned int j = 0; j < m_baseParams.num_textures; j++) {
+			fr.readNextNonEmptyLine(textureType, 256);
+			if (strcmp(textureType, "NormalMap")) m_bUseNormalMap = true;
 			
 			fr.readNextNonEmptyLine(texFileName, 256);
-			strcat(texturePath, texFileName);
-
-
+			Handle* hTexture = new Handle(sizeof(Texture));
+			Texture *tex = new(hTexture) Texture(texturePath, texFileName, m_context);
+			m_hTextures.push_back(hTexture);
 		}
+
+
+	}
+
+	Primitives::Bool MaterialBufferCPU::isDetailedMesh() {
+
+		return m_bUseNormalMap;
+
 	}
 
 	

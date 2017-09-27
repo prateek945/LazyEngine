@@ -12,6 +12,7 @@ namespace LE {
 	class GameObject {
 		Primitives::UInt16 objId;
 	public:
+		
 		Matrix4X4 objMatrix;
 		char objectName[256];
 		Primitives::Bool hasCollider;

@@ -1,16 +1,17 @@
-#include "NormalBufferCPU.h"
+#include "IndexBufferCPU.h"
+
 namespace LE {
 
-	NormalBufferCPU::NormalBufferCPU(std::string name) : m_name(name) {
+	IndexBufferCPU::IndexBufferCPU(std::string name) : m_name(name) {
 	}
 
 
 
-	void NormalBufferCPU::addData(Primitives::Float32 vert) {
+	void IndexBufferCPU::addData(Primitives::Float32 vert) {
 		m_data.push_back(vert);
 	}
 
-	Primitives::Int16 NormalBufferCPU::getVertAtIndex(Primitives::Int32 index, LEVector3& vert) {
+	Primitives::Int16 IndexBufferCPU::getVertAtIndex(Primitives::Int32 index, LEVector3& vert) {
 
 		if (index * 3 >= m_data.size()) return (Primitives::Int16) 0;
 		else {
@@ -23,25 +24,25 @@ namespace LE {
 
 	}
 	//Function to get number of vertices within this mesh
-	Primitives::Int32  NormalBufferCPU::getNumVerts() {
+	Primitives::Int32  IndexBufferCPU::getNumVerts() {
 		return m_count;
 	}
 	//Function to get the mesh name
-	std::string NormalBufferCPU::getMeshName() {
+	std::string IndexBufferCPU::getMeshName() {
 		if (!m_name.empty()) return m_name;
 		else return NULL;
 	}
 	//Function to set mesh name return 1 if successful else 0
-	Primitives::Int16 NormalBufferCPU::setMeshName(std::string name) {
+	Primitives::Int16 IndexBufferCPU::setMeshName(std::string name) {
 		if (name.empty()) return 0;
 		m_name = name; return 1;
 	}
 
-	void NormalBufferCPU::ReadDataFromFile() {
+	void IndexBufferCPU::ReadDataFromFile() {
 		char base[1024];
-		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
+		strcpy(base, "..\\LazyEngine\\meshes\\IndexBuffers\\");
 		strcat(base, m_name.c_str());
-		strcat(base, ".nb");
+		strcat(base, ".ib");
 		FileReader fr(base);
 
 

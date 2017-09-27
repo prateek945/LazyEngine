@@ -1,11 +1,10 @@
 #include "TextureCoordBufferCPU.h"
 namespace LE {
 
-	TextureCoordBufferCPU::TextureCoordBufferCPU(Primitives::Int32 count, std::string name) :m_count(count), m_name(name) {
+	TextureCoordBufferCPU::TextureCoordBufferCPU( std::string name): m_name(name) {
 	}
 
-	TextureCoordBufferCPU::TextureCoordBufferCPU(Primitives::Int32 count) : m_count(count) {
-	}
+
 
 	void TextureCoordBufferCPU::addData(Primitives::Float32 vert) {
 		m_data.push_back(vert);
@@ -36,5 +35,21 @@ namespace LE {
 	Primitives::Int16 TextureCoordBufferCPU::setMeshName(std::string name) {
 		if (name.empty()) return 0;
 		m_name = name; return 1;
+	}
+
+	void TextureCoordBufferCPU::ReadDataFromFile() {
+		char base[1024];
+		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
+		strcat(base, m_name.c_str());
+		strcat(base, ".tcb");
+		FileReader fr(base);
+
+
+		fr.readNextInt(m_count);
+		for (unsigned int j = 0; j < m_count * 3; j++) {
+			Primitives::Float32 temp;
+			fr.readNextFloat(temp);
+			addData(temp);
+		}
 	}
 };

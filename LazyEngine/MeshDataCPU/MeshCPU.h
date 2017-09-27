@@ -3,7 +3,9 @@
 #include "../Includes/LazyIncludes.h"
 #include "../Memory/Handle.h"
 #include "../Math/LEVector.h"
+
 #include "VertexBufferCPU\VertexBufferCPU.h"
+#include "IndexBufferCPU\IndexBufferCPU.h"
 #include "NormalBufferCPU\NormalBufferCPU.h"
 #include "MaterialBufferCPU\MaterialBufferCPU.h"
 #include "TextureCoordBufferCPU\TextureCoordBufferCPU.h"
@@ -12,7 +14,7 @@
 namespace LE {
 	class MeshCPU {
 	public:
-		Handle* m_hVertexBufferCPU,m_hNormalBufferCPU,m_hTextureCoordBufferCPU,m_hMaterialCPU;
+		Handle *m_hVertexBufferCPU,*m_hIndexBufferCPU,*m_hNormalBufferCPU,*m_hTextureCoordBufferCPU,*m_hMaterialCPU,*m_hTangentBufferCPU;
 		Primitives::Bool useTextures,hasTangentBuffer;
 		ID3D11Device* m_context;
 		std::string m_name;
