@@ -2,67 +2,67 @@
 
 namespace LE {
 
-	void LevelLoader::storeCPUVertDataForObj(GameObject &g) {
-		string key(g.objectName);
-		//Check Key exists and add to gpu buffer
-//TODO(Prateek) : Make changes so that only refernces to buffers are stored within the Gameobject & not a copy
-		char base[1024];
-		strcpy(base, "..\\LazyEngine\\meshes\\VertexBuffer\\");
-		strcat(base, g.objectName);
-		strcat(base, ".vb");
-		FileReader fr2(base);
-			
-
-		fr2.readNextUInt(g.num_verts);
-		for (unsigned int j = 0; j < g.num_verts * 3; j++) {
-			Primitives::Float32 temp;
-			fr2.readNextFloat(temp);
-			g.m_vertices.push_back(temp);
-		}
-		strcpy(base, "..\\LazyEngine\\meshes\\ColorBuffer\\");
-		strcat(base, g.objectName);
-		strcat(base, ".cb");
-		FileReader fr3(base);
-		fr3.readNextUInt(g.num_verts);
-		for (int j = 0; j < g.num_verts * 3; j++) {
-			Primitives::Float32 temp;
-			fr3.readNextFloat(temp);
-			g.m_color.push_back(temp);
-		}
-		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
-		strcat(base, g.objectName);
-		strcat(base, ".nb");
-		FileReader fr5(base);
-		fr5.readNextUInt(g.num_verts);
-		for (int j = 0; j < g.num_verts * 3; j++) {
-			Primitives::Float32 temp;
-			fr5.readNextFloat(temp);
-			g.m_normals.push_back(temp);
-		}
-		strcpy(base, "..\\LazyEngine\\meshes\\IndexBuffer\\");
-		strcat(base, g.objectName);
-		strcat(base, ".ib");
-		FileReader fr4(base);
-
-		fr4.readNextUInt(g.num_indices);
-		for (int j = 0; j < g.num_indices * 3; j++) {
-			Primitives::Int32 temp;
-			fr4.readNextInt(temp);
-			g.m_indices.push_back(temp);
-		}
-		if (m_instances.find(key) == m_instances.end()) {
-			m_instances[key] = make_pair(gpubuffer.m_vertices.size(), gpubuffer.m_indices.size());
-			for (unsigned int j = 0; j < g.num_verts; j++) {
-				gpubuffer.m_vertices.push_back(g.m_vertices[3 * j]); gpubuffer.m_vertices.push_back(g.m_vertices[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_vertices[3 * j + 2]);
-				gpubuffer.m_vertices.push_back(g.m_color[3 * j]); gpubuffer.m_vertices.push_back(g.m_color[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_color[3 * j + 2]);
-				gpubuffer.m_vertices.push_back(g.m_normals[3 * j]); gpubuffer.m_vertices.push_back(g.m_normals[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_normals[3 * j + 2]);
-				
-			}
-			for (unsigned int j = 0; j < g.num_indices * 3; j++) {
-				gpubuffer.m_indices.push_back(g.m_indices[j]);
-			}
-		}
-	}
+//	void LevelLoader::storeCPUVertDataForObj(GameObject &g) {
+//		string key(g.objectName);
+//		//Check Key exists and add to gpu buffer
+////TODO(Prateek) : Make changes so that only refernces to buffers are stored within the Gameobject & not a copy
+//		char base[1024];
+//		strcpy(base, "..\\LazyEngine\\meshes\\VertexBuffer\\");
+//		strcat(base, g.objectName);
+//		strcat(base, ".vb");
+//		FileReader fr2(base);
+//			
+//
+//		fr2.readNextUInt(g.num_verts);
+//		for (unsigned int j = 0; j < g.num_verts * 3; j++) {
+//			Primitives::Float32 temp;
+//			fr2.readNextFloat(temp);
+//			g.m_vertices.push_back(temp);
+//		}
+//		strcpy(base, "..\\LazyEngine\\meshes\\ColorBuffer\\");
+//		strcat(base, g.objectName);
+//		strcat(base, ".cb");
+//		FileReader fr3(base);
+//		fr3.readNextUInt(g.num_verts);
+//		for (int j = 0; j < g.num_verts * 3; j++) {
+//			Primitives::Float32 temp;
+//			fr3.readNextFloat(temp);
+//			g.m_color.push_back(temp);
+//		}
+//		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
+//		strcat(base, g.objectName);
+//		strcat(base, ".nb");
+//		FileReader fr5(base);
+//		fr5.readNextUInt(g.num_verts);
+//		for (int j = 0; j < g.num_verts * 3; j++) {
+//			Primitives::Float32 temp;
+//			fr5.readNextFloat(temp);
+//			g.m_normals.push_back(temp);
+//		}
+//		strcpy(base, "..\\LazyEngine\\meshes\\IndexBuffer\\");
+//		strcat(base, g.objectName);
+//		strcat(base, ".ib");
+//		FileReader fr4(base);
+//
+//		fr4.readNextUInt(g.num_indices);
+//		for (int j = 0; j < g.num_indices * 3; j++) {
+//			Primitives::Int32 temp;
+//			fr4.readNextInt(temp);
+//			g.m_indices.push_back(temp);
+//		}
+//		if (m_instances.find(key) == m_instances.end()) {
+//			m_instances[key] = make_pair(gpubuffer.m_vertices.size(), gpubuffer.m_indices.size());
+//			for (unsigned int j = 0; j < g.num_verts; j++) {
+//				gpubuffer.m_vertices.push_back(g.m_vertices[3 * j]); gpubuffer.m_vertices.push_back(g.m_vertices[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_vertices[3 * j + 2]);
+//				gpubuffer.m_vertices.push_back(g.m_color[3 * j]); gpubuffer.m_vertices.push_back(g.m_color[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_color[3 * j + 2]);
+//				gpubuffer.m_vertices.push_back(g.m_normals[3 * j]); gpubuffer.m_vertices.push_back(g.m_normals[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_normals[3 * j + 2]);
+//				
+//			}
+//			for (unsigned int j = 0; j < g.num_indices * 3; j++) {
+//				gpubuffer.m_indices.push_back(g.m_indices[j]);
+//			}
+//		}
+//	}
 	bool LevelLoader::loadLevelGameObjs() {
 		char base[1024];
 		strcpy(base, "..\\LazyEngine\\levels\\");
@@ -89,6 +89,7 @@ namespace LE {
 					fr.readNextNonEmptyLine(nextLine, 256);
 					strcpy(g.objectName, nextLine);
 					storeCPUVertDataForObj(g);
+					
 					fr.readNextNonEmptyLine(nextLine, 256);
 				}
 				else if (strcmp(nextLine, "Matrix") == 0) {

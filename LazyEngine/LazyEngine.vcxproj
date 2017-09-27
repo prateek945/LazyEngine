@@ -44,6 +44,7 @@
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\MemoryPool.h" />
     <ClInclude Include="Memory\StackAllocator.h" />
+    <ClInclude Include="MeshDataCPU\IndexBufferCPU\IndexBufferCPU.h" />
     <ClInclude Include="MeshDataCPU\MaterialBufferCPU\MaterialBufferCPU.h" />
     <ClInclude Include="MeshDataCPU\MeshCPU.h" />
     <ClInclude Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.h" />
@@ -80,7 +81,9 @@
     <ClCompile Include="Memory\AllignedAllocator.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\StackAllocator.cpp" />
+    <ClCompile Include="MeshDataCPU\IndexBufferCPU\IndexBufferCPU.cpp" />
     <ClCompile Include="MeshDataCPU\MaterialBufferCPU\MaterialBufferCPU.cpp" />
+    <ClCompile Include="MeshDataCPU\MeshCPU.cpp" />
     <ClCompile Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.cpp" />
     <ClCompile Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.cpp" />

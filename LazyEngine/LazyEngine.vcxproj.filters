@@ -70,6 +70,9 @@
     <Filter Include="MeshDataCPU\TextureCPU">
       <UniqueIdentifier>{e64558a2-a15e-46de-9ab9-3004b4c2c005}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MeshDataCPU\IndexBufferCPU">
+      <UniqueIdentifier>{59c6095e-f277-42e8-b599-19c31cc5078c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -207,6 +210,9 @@
     <ClInclude Include="MeshDataCPU\TextureCPU\Texture.h">
       <Filter>MeshDataCPU\TextureCPU</Filter>
     </ClInclude>
+    <ClInclude Include="MeshDataCPU\IndexBufferCPU\IndexBufferCPU.h">
+      <Filter>MeshDataCPU\IndexBufferCPU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -277,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="MeshDataCPU\MaterialBufferCPU\MaterialBufferCPU.cpp">
       <Filter>MeshDataCPU\MaterialBufferCPU</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\MeshCPU.cpp">
+      <Filter>MeshDataCPU</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\IndexBufferCPU\IndexBufferCPU.cpp">
+      <Filter>MeshDataCPU\IndexBufferCPU</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
