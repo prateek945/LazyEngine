@@ -11,16 +11,9 @@ namespace LE {
 		m_data.push_back(vert);
 	}
 
-	Primitives::Int16 IndexBufferCPU::getVertAtIndex(Primitives::Int32 index, LEVector3& vert) {
+	Primitives::Int16 IndexBufferCPU::getVertAtIndex(Primitives::Int32 index) {
 
-		if (index * 3 >= m_data.size()) return (Primitives::Int16) 0;
-		else {
-			vert.m_x = m_data.at(index * 3);
-			vert.m_y = m_data.at(index * 3 + 1);
-			vert.m_z = m_data.at(index * 3 + 2);
-
-		}
-		return (Primitives::Int16) 1;
+		return m_data.at(index);
 
 	}
 	//Function to get number of vertices within this mesh

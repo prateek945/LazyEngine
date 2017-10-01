@@ -2,68 +2,46 @@
 
 namespace LE {
 
-//	void LevelLoader::storeCPUVertDataForObj(GameObject &g) {
-//		string key(g.objectName);
-//		//Check Key exists and add to gpu buffer
-////TODO(Prateek) : Make changes so that only refernces to buffers are stored within the Gameobject & not a copy
-//		char base[1024];
-//		strcpy(base, "..\\LazyEngine\\meshes\\VertexBuffer\\");
-//		strcat(base, g.objectName);
-//		strcat(base, ".vb");
-//		FileReader fr2(base);
-//			
-//
-//		fr2.readNextUInt(g.num_verts);
-//		for (unsigned int j = 0; j < g.num_verts * 3; j++) {
-//			Primitives::Float32 temp;
-//			fr2.readNextFloat(temp);
-//			g.m_vertices.push_back(temp);
-//		}
-//		strcpy(base, "..\\LazyEngine\\meshes\\ColorBuffer\\");
-//		strcat(base, g.objectName);
-//		strcat(base, ".cb");
-//		FileReader fr3(base);
-//		fr3.readNextUInt(g.num_verts);
-//		for (int j = 0; j < g.num_verts * 3; j++) {
-//			Primitives::Float32 temp;
-//			fr3.readNextFloat(temp);
-//			g.m_color.push_back(temp);
-//		}
-//		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
-//		strcat(base, g.objectName);
-//		strcat(base, ".nb");
-//		FileReader fr5(base);
-//		fr5.readNextUInt(g.num_verts);
-//		for (int j = 0; j < g.num_verts * 3; j++) {
-//			Primitives::Float32 temp;
-//			fr5.readNextFloat(temp);
-//			g.m_normals.push_back(temp);
-//		}
-//		strcpy(base, "..\\LazyEngine\\meshes\\IndexBuffer\\");
-//		strcat(base, g.objectName);
-//		strcat(base, ".ib");
-//		FileReader fr4(base);
-//
-//		fr4.readNextUInt(g.num_indices);
-//		for (int j = 0; j < g.num_indices * 3; j++) {
-//			Primitives::Int32 temp;
-//			fr4.readNextInt(temp);
-//			g.m_indices.push_back(temp);
-//		}
-//		if (m_instances.find(key) == m_instances.end()) {
-//			m_instances[key] = make_pair(gpubuffer.m_vertices.size(), gpubuffer.m_indices.size());
-//			for (unsigned int j = 0; j < g.num_verts; j++) {
-//				gpubuffer.m_vertices.push_back(g.m_vertices[3 * j]); gpubuffer.m_vertices.push_back(g.m_vertices[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_vertices[3 * j + 2]);
-//				gpubuffer.m_vertices.push_back(g.m_color[3 * j]); gpubuffer.m_vertices.push_back(g.m_color[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_color[3 * j + 2]);
-//				gpubuffer.m_vertices.push_back(g.m_normals[3 * j]); gpubuffer.m_vertices.push_back(g.m_normals[3 * j + 1]); gpubuffer.m_vertices.push_back(g.m_normals[3 * j + 2]);
-//				
-//			}
-//			for (unsigned int j = 0; j < g.num_indices * 3; j++) {
-//				gpubuffer.m_indices.push_back(g.m_indices[j]);
-//			}
-//		}
-//	}
-	bool LevelLoader::loadLevelGameObjs() {
+	void LevelLoader::storeGPUVertDataForObj(Handle* m_hMesh) {
+		
+		//Check Key exists and add to gpu buffer
+//TODO(Prateek) : Make changes so that only refernces to buffers are stored within the Gameobject & not a copy
+		MeshCPU* mesh = m_hMesh->getObject<MeshCPU>();
+		std::string key = mesh->m_name;
+		VertexBufferCPU* verts = mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>();
+		IndexBufferCPU* indices = mesh->m_hIndexBufferCPU->getObject<IndexBufferCPU>();
+		TextureCoordBufferCPU* texCoords = mesh->m_hVertexBufferCPU->getObject<TextureCoordBufferCPU>();
+		MaterialBufferCPU* material = mesh->m_hMaterialCPU->getObject<MaterialBufferCPU>();
+		NormalBufferCPU* normals = mesh->m_hNormalBufferCPU->getObject<NormalBufferCPU>();
+		NormalBufferCPU* tangents = nullptr;
+		if (material->isDetailedMesh()) {
+			tangents = mesh->m_hTangentBufferCPU->getObject<NormalBufferCPU>();
+		}
+		if (m_instances.find(key) == m_instances.end()) {
+			
+			m_GPUIndices[key] = make_pair(gpubuffer.m_vertices.size(), gpubuffer.m_indices.size());
+			if (material->isDetailedMesh()) {
+				for (unsigned int j = 0; j < verts->getNumVerts(); j++) {
+					gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j+1)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j+2));
+					gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2*j)); gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2*j+1));
+					gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j + 2));
+					gpubuffer.m_vertices.push_back(tangents->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(tangents->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(tangents->getVertAtIndex(3 * j + 2));
+
+				}
+			}
+			else {
+				for (unsigned int j = 0; j < verts->getNumVerts(); j++) {
+					gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 2));
+					gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2 * j)); gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2 * j + 1));
+					gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j + 2));
+				}
+			}
+			for (unsigned int j = 0; j < indices->getNumVerts(); j++) {
+				gpubuffer.m_indices.push_back(indices->getVertAtIndex(j));
+			}
+		}
+	}
+	bool LevelLoader::loadLevelGameObjs(ID3D11Device* device, ID3D11DeviceContext* context) {
 		char base[1024];
 		strcpy(base, "..\\LazyEngine\\levels\\");
 		//sprintf_s(base, 1000, "%s%s", base, "C:\\LazyEngine\\LazyEngine\\LazyEngine\\levels\\");
@@ -88,8 +66,17 @@ namespace LE {
 				else if (strcmp(nextLine, "Name") == 0) {
 					fr.readNextNonEmptyLine(nextLine, 256);
 					strcpy(g.objectName, nextLine);
-					storeCPUVertDataForObj(g);
-					
+					if (m_instances.find(g.objectName) == m_instances.end()) {
+						Handle* h = new Handle(sizeof(MeshCPU));
+						MeshCPU* newMesh = new(h) MeshCPU(device, context, g.objectName);
+						m_instances[g.objectName] = h;
+						storeGPUVertDataForObj(h);
+						g.m_hMeshCPU = h;
+					}
+					else {
+						g.m_hMeshCPU = m_instances[g.objectName];
+					}
+				
 					fr.readNextNonEmptyLine(nextLine, 256);
 				}
 				else if (strcmp(nextLine, "Matrix") == 0) {
@@ -127,17 +114,18 @@ namespace LE {
 						Colliders::ColliderMeta m = {};
 						if (strcmp(nextLine, "Collider") == 0) {
 							fr.readNextNonEmptyLine(nextLine, 256);
+							MeshCPU* mesh = g.m_hMeshCPU->getObject<MeshCPU>();
 							if (strcmp(nextLine, "Cube") == 0) {
 								col = std::make_shared<Colliders::Cube>(m);
-								col.get()->generateValuesFromBuffer(g.m_vertices);
+								col.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
 								col2 = std::make_shared<Colliders::Cube>(m);
-								col2.get()->generateValuesFromBuffer(g.m_vertices);
+								col2.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
 							}
 							else if (strcmp(nextLine, "Sphere") == 0) {
 								col = std::make_shared<Colliders::Sphere>(m); 
-								col.get()->generateValuesFromBuffer(g.m_vertices);
+								col.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
 								col2 = std::make_shared<Colliders::Sphere>(m);
-								col2.get()->generateValuesFromBuffer(g.m_vertices);
+								col2.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
 							}
 							col->metaData.ObjId = i;
 							col->metaData.objMat = g.objMatrix;

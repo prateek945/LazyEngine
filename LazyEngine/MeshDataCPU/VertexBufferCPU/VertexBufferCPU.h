@@ -15,13 +15,15 @@ namespace LE {
 		
 		void addData(Primitives::Float32 vert);
 		//Function to get back a vector3 of x,y,z verts given an index into the m_data (Index should be mod 3) returns 0 otherwise
-		Primitives::Int16 getVertAtIndex(Primitives::Int32 index,LEVector3& vert);
+		Primitives::Int16 getVertAtIndex(Primitives::Int32 index);
 		//Function to get number of vertices within this mesh
 		Primitives::Int32  getNumVerts();
 		//Function to get the mesh name
 		std::string getMeshName();
 		//Function to set mesh name return 1 if successful else 0
 		Primitives::Int16 setMeshName(std::string name);
+		//Get Full m_data
+		std::vector<Primitives::Float32> getData() { return m_data; }
 		//Read Vertex Data From File.
 		void ReadDataFromFile();
 

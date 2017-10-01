@@ -2,13 +2,15 @@
 
 namespace LE {
 
-	Texture::Texture(std::string Path, std::string FileName,ID3D11Device* context){
+	Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* context,std::string Path, std::string FileName){
 		location = std::string(Path + FileName);
+		m_device = device;
 		m_context = context;
 		m_texture = 0;
+		m_textureView = 0;
 	}
-	Texture::Texture(ID3D11Device* context){
-		m_context = context;
+	Texture::Texture(ID3D11Device* device){
+		
 		m_texture = 0;
 	}
 	Texture::Texture(const Texture& copytex){
@@ -17,19 +19,23 @@ namespace LE {
 	bool Texture::Initialize(){
 		HRESULT hr;
 		if (!location.empty()) {
-			hr = D3DX11CreateShaderResourceViewFromFile(m_context, location.c_str(), NULL, NULL, &m_texture, NULL);
+			WCHAR *path; 
+			mbstowcs(path, location.c_str, 256);
+			
+			hr = DirectX::CreateWICTextureFromFile(m_device,m_context,path,&m_texture,&m_textureView);
+			
 		}
 		if (SUCCEEDED(hr)) return true;
 		return false;
 
 	}
 	ID3D11ShaderResourceView* Texture::GetTexture(){
-		return m_texture;
+		return m_textureView;
 	}
 	void Texture::Release(){
-		if (m_texture) {
-			m_texture->Release();
-			m_texture = 0;
+		if (m_textureView) {
+			m_textureView->Release();
+			m_textureView = 0;
 		}
 	}
 

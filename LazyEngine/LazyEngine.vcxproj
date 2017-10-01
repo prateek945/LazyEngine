@@ -86,6 +86,7 @@
     <ClCompile Include="MeshDataCPU\MeshCPU.cpp" />
     <ClCompile Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.cpp" />
+    <ClCompile Include="MeshDataCPU\TextureCPU\Texture.cpp" />
     <ClCompile Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.cpp" />
     <ClCompile Include="Physics\Algorithms\BasicCollisions.cpp" />
     <ClCompile Include="Physics\Colliders\ColliderBase.cpp" />

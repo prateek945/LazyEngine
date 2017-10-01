@@ -290,6 +290,9 @@
     <ClCompile Include="MeshDataCPU\IndexBufferCPU\IndexBufferCPU.cpp">
       <Filter>MeshDataCPU\IndexBufferCPU</Filter>
     </ClCompile>
+    <ClCompile Include="MeshDataCPU\TextureCPU\Texture.cpp">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

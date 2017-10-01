@@ -6,11 +6,11 @@
 #include "GameObject.h"
 #include "../LazyFiling/FileHandler.h"
 #include "../Physics/PhysicsManager.h"
-#include "../Game/LightObject.h"
+#include "LightObject.h"
 #include <string>
 #include <vector>
 #include <map>
-#include <functional>
+
 #include <cstring>
 using namespace std;
 namespace LE {
@@ -21,12 +21,13 @@ namespace LE {
 		vector<GameObject> g_gameObjs;
 		vector<LightObject> g_lights;
 		Primitives::UInt32 num_gameObjs;
-		map<Handle*, pair<Primitives::UInt32,Primitives::UInt32>> m_instances;
+		map<std::string, Handle*> m_instances;
+		map<std::string, std::pair<Primitives::Int32, Primitives::Int32>> m_GPUIndices;
 		GPUBuffers gpubuffer;
 		
 		LevelLoader(string levelname): levelName(levelname){}
-		bool loadLevelGameObjs();
-		void storeCPUVertDataForObj(GameObject &obj);
+		bool loadLevelGameObjs(ID3D11Device* device,ID3D11DeviceContext* context);
+		void storeGPUVertDataForObj(Handle*);
 		const char* getLevelName() { return levelName.c_str(); }
 
 	};

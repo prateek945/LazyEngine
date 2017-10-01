@@ -13,7 +13,7 @@ global_variable win32_buffer_info BackBuffer;
 		LE::MainWrapper();
 		
 		std::shared_ptr<LE::LevelLoader> levelLoader = std::shared_ptr<LE::LevelLoader>(new LE::LevelLoader("testLevel1.lvl"));
-		levelLoader->loadLevelGameObjs();
+		
 		std::string windowName = "LazyEngine";
 		
 		std::shared_ptr<LE::MainWindow> winMain = std::shared_ptr<LE::MainWindow>(new LE::MainWindow(windowName,Instance));
@@ -24,15 +24,16 @@ global_variable win32_buffer_info BackBuffer;
 			std::shared_ptr<LE::DeviceResources> deviceResources = std::shared_ptr<LE::DeviceResources>(new LE::DeviceResources());
 			// Create device resources.
 			deviceResources->CreateDeviceResources();
-
 			// Instantiate the renderer.
 			std::shared_ptr<LE::Renderer> renderer = std::shared_ptr<LE::Renderer>(new LE::Renderer(deviceResources));
+			levelLoader->loadLevelGameObjs(deviceResources->GetDevice(), deviceResources->GetDeviceContext());
+			
 			renderer->CreateDeviceDependentResources(levelLoader);
 
 			// We have a window, so initialize window size-dependent resources.
 			deviceResources->CreateWindowResources(winMain->getWindowHandle());
 			renderer->CreateWindowSizeDependentResources();
-
+			
 			// Go full-screen.
 			//deviceResources->GoFullScreen();
 

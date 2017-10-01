@@ -22,7 +22,7 @@ namespace LE {
 	//-----------------------------------------------------------------------------
 	// Create Direct3D shader resources by loading the .cso files.
 	//-----------------------------------------------------------------------------
-	HRESULT Renderer::CreateShaders()
+	HRESULT Renderer::CompileShaders()
 	{
 		HRESULT hr = S_OK;
 
@@ -127,34 +127,24 @@ namespace LE {
 		return hr;
 	}
 
-	HRESULT Renderer::CreateCube(std::shared_ptr<LevelLoader> levelLoader)
+	HRESULT Renderer::CreateGPUBuffers(std::shared_ptr<LevelLoader> levelLoader)
 	{
 		HRESULT hr = S_OK;
 
 		// Use the Direct3D device to load resources into graphics memory.
 		ID3D11Device* device = m_deviceResources->GetDevice();
-		vector<VertexPositionColor> allVerts ;
+		vector<Primitives::Float32> allVerts ;
 		// Create cube geometry.
-		int numgpuverts = ((levelLoader.get()->gpubuffer.m_vertices.size()*4) / sizeof(VertexPositionColor));
-		int vertsize = sizeof(VertexPositionColor) / 4;
+		int numgpuverts = (levelLoader.get()->gpubuffer.m_vertices.size());
+		//int vertsize = sizeof(VertexPositionColor) / 4;
 		for (unsigned int i = 0; i < numgpuverts; i++) {
-			VertexPositionColor vpc = {};
-			vpc.pos.m_x = levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i);
-			vpc.pos.m_y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+1));
-			vpc.pos.m_z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+2));
-			vpc.color.m_x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+3));
-			vpc.color.m_y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+4));
-			vpc.color.m_z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i+5));
-			vpc.normal.m_x = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 6));
-			vpc.normal.m_y = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 7));
-			vpc.normal.m_z = (levelLoader.get()->gpubuffer.m_vertices.at(vertsize*i + 8));
-			allVerts.push_back(vpc);
+			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices[i]);
 		}
 
 		// Create vertex buffer:
 		
 		CD3D11_BUFFER_DESC vDesc(
-			allVerts.size()*sizeof(VertexPositionColor),
+			allVerts.size(),
 			D3D11_BIND_VERTEX_BUFFER
 		);
 		vDesc.ByteWidth;
@@ -171,10 +161,6 @@ namespace LE {
 			&m_pVertexBuffer
 		);
 
-		
-		
-
-		
 		vector<Primitives::UInt16> allIndices;
 		numgpuverts =levelLoader.get()->gpubuffer.m_indices.size();
 		for (unsigned int i = 0; i < numgpuverts; i++) {
@@ -226,8 +212,8 @@ namespace LE {
 		// Compile shaders using the Effects library.
 		m_keyboard = make_unique<DirectX::Keyboard>();
 		m_mouse = make_unique<DirectX::Mouse>();
-		CreateShaders();
-		CreateCube(levelLoader);
+		CompileShaders();
+		CreateGPUBuffers(levelLoader);
 	}
 
 	void Renderer::CreateWindowSizeDependentResources()
@@ -419,9 +405,11 @@ namespace LE {
 			
 
 				string key = levelLoader.get()->g_gameObjs[i].objectName;
-				UINT startIndexLocation = levelLoader.get()->m_instances.at(key).second;
-				UINT startVertexLocation = levelLoader.get()->m_instances.at(key).first/(sizeof(VertexPositionColor)*0.25f);
-				UINT index_count = levelLoader.get()->g_gameObjs[i].num_indices * 3;
+
+				UINT startIndexLocation = levelLoader.get()->m_GPUIndices.at(key).second;
+				UINT startVertexLocation = levelLoader.get()->m_GPUIndices.at(key).first;
+				UINT index_count = levelLoader.get()->g_gameObjs[i].m_hMeshCPU->getObject<MeshCPU>()->m_hIndexBufferCPU->getObject<IndexBufferCPU>()->getNumVerts();
+
 				// Calling Draw tells Direct3D to start sending commands to the graphics device.
 				context->DrawIndexedInstanced(
 					index_count,

@@ -16,7 +16,11 @@ namespace LE {
 	//-----------------------------------------------------------------------------
 	// Class declarations
 	//-----------------------------------------------------------------------------
-
+	enum ShaderID : Primitives::Int16 {
+		StandardShader = 0,
+		DetialedShader,
+		EndOfList
+	};
 	class Renderer
 	{
 	public:
@@ -31,8 +35,8 @@ namespace LE {
 		void Render(std::shared_ptr<LevelLoader>);
 
 	private:
-		HRESULT CreateShaders();
-		HRESULT CreateCube(std::shared_ptr<LevelLoader> levelLoader);
+		HRESULT CompileShaders();
+		HRESULT CreateGPUBuffers(std::shared_ptr<LevelLoader> levelLoader);
 		void    CreateViewAndPerspective();
 		
 		//-----------------------------------------------------------------------------
@@ -58,22 +62,21 @@ namespace LE {
 		//-----------------------------------------------------------------------------
 		// Per-vertex data
 		//-----------------------------------------------------------------------------
-		typedef struct _vertexPositionColor
+		typedef struct _vertexPositionNormal
 		{
 			LEVector3 pos;
-			LEVector3 color;
 			LEVector3 normal;
-		} VertexPositionColor;
+		} VertexPositionNormal;
 
 		//-----------------------------------------------------------------------------
 		// Per-vertex data (extended)
 		//-----------------------------------------------------------------------------
-		typedef struct _vertexPositionColorTangent
+		typedef struct _vertexPositionNormalTangent
 		{
 			LEVector3 pos;
 			LEVector3 normal;
 			LEVector3 tangent;
-		} VertexPositionColorTangent;
+		} VertexPositionNormalTangent;
 
 		ConstantBufferStruct m_constantBufferData;
 		unsigned int  m_indexCount;
@@ -81,7 +84,7 @@ namespace LE {
 
 		//Global Object array
 
-
+		std::vector<WCHAR*> shaderFiles;
 		//-----------------------------------------------------------------------------
 		// Direct3D device resources
 		//-----------------------------------------------------------------------------

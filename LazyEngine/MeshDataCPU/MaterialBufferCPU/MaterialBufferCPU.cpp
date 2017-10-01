@@ -2,7 +2,7 @@
 
 namespace LE {
 
-	MaterialBufferCPU::MaterialBufferCPU(ID3D11Device* context,std::string name):m_context(context),m_name(name),m_bUseNormalMap(false){}
+	MaterialBufferCPU::MaterialBufferCPU(ID3D11Device* device,ID3D11DeviceContext* context,std::string name):m_device(device),m_context(context),m_name(name),m_bUseNormalMap(false){}
 
 	void MaterialBufferCPU::ReadDataFromFile() {
 
@@ -39,7 +39,7 @@ namespace LE {
 			
 			fr.readNextNonEmptyLine(texFileName, 256);
 			Handle* hTexture = new Handle(sizeof(Texture));
-			Texture *tex = new(hTexture) Texture(texturePath, texFileName, m_context);
+			Texture *tex = new(hTexture) Texture(m_device,m_context,texturePath, texFileName);
 			m_hTextures.push_back(hTexture);
 		}
 

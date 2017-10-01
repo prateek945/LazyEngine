@@ -18,35 +18,22 @@ namespace LE {
 		Primitives::Bool hasCollider;
 		Colliders::ColliderMeta colliderMetaData;
 		Primitives::Bool isPhysicsEnabled;
-		Primitives::UInt32 num_verts;
-		Primitives::UInt32 num_indices;
 		Primitives::Bool isVisible;
 		Handle* m_hMeshCPU;
-
-		vector<Primitives::Float32> m_vertices;
-		vector<Primitives::Float32> m_color;
-		vector<Primitives::Float32> m_normals;
-		vector<Primitives::UInt32> m_indices;
 		LEVector3 diffuseColor;
 		Primitives::Float32 alpha;
 		GameObject() = default;
 		GameObject(GameObject&&) = default;
 		GameObject(GameObject const& g) {
+
 			objId = g.getObjId();
 			objMatrix = g.objMatrix;
 			strcpy(objectName, g.objectName);
 			hasCollider = g.hasCollider;
 			colliderMetaData = g.colliderMetaData;
-			num_verts = g.num_verts;
-			num_indices = g.num_indices;
 			isPhysicsEnabled = g.isPhysicsEnabled;
 			isVisible = g.isVisible;
-			m_vertices = g.m_vertices;
-			m_color = g.m_color;
-			m_normals = g.m_normals;
-			m_indices = g.m_indices;
-			diffuseColor = g.diffuseColor;
-			alpha = g.alpha;
+			m_hMeshCPU = g.m_hMeshCPU;
 		};
 		void setObjId(Primitives::UInt16 id) { objId = id; }
 		Primitives::UInt16 getObjId()const { return objId; }
