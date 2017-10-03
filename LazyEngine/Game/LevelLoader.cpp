@@ -18,9 +18,18 @@ namespace LE {
 			tangents = mesh->m_hTangentBufferCPU->getObject<NormalBufferCPU>();
 		}
 		if (m_instances.find(key) == m_instances.end()) {
-			
+			std::string vertexshader; 
+			std::string pixelshader;
 			m_GPUIndices[key] = make_pair(gpubuffer.m_vertices.size(), gpubuffer.m_indices.size());
+			
 			if (material->isDetailedMesh()) {
+				
+				if (m_shaders.find(ShaderID::DetialedShader) == m_shaders.end()) {
+					vertexshader = "DetailedVertexShader.hlsl";
+					pixelshader = "DetailedPixelShader.hlsl";
+					m_shaders[ShaderID::DetialedShader].first = vertexshader;
+					m_shaders[ShaderID::DetialedShader].second = pixelshader;
+				}
 				for (unsigned int j = 0; j < verts->getNumVerts(); j++) {
 					gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j+1)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j+2));
 					gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2*j)); gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2*j+1));
@@ -30,6 +39,14 @@ namespace LE {
 				}
 			}
 			else {
+
+				
+				if (m_shaders.find(ShaderID::DetialedShader) == m_shaders.end()) {
+					vertexshader = "SimpleVertexShader.hlsl";
+					pixelshader = "SimplePixelShader.hlsl";
+					m_shaders[ShaderID::StandardShader].first = vertexshader;
+					m_shaders[ShaderID::StandardShader].second = pixelshader;
+				}
 				for (unsigned int j = 0; j < verts->getNumVerts(); j++) {
 					gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 2));
 					gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2 * j)); gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2 * j + 1));

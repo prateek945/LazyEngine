@@ -19,8 +19,8 @@ namespace LE {
 	bool Texture::Initialize(){
 		HRESULT hr;
 		if (!location.empty()) {
-			WCHAR *path; 
-			mbstowcs(path, location.c_str, 256);
+			WCHAR *path = nullptr; 
+			mbstowcs(path, location.c_str(), 256);
 			
 			hr = DirectX::CreateWICTextureFromFile(m_device,m_context,path,&m_texture,&m_textureView);
 			

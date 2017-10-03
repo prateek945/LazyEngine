@@ -22,7 +22,7 @@ namespace LE {
 	//-----------------------------------------------------------------------------
 	// Create Direct3D shader resources by loading the .cso files.
 	//-----------------------------------------------------------------------------
-	HRESULT Renderer::CompileShaders()
+	HRESULT Renderer::CompileShaders(std::shared_ptr<LevelLoader> levelLoader)
 	{
 		HRESULT hr = S_OK;
 
@@ -37,82 +37,89 @@ namespace LE {
 		// the release configuration of this program.
 		dwShaderFlags |= D3D10_SHADER_DEBUG | D3D10_SHADER_SKIP_OPTIMIZATION;
 #endif
-		// You'll need to use a file loader to load the shader bytecode. In this
-		// example, we just use the standard library.
+		
 		
 		ID3DBlob* compiledCodeBlob = NULL;
 		ID3DBlob* errorBlob = NULL;
-		WCHAR *shaderFile = L"..\\LazyEngine\\DX11\\CubeVertexShader.hlsl";
+		char* vertexShaderBase = "..//Meshes//GPUPrograms//VertexShaders//";
+		char* pixelShaderBase = "..//Meshes//GPUPrograms//PixelShaders//";
+		WCHAR *shaderFile = nullptr;
 		
-		hr = D3DCompileFromFile(
-			shaderFile,
-			NULL,
-			D3D_COMPILE_STANDARD_FILE_INCLUDE,
-			"main",
-			"vs_4_1",
-			dwShaderFlags,
-			0,
-			&compiledCodeBlob,
-			&errorBlob
-		);
-		if (errorBlob) {
-			OutputDebugStringA((LPCSTR)errorBlob->GetBufferPointer());
+		for (Primitives::Int16 i = 0; i < levelLoader->m_shaders.size(); i++) {
+			if (levelLoader->m_shaders.find(ShaderID(i)) == levelLoader->m_shaders.end()) continue;
+			strcat(vertexShaderBase, levelLoader->m_shaders[ShaderID(i)].first.c_str());
+			mbstowcs(shaderFile,vertexShaderBase,255);
+			
+			hr = D3DCompileFromFile(
+				shaderFile,
+				NULL,
+				D3D_COMPILE_STANDARD_FILE_INCLUDE,
+				"main",
+				"vs_4_1",
+				dwShaderFlags,
+				0,
+				&compiledCodeBlob,
+				&errorBlob
+			);
+			if (errorBlob) {
+				OutputDebugStringA((LPCSTR)errorBlob->GetBufferPointer());
+			}
+			hr = device->CreateVertexShader(
+				compiledCodeBlob->GetBufferPointer(),
+				compiledCodeBlob->GetBufferSize(),
+				nullptr,
+				&m_pVertexShaders[ShaderID(i)]
+			);
+
+			D3D11_INPUT_ELEMENT_DESC iaDesc[] =
+			{
+				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+				0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+				{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+				0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+				{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,
+				0,24,D3D11_INPUT_PER_VERTEX_DATA,0}
+			};
+
+			hr = device->CreateInputLayout(
+				iaDesc,
+				ARRAYSIZE(iaDesc),
+				compiledCodeBlob->GetBufferPointer(),
+				compiledCodeBlob->GetBufferSize(),
+				&m_pInputLayout
+			);
+
+			compiledCodeBlob = NULL;
+			errorBlob = NULL;
+
+
+			strcat(pixelShaderBase, levelLoader->m_shaders[ShaderID(i)].second.c_str());
+			mbstowcs(shaderFile, pixelShaderBase, 255);
+
+			hr = D3DCompileFromFile(
+				shaderFile,
+				NULL,
+				D3D_COMPILE_STANDARD_FILE_INCLUDE,
+				"main",
+				"ps_4_1",
+				dwShaderFlags,
+				0,
+				&compiledCodeBlob,
+				&errorBlob
+			);
+			if (errorBlob) {
+				OutputDebugStringA((LPCSTR)errorBlob->GetBufferPointer());
+			}
+			hr = device->CreatePixelShader(
+				compiledCodeBlob->GetBufferPointer(),
+				compiledCodeBlob->GetBufferSize(),
+				nullptr,
+				m_pPixelShader.GetAddressOf()
+			);
+
 		}
-		hr = device->CreateVertexShader(
-			compiledCodeBlob->GetBufferPointer(),
-			compiledCodeBlob->GetBufferSize(),
-			nullptr,
-			&m_pVertexShader
-		);
-		
-		D3D11_INPUT_ELEMENT_DESC iaDesc[] =
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-			0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-			0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-			{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,
-			0,24,D3D11_INPUT_PER_VERTEX_DATA,0}
-		};
-
-		hr = device->CreateInputLayout(
-			iaDesc,
-			ARRAYSIZE(iaDesc),
-			compiledCodeBlob->GetBufferPointer(),
-			compiledCodeBlob->GetBufferSize(),
-			&m_pInputLayout
-		);
-
-		compiledCodeBlob = NULL;
-		errorBlob = NULL;
-
-
-		shaderFile = L"..\\LazyEngine\\DX11\\CubePixelShader.hlsl";
-
-		hr = D3DCompileFromFile(
-			shaderFile,
-			NULL,
-			D3D_COMPILE_STANDARD_FILE_INCLUDE,
-			"main",
-			"ps_4_1",
-			dwShaderFlags,
-			0,
-			&compiledCodeBlob,
-			&errorBlob
-		);
-		if (errorBlob) {
-			OutputDebugStringA((LPCSTR)errorBlob->GetBufferPointer());
-		}
-		hr = device->CreatePixelShader(
-			compiledCodeBlob->GetBufferPointer(),
-			compiledCodeBlob->GetBufferSize(),
-			nullptr,
-			m_pPixelShader.GetAddressOf()
-		);
-
-	
 
 		CD3D11_BUFFER_DESC cbDesc(
 			sizeof(ConstantBufferStruct),
@@ -212,7 +219,7 @@ namespace LE {
 		// Compile shaders using the Effects library.
 		m_keyboard = make_unique<DirectX::Keyboard>();
 		m_mouse = make_unique<DirectX::Mouse>();
-		CompileShaders();
+		CompileShaders(levelLoader);
 		CreateGPUBuffers(levelLoader);
 	}
 
@@ -334,7 +341,7 @@ namespace LE {
 			&renderTarget,
 			depthStencil
 		);
-		UINT stride = sizeof(VertexPositionColor);
+		UINT stride = sizeof(VertexPositionNormal);
 		UINT offset = 0;
 
 		context->IASetVertexBuffers(
@@ -353,7 +360,7 @@ namespace LE {
 		
 		
 		context->VSSetShader(
-			m_pVertexShader.Get(),
+			m_pVertexShaders[0].Get(),
 			nullptr,
 			0
 		);
