@@ -213,6 +213,9 @@
     <ClInclude Include="MeshDataCPU\IndexBufferCPU\IndexBufferCPU.h">
       <Filter>MeshDataCPU\IndexBufferCPU</Filter>
     </ClInclude>
+    <ClInclude Include="DX11\ShaderIDEnum.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">

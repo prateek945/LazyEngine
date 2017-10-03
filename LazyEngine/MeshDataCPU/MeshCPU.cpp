@@ -4,6 +4,9 @@ namespace LE {
 
 	MeshCPU::MeshCPU(ID3D11Device* device,ID3D11DeviceContext* context, std::string name):m_context(context),m_device(device),m_name(name){
 		//First add material
+		m_name = name;
+		m_device = device;
+		m_context = context;
 		m_hMaterialCPU = new Handle(sizeof(MaterialBufferCPU));
 		MaterialBufferCPU *material = new(m_hMaterialCPU) MaterialBufferCPU(m_device,m_context, m_name);
 		material->ReadDataFromFile();

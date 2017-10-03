@@ -33,7 +33,7 @@ namespace LE {
 
 	void IndexBufferCPU::ReadDataFromFile() {
 		char base[1024];
-		strcpy(base, "..\\LazyEngine\\meshes\\IndexBuffers\\");
+		strcpy(base, "..\\LazyEngine\\meshes\\IndexBuffer\\");
 		strcat(base, m_name.c_str());
 		strcat(base, ".ib");
 		FileReader fr(base);

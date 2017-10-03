@@ -16,7 +16,35 @@ namespace LE {
 		m_frameCount(0),
 		m_deviceResources(deviceResources)
 	{
-		m_frameCount = 0; // init frame count
+		m_frameCount = 0;
+		D3D11_INPUT_ELEMENT_DESC simpleShaderIL[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+			0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,
+			0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+			{ "NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,
+			0,20,D3D11_INPUT_PER_VERTEX_DATA,0 }
+		};
+		m_inputLayouts[ShaderID::StandardShader] = simpleShaderIL;
+		D3D11_INPUT_ELEMENT_DESC DetailedShaderIL[] = 
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+			0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,
+			0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+			{ "NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,
+			0,20,D3D11_INPUT_PER_VERTEX_DATA,0 },
+
+			{ "TANGENT",0,DXGI_FORMAT_R32G32B32_FLOAT,
+			0,32,D3D11_INPUT_PER_VERTEX_DATA,0}
+		};
+		m_inputLayouts[ShaderID::DetialedShader] = DetailedShaderIL;
+		// init frame count
 	}
 
 	//-----------------------------------------------------------------------------
@@ -71,21 +99,11 @@ namespace LE {
 				&m_pVertexShaders[ShaderID(i)]
 			);
 
-			D3D11_INPUT_ELEMENT_DESC iaDesc[] =
-			{
-				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-				0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-				{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-				0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-				{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,
-				0,24,D3D11_INPUT_PER_VERTEX_DATA,0}
-			};
+			
 
 			hr = device->CreateInputLayout(
-				iaDesc,
-				ARRAYSIZE(iaDesc),
+				m_inputLayouts[ShaderID(i)],
+				sizeof(m_inputLayouts[ShaderID(i)]) / sizeof(D3D11_INPUT_ELEMENT_DESC),
 				compiledCodeBlob->GetBufferPointer(),
 				compiledCodeBlob->GetBufferSize(),
 				&m_pInputLayout

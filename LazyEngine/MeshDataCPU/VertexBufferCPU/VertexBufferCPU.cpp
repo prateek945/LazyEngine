@@ -1,7 +1,8 @@
 #include "VertexBufferCPU.h"
 namespace LE {
 
-	VertexBufferCPU::VertexBufferCPU(std::string name):m_name(name){
+	VertexBufferCPU::VertexBufferCPU(std::string name){
+		m_name = name;
 	}
 
 	
