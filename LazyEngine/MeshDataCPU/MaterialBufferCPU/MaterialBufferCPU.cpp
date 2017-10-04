@@ -38,8 +38,9 @@ namespace LE {
 			if (strcmp(textureType, "NormalMap")) m_bUseNormalMap = true;
 			
 			fr.readNextNonEmptyLine(texFileName, 256);
-			Handle* hTexture = new Handle(sizeof(Texture));
+			Handle* hTexture = new Handle(sizeof(Texture) + 1024*1024);
 			Texture *tex = new(hTexture) Texture(m_device,m_context,texturePath, texFileName);
+			tex->Initialize();
 			m_hTextures.push_back(hTexture);
 		}
 
