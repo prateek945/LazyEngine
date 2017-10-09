@@ -78,3 +78,5 @@ bld/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 LazyEngine.VC.db
+LazyEngine/LazyEngine.vcxproj.filters
+*.db

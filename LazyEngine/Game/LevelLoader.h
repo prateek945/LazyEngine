@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "../LazyFiling/FileHandler.h"
 #include "../Physics/PhysicsManager.h"
+#include "../DX11/ShaderIDEnum.h"
 #include "LightObject.h"
 #include <string>
 #include <vector>
@@ -23,11 +24,13 @@ namespace LE {
 		Primitives::UInt32 num_gameObjs;
 		map<std::string, Handle*> m_instances;
 		map<std::string, std::pair<Primitives::Int32, Primitives::Int32>> m_GPUIndices;
+		map<ShaderID, std::pair<std::string,std::string>> m_shaders;
 		GPUBuffers gpubuffer;
 		
 		LevelLoader(string levelname): levelName(levelname){}
 		bool loadLevelGameObjs(ID3D11Device* device,ID3D11DeviceContext* context);
 		void storeGPUVertDataForObj(Handle*);
+
 		const char* getLevelName() { return levelName.c_str(); }
 
 	};

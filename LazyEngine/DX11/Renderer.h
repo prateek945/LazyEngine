@@ -3,6 +3,7 @@
 #define RENDERER_H_
 
 #include "DeviceManager.h"
+#include "ShaderIDEnum.h"
 #include "CameraUtils/Camera.h"
 #include "../Memory/Handle.h"
 #include "../Math/Matrix4X4.h"
@@ -16,11 +17,7 @@ namespace LE {
 	//-----------------------------------------------------------------------------
 	// Class declarations
 	//-----------------------------------------------------------------------------
-	enum ShaderID : Primitives::Int16 {
-		StandardShader = 0,
-		DetialedShader,
-		EndOfList
-	};
+	
 	class Renderer
 	{
 	public:
@@ -35,7 +32,7 @@ namespace LE {
 		void Render(std::shared_ptr<LevelLoader>);
 
 	private:
-		HRESULT CompileShaders();
+		HRESULT CompileShaders(std::shared_ptr<LevelLoader> levelLoader);
 		HRESULT CreateGPUBuffers(std::shared_ptr<LevelLoader> levelLoader);
 		void    CreateViewAndPerspective();
 		
@@ -65,6 +62,7 @@ namespace LE {
 		typedef struct _vertexPositionNormal
 		{
 			LEVector3 pos;
+			Primitives::Float32 textCoords[2];
 			LEVector3 normal;
 		} VertexPositionNormal;
 
@@ -74,6 +72,7 @@ namespace LE {
 		typedef struct _vertexPositionNormalTangent
 		{
 			LEVector3 pos;
+			Primitives::Float32 textCoords[2];
 			LEVector3 normal;
 			LEVector3 tangent;
 		} VertexPositionNormalTangent;
@@ -91,11 +90,12 @@ namespace LE {
 		//ID3DXEffect* m_pEffect;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pVertexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pIndexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11VertexShader>      m_pVertexShader;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11VertexShader>>      m_pVertexShaders;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout>       m_pInputLayout;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout>       m_pInputLayoutExtended;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>       m_pPixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pConstantBuffer;
+		map<ShaderID, D3D11_INPUT_ELEMENT_DESC*>		m_inputLayouts;
 	};
 };
 #endif

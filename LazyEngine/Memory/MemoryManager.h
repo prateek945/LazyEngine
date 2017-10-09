@@ -6,7 +6,7 @@
 //16B alignment
 #define ALLIGNMENT 16
 //Increase when number of pools is increased.
-#define NUM_MEM_POOLS 7
+#define NUM_MEM_POOLS 9
 #define INVALID_UINT 0xFFFFFFFF
 
 namespace LE {
@@ -19,6 +19,8 @@ namespace LE {
 		{512,1024},
 		{1024,16},
 		{2048,16},
+		{32 MB,16},
+		
 	};
 	//CLASS_SINGLETON_DECL(MemoryManager, MemoryPool)
 	class MemoryManager{
