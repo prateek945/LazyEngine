@@ -73,6 +73,9 @@
     <Filter Include="MeshDataCPU\IndexBufferCPU">
       <UniqueIdentifier>{59c6095e-f277-42e8-b599-19c31cc5078c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{23fba934-daa7-43f1-952d-758653cb2f8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="MeshDataCPU\IndexBufferCPU\IndexBufferCPU.h">
       <Filter>MeshDataCPU\IndexBufferCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\DDS_Loader.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

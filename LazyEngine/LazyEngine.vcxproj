@@ -66,6 +66,7 @@
     <ClInclude Include="Physics\PrimitiveShapes\Ray.h" />
     <ClInclude Include="Primitives\Primitives.h" />
     <ClInclude Include="Singleton\SingletonClasses.h" />
+    <ClInclude Include="Utils\DDS_Loader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11\CameraUtils\Camera.cpp" />
