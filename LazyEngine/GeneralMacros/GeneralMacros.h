@@ -8,6 +8,8 @@
 #define internal_variable static
 #define DEGTORAD(deg) (((Primitives::Constants::c_Pi_F32)*(deg))/(180.0f))
 #define RADTODEG(rad) (((180.0f)*(rad))/(Primitives::Constants::PI))
+#define DDSF_MAX_MIPMAPS 16
+
 
 #define LAZYASSERT(truth,format,...) {if(!(truth)){\
 LE::LogManager::getInstance()->get()->Log(format "\n",##__VA_ARGS__);\

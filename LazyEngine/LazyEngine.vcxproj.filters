@@ -219,6 +219,7 @@
     <ClInclude Include="Utils\DDS_Loader.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="DX11\ShaderIDEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -298,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="MeshDataCPU\TextureCPU\Texture.cpp">
       <Filter>MeshDataCPU\TextureCPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\DDS_Loader.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

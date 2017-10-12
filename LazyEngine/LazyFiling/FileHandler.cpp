@@ -38,4 +38,16 @@ namespace LE {
 			return true; // good line
 		}
 	}
+
+	bool FileReader::ReadDataToBuffer(int length, int offset,char* buffer) {
+		
+		fseek(fptr, offset,	SEEK_SET);
+		fseek(fptr, 0, SEEK_END);
+		int size = ftell(fptr);
+
+		fread(buffer, 1, length, fptr);
+
+		
+
+	}
 };

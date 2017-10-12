@@ -21,6 +21,8 @@ namespace LE {
 		void readNextInt(Primitives::Int32 &val);
 		void readNextUInt(Primitives::UInt32 &val);
 		bool readNextNonEmptyLine(char* val, Primitives::UInt32 max);
+		bool ReadDataToBuffer(int length, int offset, char* buffer);
+		Primitives::UInt32 getFileLength();
 	};
 };
 #endif

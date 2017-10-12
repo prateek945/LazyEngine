@@ -96,6 +96,7 @@
     <ClCompile Include="Physics\PhysicsManager.cpp" />
     <ClCompile Include="Physics\PrimitiveShapes\Plane.cpp" />
     <ClCompile Include="Physics\PrimitiveShapes\Point.cpp" />
+    <ClCompile Include="Utils\DDS_Loader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
