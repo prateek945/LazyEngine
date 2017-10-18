@@ -39,15 +39,23 @@ namespace LE {
 		}
 	}
 
-	bool FileReader::ReadDataToBuffer(int length, int offset,char* buffer) {
+	bool FileReader::ReadDataToBuffer(unsigned char* buffer) {
+		if (fptr == nullptr)
+			return false;
 		
-		fseek(fptr, offset,	SEEK_SET);
 		fseek(fptr, 0, SEEK_END);
 		int size = ftell(fptr);
 
-		fread(buffer, 1, length, fptr);
-
+		fread(buffer, 1, size, fptr);
 		
+		return true;
+	}
+
+	Primitives::UInt32 FileReader::getFileLength() {
+
+		fseek(fptr, 0, SEEK_END);
+		Primitives::UInt32 size = ftell(fptr);
+		return size;
 
 	}
 };
