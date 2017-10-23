@@ -45,7 +45,7 @@ namespace LE {
 		
 		fseek(fptr, 0, SEEK_END);
 		int size = ftell(fptr);
-
+		fseek(fptr, 0, SEEK_SET);
 		fread(buffer, 1, size, fptr);
 		
 		return true;

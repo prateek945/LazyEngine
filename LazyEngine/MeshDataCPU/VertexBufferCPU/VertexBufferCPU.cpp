@@ -7,12 +7,12 @@ namespace LE {
 
 	
 	void VertexBufferCPU::addData(Primitives::Float32 vert){
-		m_data.push_back(vert);
+		m_data.addElement(vert);
 	}
 
 	Primitives::Int16 VertexBufferCPU::getVertAtIndex(Primitives::Int32 index){
 		
-		return m_data.at(index);
+		return m_data.getElement(index);
 
 	}
 	//Function to get number of vertices within this mesh
@@ -39,6 +39,7 @@ namespace LE {
 
 
 		fr.readNextInt(m_count);
+		m_data.setSize(m_count*3);
 		for (unsigned int j = 0; j < m_count * 3; j++) {
 			Primitives::Float32 temp;
 			fr.readNextFloat(temp);

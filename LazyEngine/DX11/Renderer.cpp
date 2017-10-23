@@ -69,15 +69,15 @@ namespace LE {
 		
 		ID3DBlob* compiledCodeBlob = NULL;
 		ID3DBlob* errorBlob = NULL;
-		char* vertexShaderBase = "..//Meshes//GPUPrograms//VertexShaders//";
-		char* pixelShaderBase = "..//Meshes//GPUPrograms//PixelShaders//";
-		WCHAR *shaderFile = nullptr;
+		char vertexShaderBase[256] = "..//Meshes//GPUPrograms//VertexShaders//";
+		char pixelShaderBase[256] = "..//Meshes//GPUPrograms//PixelShaders//";
 		
-		for (Primitives::Int16 i = 0; i < levelLoader->m_shaders.size(); i++) {
-			if (levelLoader->m_shaders.find(ShaderID(i)) == levelLoader->m_shaders.end()) continue;
-			strcat(vertexShaderBase, levelLoader->m_shaders[ShaderID(i)].first.c_str());
-			mbstowcs(shaderFile,vertexShaderBase,255);
+		WCHAR shaderFile[256];
+		for (Primitives::Int16 i = 0; i < levelLoader->m_vertexShaders.size(); i++) {
 			
+			strcat(vertexShaderBase, levelLoader->m_vertexShaders.at(i).second.c_str());
+			mbstowcs(shaderFile, vertexShaderBase, 256);
+
 			hr = D3DCompileFromFile(
 				shaderFile,
 				NULL,
@@ -89,6 +89,8 @@ namespace LE {
 				&compiledCodeBlob,
 				&errorBlob
 			);
+			Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
+			m_pVertexShaders.push_back(make_pair(levelLoader->m_vertexShaders.at(i).first, vertexShader));
 			if (errorBlob) {
 				OutputDebugStringA((LPCSTR)errorBlob->GetBufferPointer());
 			}
@@ -96,24 +98,28 @@ namespace LE {
 				compiledCodeBlob->GetBufferPointer(),
 				compiledCodeBlob->GetBufferSize(),
 				nullptr,
-				&m_pVertexShaders[ShaderID(i)]
+				m_pVertexShaders.at(i).second.GetAddressOf()
 			);
 
-			
 
+
+			Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
+			m_pInputLayouts.push_back(make_pair(levelLoader->m_vertexShaders.at(i).first, inputLayout));
 			hr = device->CreateInputLayout(
-				m_inputLayouts[ShaderID(i)],
+				m_inputLayouts[levelLoader->m_vertexShaders.at(i).first],
 				sizeof(m_inputLayouts[ShaderID(i)]) / sizeof(D3D11_INPUT_ELEMENT_DESC),
 				compiledCodeBlob->GetBufferPointer(),
 				compiledCodeBlob->GetBufferSize(),
-				&m_pInputLayout
+				m_pInputLayouts.at(i).second.GetAddressOf()
 			);
-
+		}
+		for (Primitives::Int16 i = 0; i < levelLoader->m_pixelShaders.size(); i++) {
+			
 			compiledCodeBlob = NULL;
 			errorBlob = NULL;
 
 
-			strcat(pixelShaderBase, levelLoader->m_shaders[ShaderID(i)].second.c_str());
+			strcat(pixelShaderBase, levelLoader->m_pixelShaders.at(i).second.c_str());
 			mbstowcs(shaderFile, pixelShaderBase, 255);
 
 			hr = D3DCompileFromFile(
@@ -130,11 +136,13 @@ namespace LE {
 			if (errorBlob) {
 				OutputDebugStringA((LPCSTR)errorBlob->GetBufferPointer());
 			}
+			Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
+			m_pPixelShaders.push_back(make_pair(levelLoader->m_vertexShaders.at(i).first, pixelShader));
 			hr = device->CreatePixelShader(
 				compiledCodeBlob->GetBufferPointer(),
 				compiledCodeBlob->GetBufferSize(),
 				nullptr,
-				m_pPixelShader.GetAddressOf()
+				m_pPixelShaders.at(i).second.GetAddressOf()
 			);
 
 		}
@@ -377,33 +385,53 @@ namespace LE {
 		);
 		
 		
-		context->VSSetShader(
-			m_pVertexShaders[0].Get(),
-			nullptr,
-			0
-		);
-
-		context->PSSetShader(
-			m_pPixelShader.Get(),
-			nullptr,
-			0
-		);
-		
-		context->IASetInputLayout(m_pInputLayout.Get());
+	
 		//m_constantBufferData.view = m_hMainCamera->getObject<Camera>()->getViewMatrix();
 		//m_constantBufferData.projection = m_hMainCamera->getObject<Camera>()->getProjectionMatrix();
 		for (unsigned int i = 0; i < levelLoader.get()->num_gameObjs; i++) {
-			//levelLoader.get()->g_gameObjs[i].objMatrix;
-			if (levelLoader.get()->g_gameObjs[i].getObjId() == 2) {
-				context->IASetPrimitiveTopology(
-					D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-				);
+			MeshCPU* mesh = levelLoader.get()->g_gameObjs[i].m_hMeshCPU->getObject<MeshCPU>();
+			MaterialBufferCPU* material = mesh->m_hMaterialCPU.getObject<MaterialBufferCPU>();
+
+			if (material->isDetailedMesh()) {
+				for (int j = 0; j < m_pVertexShaders.size(); j++) {
+					if(m_pVertexShaders.at(i).first == ShaderID::DetialedShader)
+						context->VSSetShader(
+							m_pVertexShaders.at(i).second.Get(),
+							nullptr,
+							0
+						);
+
+						context->PSSetShader(
+							m_pPixelShaders.at(i).second.Get(),
+							nullptr,
+							0
+						);
+
+						context->IASetInputLayout(m_pInputLayouts.at(i).second.Get());
+				}
 			}
 			else {
-				context->IASetPrimitiveTopology(
-					D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-				);
+				for (int j = 0; j < m_pVertexShaders.size(); j++) {
+					if (m_pVertexShaders.at(i).first == ShaderID::StandardShader)
+						context->VSSetShader(
+							m_pVertexShaders.at(i).second.Get(),
+							nullptr,
+							0
+						);
+
+					context->PSSetShader(
+						m_pPixelShaders.at(i).second.Get(),
+						nullptr,
+						0
+					);
+
+					context->IASetInputLayout(m_pInputLayouts.at(i).second.Get());
+				}
+
 			}
+			context->IASetPrimitiveTopology(
+				D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+			);
 			m_constantBufferData.view = m_hMainCamera->getObject<Camera>()->getViewMatrix();
 			m_constantBufferData.projection = m_hMainCamera->getObject<Camera>()->getProjectionMatrix();
 			if (levelLoader.get()->g_gameObjs[i].isVisible) {
@@ -433,7 +461,7 @@ namespace LE {
 
 				UINT startIndexLocation = levelLoader.get()->m_GPUIndices.at(key).second;
 				UINT startVertexLocation = levelLoader.get()->m_GPUIndices.at(key).first;
-				UINT index_count = levelLoader.get()->g_gameObjs[i].m_hMeshCPU->getObject<MeshCPU>()->m_hIndexBufferCPU->getObject<IndexBufferCPU>()->getNumVerts();
+				UINT index_count = levelLoader.get()->g_gameObjs[i].m_hMeshCPU->getObject<MeshCPU>()->m_hIndexBufferCPU.getObject<IndexBufferCPU>()->getNumVerts();
 
 				// Calling Draw tells Direct3D to start sending commands to the graphics device.
 				context->DrawIndexedInstanced(

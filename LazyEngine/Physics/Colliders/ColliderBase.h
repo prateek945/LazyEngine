@@ -2,6 +2,7 @@
 #ifndef COLLIDER_BASE_H_
 #define COLLIDER_BASE_H_
 #include "../PrimitiveShapes/Point.h"
+#include "../../Utils/LArray.h"
 #include "ColliderMeta.h"
 #include <vector>
 namespace LE {
@@ -17,7 +18,7 @@ namespace LE {
 			Collider(ColliderMeta m);
 			Collider(Collider &&) = default;
 			Collider(Collider const&col);
-			virtual void generateValuesFromBuffer(vector<Primitives::Float32>) = 0;
+			virtual void generateValuesFromBuffer(LArray<Primitives::Float32>) = 0;
 			virtual PrimitiveShapes::Point getFurthestInDir(LEVector3 *Dir) = 0;
 			ColliderMeta getMetaData();
 			void setColliderType(ColliderType type);

@@ -4,12 +4,13 @@
 #include "../../Memory/Handle.h"
 #include "../../Math/LEVector.h"
 #include "../../LazyFiling/FileHandler.h"
+#include "../../Utils/LArray.h"
 #include <vector>
 #include <string>
 namespace LE {
 	class IndexBufferCPU {
 		Primitives::Int32 m_count;
-		std::vector<Primitives::Float32> m_data;
+		LArray<Primitives::Int16> m_data;
 		std::string m_name;
 	public:
 		IndexBufferCPU(std::string name);

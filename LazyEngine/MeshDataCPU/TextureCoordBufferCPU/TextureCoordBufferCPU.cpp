@@ -7,12 +7,12 @@ namespace LE {
 
 
 	void TextureCoordBufferCPU::addData(Primitives::Float32 vert) {
-		m_data.push_back(vert);
+		m_data.addElement(vert);
 	}
 
 	Primitives::Int16 TextureCoordBufferCPU::getVertAtIndex(Primitives::Int32 index) {
 
-		return m_data.at(index);
+		return m_data.getElement(index);
 
 	}
 	//Function to get number of vertices within this mesh
@@ -32,14 +32,15 @@ namespace LE {
 
 	void TextureCoordBufferCPU::ReadDataFromFile() {
 		char base[1024];
-		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
+		strcpy(base, "..\\LazyEngine\\meshes\\TexCoordBuffer\\");
 		strcat(base, m_name.c_str());
 		strcat(base, ".tcb");
 		FileReader fr(base);
 
 
 		fr.readNextInt(m_count);
-		for (unsigned int j = 0; j < m_count * 3; j++) {
+		m_data.setSize(m_count * 2);
+		for (unsigned int j = 0; j < m_count * 2; j++) {
 			Primitives::Float32 temp;
 			fr.readNextFloat(temp);
 			addData(temp);

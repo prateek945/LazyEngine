@@ -90,10 +90,9 @@ namespace LE {
 		//ID3DXEffect* m_pEffect;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pVertexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pIndexBuffer;
-		std::vector<Microsoft::WRL::ComPtr<ID3D11VertexShader>>      m_pVertexShaders;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout>       m_pInputLayout;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout>       m_pInputLayoutExtended;
-		Microsoft::WRL::ComPtr<ID3D11PixelShader>       m_pPixelShader;
+		std::vector<std::pair<ShaderID,Microsoft::WRL::ComPtr<ID3D11VertexShader>>>      m_pVertexShaders;
+		std::vector<std::pair<ShaderID, Microsoft::WRL::ComPtr<ID3D11InputLayout>>>      m_pInputLayouts;
+		std::vector<std::pair<ShaderID, Microsoft::WRL::ComPtr<ID3D11PixelShader>>>      m_pPixelShaders;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pConstantBuffer;
 		map<ShaderID, D3D11_INPUT_ELEMENT_DESC*>		m_inputLayouts;
 	};

@@ -123,7 +123,7 @@ namespace LE {
 		friend ostream &operator << (ostream &output, const Matrix3X3 &m) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					output << m.m_values[i][j] << "\Primitives::Float32";
+					output << m.m_values[i][j] << "Primitives::Float32";
 				}
 				output << "\n";
 			}

@@ -4,6 +4,7 @@
 
 
 #include "ColliderBase.h"
+
 namespace LE {
 	namespace Colliders {
 		class Sphere : public Collider{
@@ -28,12 +29,12 @@ namespace LE {
 				return PrimitiveShapes::Point((LEVector3(center.x, center.y, center.z) + radius * (localDir)));
 				
 			}
-			void generateValuesFromBuffer(vector<Primitives::Float32> vertices) override {
+			void generateValuesFromBuffer(LArray<Primitives::Float32> vertices) override {
 				Primitives::Float32 min_x = Primitives::Constants::c_MaxFloat32;
 				Primitives::Float32 max_x = 0.f;
-				for (unsigned int i = 0; i < vertices.size() / 3; i++) {
-					if (vertices.at(3 * i) > max_x) max_x = vertices.at(3 * i);
-					if (vertices.at(3 * i) < min_x) min_x = vertices.at(3 * i);
+				for (unsigned int i = 0; i < vertices.getSize() / 3; i++) {
+					if (vertices.getElement(3 * i) > max_x) max_x = vertices.getElement(3 * i);
+					if (vertices.getElement(3 * i) < min_x) min_x = vertices.getElement(3 * i);
 				}
 				radius = (max_x - min_x) / 2.f;
 			}

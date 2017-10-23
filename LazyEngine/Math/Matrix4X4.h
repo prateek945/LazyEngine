@@ -165,7 +165,7 @@ namespace LE {
 			for (int i = 0; i < 4; i++) {
 				output << "\n";
 				for (int j = 0; j < 4; j++)
-					output << m.m_values[i][j] << "\Primitives::Float32";
+					output << m.m_values[i][j] << "Primitives::Float32";
 			}
 			output << "\n";
 			return output;

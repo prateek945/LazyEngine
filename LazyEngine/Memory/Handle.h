@@ -5,16 +5,18 @@
 #include "MemoryManager.h"
 namespace LE {
 	struct Handle {
-	private:
+	
 		void* m_objPtr;
 		unsigned int m_poolIndex, m_blockIndex, objectSize;
 		bool valid;
 	public:
+		Handle(){}
 		Handle(unsigned int size) : m_objPtr(0), m_poolIndex(INVALID_UINT), m_blockIndex(INVALID_UINT), objectSize(0) {
 
 			if (size > 0) {
 				objectSize = size;
-				m_objPtr = MemoryManager::getInstance()->allocateBlock(size, m_poolIndex, m_blockIndex);
+				MemoryManager::getInstance()->allocateBlock(size, m_poolIndex, m_blockIndex);
+				m_objPtr = MemoryManager::getInstance()->getBlockStart(m_poolIndex, m_blockIndex);
 				LAZYASSERT(m_objPtr, "No free Memory for this block size");
 			}
 		}
@@ -32,6 +34,11 @@ namespace LE {
 		}
 		void Release() {
 			MemoryManager::getInstance()->freeBlock(m_poolIndex, m_blockIndex);
+		}
+
+		bool operator==(const Handle &b)
+		{
+			return (m_objPtr == b.m_objPtr);
 		}
 	};
 };

@@ -139,8 +139,7 @@ namespace LE {
 				PrimitiveShapes::Point center = PrimitiveShapes::Point(farPlane.getPoint().x - nearPlane.getPoint().x,
 					farPlane.getPoint().y - nearPlane.getPoint().y,
 					farPlane.getPoint().z - nearPlane.getPoint().z);
-				Primitives::Float32 t;
-				Primitives::Float32 d;
+				
 				for (unsigned int i = 0; i < 6; i++) {
 					
 				}

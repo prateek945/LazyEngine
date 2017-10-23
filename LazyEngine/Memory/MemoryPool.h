@@ -36,8 +36,13 @@ namespace LE {
 			}
 			return ptr;
 		}
+		void *getBlockStart(unsigned int blockIndex)
+		{
+			// calculate offset and return start of the block
+			return (void *)((uintptr_t)(m_header.startPtr) + (uintptr_t)(m_header.m_poolSize * blockIndex));
+		}
 		void* allocateBlock(unsigned int &blockIndex) {
-			void *ptr;
+			
 			blockIndex = m_freeBlocks[--m_header.m_nBlocksFree];
 			return (void*)((uintptr_t)m_header.startPtr + blockIndex*m_header.m_poolSize);
 		}

@@ -10,6 +10,7 @@
 #include "LightObject.h"
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <map>
 
 #include <cstring>
@@ -22,14 +23,16 @@ namespace LE {
 		vector<GameObject> g_gameObjs;
 		vector<LightObject> g_lights;
 		Primitives::UInt32 num_gameObjs;
-		map<std::string, Handle*> m_instances;
+		map<std::string, Handle> m_instances;
 		map<std::string, std::pair<Primitives::Int32, Primitives::Int32>> m_GPUIndices;
-		map<ShaderID, std::pair<std::string,std::string>> m_shaders;
+		vector<pair<ShaderID, string>> m_pixelShaders;
+		vector<pair<ShaderID, string>> m_vertexShaders;
+		
 		GPUBuffers gpubuffer;
 		
 		LevelLoader(string levelname): levelName(levelname){}
 		bool loadLevelGameObjs(ID3D11Device* device,ID3D11DeviceContext* context);
-		void storeGPUVertDataForObj(Handle*);
+		void storeGPUVertDataForObj(Handle);
 
 		const char* getLevelName() { return levelName.c_str(); }
 

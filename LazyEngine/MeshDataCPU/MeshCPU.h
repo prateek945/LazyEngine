@@ -15,7 +15,7 @@
 namespace LE {
 	class MeshCPU {
 	public:
-		Handle *m_hVertexBufferCPU,*m_hIndexBufferCPU,*m_hNormalBufferCPU,*m_hTextureCoordBufferCPU,*m_hMaterialCPU,*m_hTangentBufferCPU;
+		Handle m_hVertexBufferCPU,m_hIndexBufferCPU,m_hNormalBufferCPU,m_hTextureCoordBufferCPU,m_hMaterialCPU,m_hTangentBufferCPU;
 		Primitives::Bool useTextures,hasTangentBuffer;
 		ID3D11Device* m_device;
 		ID3D11DeviceContext* m_context;

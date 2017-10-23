@@ -29,10 +29,12 @@ namespace LE {
 		//Now create the actual pools over the complete memory block
 		for (unsigned int i = 0; i < NUM_MEM_POOLS; i++) {
 			m_globalInstance->m_MemoryPools[i] = MemoryPool::startUp(g_memPool[i][0], g_memPool[i][1], allignedPtr);
+			allignedPtr = (void *)((uintptr_t)(allignedPtr)+MemoryPool::sizeRequired(g_memPool[i][0],g_memPool[i][1]));
+			allignedPtr = allignPtr(allignedPtr);
 		}
 
 	}
-	void* MemoryManager::allocateBlock(unsigned int size, unsigned int &poolIndex, unsigned int &blockIndex)
+	void MemoryManager::allocateBlock(unsigned int size, unsigned int &poolIndex, unsigned int &blockIndex)
 	{
 		void* ptr = 0;
 		for (unsigned int i = 0; i < NUM_MEM_POOLS; i++) {
@@ -42,7 +44,7 @@ namespace LE {
 				break;
 			}
 		}
-		return ptr;
+		
 	}
 	void MemoryManager::freeBlock(unsigned int poolIndex, unsigned int blockIndex) {
 		m_globalInstance->m_MemoryPools[poolIndex]->freeBlock(blockIndex);

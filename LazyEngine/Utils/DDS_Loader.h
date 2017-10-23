@@ -1,6 +1,7 @@
 #pragma once
 #include "../Includes/LazyIncludes.h"
 #include "../LazyFiling/FileHandler.h"
+#include "DDS.h"
 namespace LE {
 	namespace DDS {
 		struct DDS_PIXELFORMAT

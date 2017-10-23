@@ -4,6 +4,7 @@
 #include "../../Math/LEVector.h"
 #include "../../Memory/Handle.h"
 #include "../../LazyFiling/FileHandler.h"
+#include "../../Utils/LArray.h"
 #include <string>
 #include <vector>
 namespace LE {
@@ -16,11 +17,15 @@ namespace LE {
 	};
 	class MaterialBufferCPU {
 
-		BaseParams m_baseParams;
-		std::vector<Handle*> m_hTextures;
+		float color[3];
+		Primitives::Float32 alpha;
+		Primitives::Float32 specular;
+		Primitives::Int32 num_textures;
+		Primitives::Float32 emissive;
+		LArray<Handle> m_hTextures;
 		ID3D11Device* m_device;
 		ID3D11DeviceContext* m_context;
-		std::string m_name;
+		char m_name[256];
 		Primitives::Bool m_bUseNormalMap;
 	public:
 		MaterialBufferCPU(ID3D11Device* device,ID3D11DeviceContext* context,std::string name);

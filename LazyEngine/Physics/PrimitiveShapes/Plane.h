@@ -15,7 +15,7 @@ namespace LE {
 			Plane();
 
 			Plane& operator=(Plane rhs) {
-				Plane ret();
+				
 				setNormal(rhs.getNormal());
 				setPoint(rhs.getPoint());
 				return *this;

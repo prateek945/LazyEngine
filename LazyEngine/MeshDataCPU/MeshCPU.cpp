@@ -7,29 +7,30 @@ namespace LE {
 		m_name = name;
 		m_device = device;
 		m_context = context;
-		m_hMaterialCPU = new Handle(sizeof(MaterialBufferCPU));
-		MaterialBufferCPU *material = new(m_hMaterialCPU) MaterialBufferCPU(m_device,m_context, m_name);
+		m_hMaterialCPU = Handle(sizeof(MaterialBufferCPU));
+		void* add = m_hMaterialCPU.getAddress();
+		MaterialBufferCPU *material = new(m_hMaterialCPU.getAddress()) MaterialBufferCPU(m_device,m_context, m_name);
 		material->ReadDataFromFile();
 		//Vertex Data
-		m_hVertexBufferCPU = new Handle(sizeof(VertexBufferCPU));
-		VertexBufferCPU *vb = new(m_hVertexBufferCPU) VertexBufferCPU(m_name);
+		m_hVertexBufferCPU = Handle(sizeof(VertexBufferCPU));
+		VertexBufferCPU *vb = new(m_hVertexBufferCPU.getAddress()) VertexBufferCPU(m_name);
 		vb->ReadDataFromFile();
 		//Index Data
-		m_hIndexBufferCPU = new Handle(sizeof(IndexBufferCPU));
-		IndexBufferCPU *ib = new(m_hIndexBufferCPU) IndexBufferCPU(m_name);
+		m_hIndexBufferCPU =  Handle(sizeof(IndexBufferCPU));
+		IndexBufferCPU *ib = new(m_hIndexBufferCPU.getAddress()) IndexBufferCPU(m_name);
 		ib->ReadDataFromFile();
 		//Normal Data
-		m_hNormalBufferCPU = new Handle(sizeof(NormalBufferCPU));
-		NormalBufferCPU *nb = new(m_hVertexBufferCPU) NormalBufferCPU(m_name);
+		m_hNormalBufferCPU =  Handle(sizeof(NormalBufferCPU));
+		NormalBufferCPU *nb = new(m_hNormalBufferCPU.getAddress()) NormalBufferCPU(m_name);
 		nb->ReadDataFromFile();
 		//TextureCoord Data
-		m_hTextureCoordBufferCPU = new Handle(sizeof(TextureCoordBufferCPU));
-		TextureCoordBufferCPU *tcb = new(m_hVertexBufferCPU) TextureCoordBufferCPU(m_name);
+		m_hTextureCoordBufferCPU =  Handle(sizeof(TextureCoordBufferCPU));
+		TextureCoordBufferCPU *tcb = new(m_hTextureCoordBufferCPU.getAddress()) TextureCoordBufferCPU(m_name);
 		tcb->ReadDataFromFile();
 		//if material uses normal map probably has tangent data too.
-		if (m_hMaterialCPU->getObject<MaterialBufferCPU>()->isDetailedMesh()) {
-			m_hTangentBufferCPU = new Handle(sizeof(NormalBufferCPU));
-			NormalBufferCPU *tanb = new(m_hTangentBufferCPU) NormalBufferCPU(m_name);
+		if (m_hMaterialCPU.getObject<MaterialBufferCPU>()->isDetailedMesh()) {
+			m_hTangentBufferCPU = Handle(sizeof(NormalBufferCPU));
+			NormalBufferCPU *tanb = new(m_hTangentBufferCPU.getAddress()) NormalBufferCPU(m_name);
 			tanb->ReadDataFromFile();
 		}
 

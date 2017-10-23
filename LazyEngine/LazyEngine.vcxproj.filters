@@ -76,6 +76,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{23fba934-daa7-43f1-952d-758653cb2f8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DX11\Effects">
+      <UniqueIdentifier>{ee3bd52c-f7dd-4c52-a048-f500bc9ee6c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\LEVector.h">
@@ -220,6 +223,15 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="DX11\ShaderIDEnum.h" />
+    <ClInclude Include="Utils\DDS.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\LArray.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\Effects\Effect.h">
+      <Filter>DX11\Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -302,6 +314,12 @@
     </ClCompile>
     <ClCompile Include="Utils\DDS_Loader.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\LArray.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\Effects\Effect.cpp">
+      <Filter>DX11\Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

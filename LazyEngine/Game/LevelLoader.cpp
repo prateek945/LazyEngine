@@ -2,20 +2,20 @@
 
 namespace LE {
 
-	void LevelLoader::storeGPUVertDataForObj(Handle* m_hMesh) {
+	void LevelLoader::storeGPUVertDataForObj(Handle m_hMesh) {
 		
 		//Check Key exists and add to gpu buffer
 //TODO(Prateek) : Make changes so that only refernces to buffers are stored within the Gameobject & not a copy
-		MeshCPU* mesh = m_hMesh->getObject<MeshCPU>();
+		MeshCPU* mesh = m_hMesh.getObject<MeshCPU>();
 		std::string key = mesh->m_name;
-		VertexBufferCPU* verts = mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>();
-		IndexBufferCPU* indices = mesh->m_hIndexBufferCPU->getObject<IndexBufferCPU>();
-		TextureCoordBufferCPU* texCoords = mesh->m_hVertexBufferCPU->getObject<TextureCoordBufferCPU>();
-		MaterialBufferCPU* material = mesh->m_hMaterialCPU->getObject<MaterialBufferCPU>();
-		NormalBufferCPU* normals = mesh->m_hNormalBufferCPU->getObject<NormalBufferCPU>();
+		VertexBufferCPU* verts = mesh->m_hVertexBufferCPU.getObject<VertexBufferCPU>();
+		IndexBufferCPU* indices = mesh->m_hIndexBufferCPU.getObject<IndexBufferCPU>();
+		TextureCoordBufferCPU* texCoords = mesh->m_hVertexBufferCPU.getObject<TextureCoordBufferCPU>();
+		MaterialBufferCPU* material = mesh->m_hMaterialCPU.getObject<MaterialBufferCPU>();
+		NormalBufferCPU* normals = mesh->m_hNormalBufferCPU.getObject<NormalBufferCPU>();
 		NormalBufferCPU* tangents = nullptr;
 		if (material->isDetailedMesh()) {
-			tangents = mesh->m_hTangentBufferCPU->getObject<NormalBufferCPU>();
+			tangents = mesh->m_hTangentBufferCPU.getObject<NormalBufferCPU>();
 		}
 		if (m_instances.find(key) == m_instances.end()) {
 			std::string vertexshader; 
@@ -24,11 +24,15 @@ namespace LE {
 			
 			if (material->isDetailedMesh()) {
 				
-				if (m_shaders.find(ShaderID::DetialedShader) == m_shaders.end()) {
-					vertexshader = "DetailedVertexShader.hlsl";
-					pixelshader = "DetailedPixelShader.hlsl";
-					m_shaders[ShaderID::DetialedShader].first = vertexshader;
-					m_shaders[ShaderID::DetialedShader].second = pixelshader;
+				if (find(m_vertexShaders.begin(),m_vertexShaders.end(),make_pair(ShaderID::DetialedShader, std::string("DetailedVertexShader.hlsl"))) == m_vertexShaders.end()) {
+					
+					m_vertexShaders.push_back(make_pair(ShaderID::DetialedShader, std::string("DetailedVertexShader.hlsl")));
+				
+				}
+				if (find(m_pixelShaders.begin(), m_pixelShaders.end(), make_pair(ShaderID::DetialedShader, std::string("DetailedVertexShader.hlsl"))) == m_pixelShaders.end()) {
+					
+					
+					m_pixelShaders.push_back(make_pair(ShaderID::DetialedShader, std::string("DetailedPixelShader.hlsl")));
 				}
 				for (unsigned int j = 0; j < verts->getNumVerts(); j++) {
 					gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j+1)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3*j+2));
@@ -39,13 +43,12 @@ namespace LE {
 				}
 			}
 			else {
+				if (find(m_vertexShaders.begin(), m_vertexShaders.end(), make_pair(ShaderID::StandardShader, std::string("StandardVertexShader.hlsl"))) == m_vertexShaders.end()) {
+					m_vertexShaders.push_back(make_pair(ShaderID::StandardShader, std::string("StandardVertexShader.hlsl")));
+				}
+				if (find(m_pixelShaders.begin(), m_pixelShaders.end(), make_pair(ShaderID::StandardShader, std::string("StandardPixelShader.hlsl"))) == m_pixelShaders.end()) {
 
-				
-				if (m_shaders.find(ShaderID::DetialedShader) == m_shaders.end()) {
-					vertexshader = "SimpleVertexShader.hlsl";
-					pixelshader = "SimplePixelShader.hlsl";
-					m_shaders[ShaderID::StandardShader].first = vertexshader;
-					m_shaders[ShaderID::StandardShader].second = pixelshader;
+					m_pixelShaders.push_back(make_pair(ShaderID::StandardShader, std::string("StandardPixelShader.hlsl")));
 				}
 				for (unsigned int j = 0; j < verts->getNumVerts(); j++) {
 					gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 2));
@@ -84,14 +87,15 @@ namespace LE {
 					fr.readNextNonEmptyLine(nextLine, 256);
 					strcpy(g.objectName, nextLine);
 					if (m_instances.find(g.objectName) == m_instances.end()) {
-						Handle* h = new Handle(sizeof(MeshCPU));
-						MeshCPU* newMesh = new(h) MeshCPU(device, context, g.objectName);
-						m_instances[g.objectName] = h;
+						Handle h = Handle(sizeof(MeshCPU));
+						MeshCPU* newMesh = new(h.getAddress()) MeshCPU(device, context, g.objectName);
+						
 						storeGPUVertDataForObj(h);
-						g.m_hMeshCPU = h;
+						m_instances[g.objectName] = h;
+						g.m_hMeshCPU = &h;
 					}
 					else {
-						g.m_hMeshCPU = m_instances[g.objectName];
+						g.m_hMeshCPU = &m_instances[g.objectName];
 					}
 				
 					fr.readNextNonEmptyLine(nextLine, 256);
@@ -134,15 +138,15 @@ namespace LE {
 							MeshCPU* mesh = g.m_hMeshCPU->getObject<MeshCPU>();
 							if (strcmp(nextLine, "Cube") == 0) {
 								col = std::make_shared<Colliders::Cube>(m);
-								col.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
+								col.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU.getObject<VertexBufferCPU>()->getData());
 								col2 = std::make_shared<Colliders::Cube>(m);
-								col2.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
+								col2.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU.getObject<VertexBufferCPU>()->getData());
 							}
 							else if (strcmp(nextLine, "Sphere") == 0) {
 								col = std::make_shared<Colliders::Sphere>(m); 
-								col.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
+								col.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU.getObject<VertexBufferCPU>()->getData());
 								col2 = std::make_shared<Colliders::Sphere>(m);
-								col2.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU->getObject<VertexBufferCPU>()->getData());
+								col2.get()->generateValuesFromBuffer(mesh->m_hVertexBufferCPU.getObject<VertexBufferCPU>()->getData());
 							}
 							col->metaData.ObjId = i;
 							col->metaData.objMat = g.objMatrix;
