@@ -24,6 +24,7 @@
     <ClInclude Include="DX11\CameraUtils\Camera.h" />
     <ClInclude Include="DX11\DeviceManager.h" />
     <ClInclude Include="DX11\Effects\Effect.h" />
+    <ClInclude Include="DX11\Effects\EffectManager.h" />
     <ClInclude Include="DX11\MainWindow.h" />
     <ClInclude Include="DX11\Renderer.h" />
     <ClInclude Include="DX11\ShaderIDEnum.h" />
@@ -77,6 +78,7 @@
     <ClCompile Include="DX11\CameraUtils\Camera.cpp" />
     <ClCompile Include="DX11\DeviceManager.cpp" />
     <ClCompile Include="DX11\Effects\Effect.cpp" />
+    <ClCompile Include="DX11\Effects\EffectManager.cpp" />
     <ClCompile Include="DX11\MainWindow.cpp" />
     <ClCompile Include="DX11\Renderer.cpp" />
     <ClCompile Include="Game\LevelLoader.cpp" />
@@ -110,7 +112,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7C47CF92-9A20-4B29-80A2-7A0AB534F4E8}</ProjectGuid>
     <RootNamespace>LazyEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
