@@ -50,11 +50,15 @@ namespace LE {
 				type = TextureType::ColorTexture;
 			}
 			fr.readNextNonEmptyLine(texFileName, 256);
-			Handle hTexture = Handle(sizeof(Texture));
 			
-			Texture *tex = new(hTexture.getAddress()) Texture(m_device,m_context,texturePath, texFileName,type);
-			tex->Initialize();
+			Handle hTexture = Handle(sizeof(Texture));
+			if (!TextureManager::getInstance()->getTexture(texturePath, texFileName, hTexture))
+			{
+				TextureManager::getInstance()->addTexture(texturePath, texFileName, type);
+				TextureManager::getInstance()->getTexture(texturePath, texFileName, hTexture);
+			}
 			m_hTextures.addElement(hTexture);
+
 		}
 		fr.~FileReader();
 

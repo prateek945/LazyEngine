@@ -11,7 +11,7 @@ namespace LE {
 		m_data.addElement(vert);
 	}
 
-	Primitives::Int16 IndexBufferCPU::getVertAtIndex(Primitives::Int32 index) {
+	Primitives::UInt32 IndexBufferCPU::getVertAtIndex(Primitives::Int32 index) {
 
 		return m_data.getElement(index);
 
@@ -42,8 +42,8 @@ namespace LE {
 		fr.readNextInt(m_count);
 		m_data.setSize(m_count*3);
 		for (unsigned int j = 0; j < m_count * 3; j++) {
-			Primitives::Float32 temp;
-			fr.readNextFloat(temp);
+			Primitives::UInt32 temp;
+			fr.readNextUInt(temp);
 			addData(temp);
 		}
 	}

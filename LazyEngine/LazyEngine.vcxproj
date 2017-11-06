@@ -53,7 +53,9 @@
     <ClInclude Include="MeshDataCPU\MeshCPU.h" />
     <ClInclude Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.h" />
     <ClInclude Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.h" />
+    <ClInclude Include="MeshDataCPU\TextureCPU\SamplerState.h" />
     <ClInclude Include="MeshDataCPU\TextureCPU\Texture.h" />
+    <ClInclude Include="MeshDataCPU\TextureCPU\TextureManager.h" />
     <ClInclude Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.h" />
     <ClInclude Include="Physics\Algorithms\BasicCollisons.h" />
     <ClInclude Include="Physics\Algorithms\GJK.h" />
@@ -95,7 +97,9 @@
     <ClCompile Include="MeshDataCPU\MeshCPU.cpp" />
     <ClCompile Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.cpp" />
+    <ClCompile Include="MeshDataCPU\TextureCPU\SamplerState.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCPU\Texture.cpp" />
+    <ClCompile Include="MeshDataCPU\TextureCPU\TextureManager.cpp" />
     <ClCompile Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.cpp" />
     <ClCompile Include="Physics\Algorithms\BasicCollisions.cpp" />
     <ClCompile Include="Physics\Colliders\ColliderBase.cpp" />
@@ -174,7 +178,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;PROJPATH=R"($(ProjectDir))"</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);d3d11.lib;D3DCompiler.lib</AdditionalDependencies>

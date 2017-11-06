@@ -5,8 +5,7 @@
 #include "../LazyLogger/LogManager.h"
 #include "../Memory/MemoryManager.h"
 #include "../Physics/PhysicsManager.h"
-
+#include "../DX11/Effects/EffectManager.h"
+#include "../MeshDataCPU/TextureCPU/TextureManager.h"
+//#include "../MeshDataCPU/TextureCPU/TextureManager.h"
 #endif // !1
-
-
-

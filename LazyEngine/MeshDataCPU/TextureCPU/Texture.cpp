@@ -42,7 +42,7 @@ namespace LE {
 				else if (dds.uncompressedFormat == DDS_RGB)
 					destApiFormat = DXGI_FORMAT_B8G8R8X8_UNORM;
 			}
-
+			
 
 			D3D11_TEXTURE2D_DESC desc;
 			desc.Width = dds.width;

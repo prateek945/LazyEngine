@@ -19,7 +19,7 @@ namespace LE {
 		Colliders::ColliderMeta colliderMetaData;
 		Primitives::Bool isPhysicsEnabled;
 		Primitives::Bool isVisible;
-		Handle* m_hMeshCPU;
+		Handle m_hMeshCPU;
 		LEVector3 diffuseColor;
 		Primitives::Float32 alpha;
 		GameObject() = default;

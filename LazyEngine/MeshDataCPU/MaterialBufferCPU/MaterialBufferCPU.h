@@ -5,6 +5,7 @@
 #include "../../Memory/Handle.h"
 #include "../../LazyFiling/FileHandler.h"
 #include "../../Utils/LArray.h"
+#include "../TextureCPU/TextureManager.h"
 #include <string>
 #include <vector>
 namespace LE {

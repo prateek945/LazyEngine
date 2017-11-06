@@ -10,7 +10,7 @@ namespace LE {
 		m_data.addElement(vert);
 	}
 
-	Primitives::Int16 NormalBufferCPU::getVertAtIndex(Primitives::Int32 index) {
+	Primitives::Float32 NormalBufferCPU::getVertAtIndex(Primitives::Int32 index) {
 
 		return m_data.getElement(index);
 

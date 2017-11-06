@@ -26,6 +26,9 @@ global_variable win32_buffer_info BackBuffer;
 			deviceResources->CreateDeviceResources();
 			// Instantiate the renderer.
 			std::shared_ptr<LE::Renderer> renderer = std::shared_ptr<LE::Renderer>(new LE::Renderer(deviceResources));
+			LE::TextureManager* gTextureManager = LE::TextureManager::getInstance();
+			gTextureManager->startUp(deviceResources->GetDevice(), deviceResources->GetDeviceContext());
+
 			levelLoader->loadLevelGameObjs(deviceResources->GetDevice(), deviceResources->GetDeviceContext());
 			
 			renderer->CreateDeviceDependentResources(levelLoader);

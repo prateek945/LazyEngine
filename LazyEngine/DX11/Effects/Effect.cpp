@@ -3,7 +3,7 @@
 namespace LE {
 	Effect::Effect() :m_ShaderBase(""),m_EffectName("") ,m_vertexShader(NULL), m_pixelShader(NULL) {}
 
-	Effect::Effect(const char* base,const char* name) : m_vertexShader(NULL), m_pixelShader(NULL) {
+	Effect::Effect(const char* base,const char* name,ShaderID layout) : m_vertexShader(NULL), m_pixelShader(NULL), m_layout(layout){
 		strncpy(m_ShaderBase, base, 256);
 		strncpy(m_EffectName, name, 256);
 	}

@@ -7,6 +7,7 @@
 #include "../LazyFiling/FileHandler.h"
 #include "../Physics/PhysicsManager.h"
 #include "../DX11/ShaderIDEnum.h"
+#include "../DX11/Effects/EffectManager.h"
 #include "LightObject.h"
 #include <string>
 #include <vector>

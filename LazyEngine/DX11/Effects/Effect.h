@@ -1,20 +1,22 @@
 #pragma once
 #include "../../Includes/LazyIncludes.h"
 #include "../../GeneralMacros/GeneralMacros.h"
-
+#include "../ShaderIDEnum.h"
 #include <d3d11.h>
 namespace LE {
 	class Effect {
 	
 		char m_EffectName[256];
 		char m_ShaderBase[256];
+		
+
+	public:
 		ID3D11VertexShader *m_vertexShader;
 		ID3D11PixelShader *m_pixelShader;
 		ID3D11InputLayout *m_inputLayout;
-
-	public:
+		ShaderID m_layout;
 		Effect();
-		Effect(const char* base,const char* name);
+		Effect(const char* base,const char* name,ShaderID layout);
 		void setEffectBase(const char* base);
 		void getEffectBase(char* &base);
 		void setEffectName(const char* name);

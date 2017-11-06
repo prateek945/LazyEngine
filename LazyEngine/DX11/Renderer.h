@@ -94,7 +94,7 @@ namespace LE {
 		std::vector<std::pair<ShaderID, Microsoft::WRL::ComPtr<ID3D11InputLayout>>>      m_pInputLayouts;
 		std::vector<std::pair<ShaderID, Microsoft::WRL::ComPtr<ID3D11PixelShader>>>      m_pPixelShaders;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pConstantBuffer;
-		map<ShaderID, D3D11_INPUT_ELEMENT_DESC*>		m_inputLayouts;
+		map<ShaderID, D3D11_INPUT_ELEMENT_DESC>		m_inputLayouts;
 	};
 };
 #endif

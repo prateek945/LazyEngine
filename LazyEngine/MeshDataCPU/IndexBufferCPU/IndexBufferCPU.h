@@ -10,14 +10,14 @@
 namespace LE {
 	class IndexBufferCPU {
 		Primitives::Int32 m_count;
-		LArray<Primitives::Int16> m_data;
+		LArray<Primitives::UInt32> m_data;
 		std::string m_name;
 	public:
 		IndexBufferCPU(std::string name);
 
 		void addData(Primitives::Float32 vert);
 		//Function to get back a vector3 of x,y,z verts given an index into the m_data (Index should be mod 3) returns 0 otherwise
-		Primitives::Int16 getVertAtIndex(Primitives::Int32 index);
+		Primitives::UInt32 getVertAtIndex(Primitives::Int32 index);
 		//Function to get number of vertices within this mesh
 		Primitives::Int32  getNumVerts();
 		//Function to get the mesh name

@@ -21,6 +21,11 @@ namespace LE {
 		gPhysicsManager->startUp((Primitives::Int16) 100);
 
 		LAZYASSERT(gPhysicsManager->get(), "Physics Manager Not Set")
+
+		EffectManager *gEffectManager = EffectManager::getInstance();
+		gEffectManager->startUp();
+		
+		
 		
 		return 0;
 	}

@@ -235,6 +235,12 @@
     <ClInclude Include="DX11\Effects\EffectManager.h">
       <Filter>DX11\Effects</Filter>
     </ClInclude>
+    <ClInclude Include="MeshDataCPU\TextureCPU\TextureManager.h">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataCPU\TextureCPU\SamplerState.h">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -326,6 +332,12 @@
     </ClCompile>
     <ClCompile Include="DX11\Effects\EffectManager.cpp">
       <Filter>DX11\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\TextureCPU\TextureManager.cpp">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\TextureCPU\SamplerState.cpp">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
