@@ -54,6 +54,7 @@
     <ClInclude Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.h" />
     <ClInclude Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.h" />
     <ClInclude Include="MeshDataCPU\TextureCPU\SamplerState.h" />
+    <ClInclude Include="MeshDataCPU\TextureCPU\SamplerStateManager.h" />
     <ClInclude Include="MeshDataCPU\TextureCPU\Texture.h" />
     <ClInclude Include="MeshDataCPU\TextureCPU\TextureManager.h" />
     <ClInclude Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.h" />
@@ -98,6 +99,7 @@
     <ClCompile Include="MeshDataCPU\NormalBufferCPU\NormalBufferCPU.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCoordBufferCPU\TextureCoordBufferCPU.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCPU\SamplerState.cpp" />
+    <ClCompile Include="MeshDataCPU\TextureCPU\SamplerStateManager.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCPU\Texture.cpp" />
     <ClCompile Include="MeshDataCPU\TextureCPU\TextureManager.cpp" />
     <ClCompile Include="MeshDataCPU\VertexBufferCPU\VertexBufferCPU.cpp" />

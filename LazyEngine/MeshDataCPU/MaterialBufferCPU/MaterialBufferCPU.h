@@ -19,16 +19,18 @@ namespace LE {
 	class MaterialBufferCPU {
 
 		float color[3];
+		
+		ID3D11Device* m_device;
+		ID3D11DeviceContext* m_context;
+		
+	public:
 		Primitives::Float32 alpha;
 		Primitives::Float32 specular;
 		Primitives::Int32 num_textures;
 		Primitives::Float32 emissive;
 		LArray<Handle> m_hTextures;
-		ID3D11Device* m_device;
-		ID3D11DeviceContext* m_context;
 		char m_name[256];
 		Primitives::Bool m_bUseNormalMap;
-	public:
 		MaterialBufferCPU(ID3D11Device* device,ID3D11DeviceContext* context,std::string name);
 		Primitives::Bool isDetailedMesh();
 		void ReadDataFromFile();

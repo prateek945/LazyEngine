@@ -241,6 +241,9 @@
     <ClInclude Include="MeshDataCPU\TextureCPU\SamplerState.h">
       <Filter>MeshDataCPU\TextureCPU</Filter>
     </ClInclude>
+    <ClInclude Include="MeshDataCPU\TextureCPU\SamplerStateManager.h">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFunctions\Main.cpp">
@@ -337,6 +340,9 @@
       <Filter>MeshDataCPU\TextureCPU</Filter>
     </ClCompile>
     <ClCompile Include="MeshDataCPU\TextureCPU\SamplerState.cpp">
+      <Filter>MeshDataCPU\TextureCPU</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataCPU\TextureCPU\SamplerStateManager.cpp">
       <Filter>MeshDataCPU\TextureCPU</Filter>
     </ClCompile>
   </ItemGroup>

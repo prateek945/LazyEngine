@@ -9,9 +9,11 @@ namespace LE {
 	}
 
 	void TextureManager::startUp(ID3D11Device* device, ID3D11DeviceContext* context) {
+		
 		m_globalInstance = new TextureManager();
-		m_pDevice = device;
-		m_pContext = context;
+		m_globalInstance->m_pDevice = device;
+		m_globalInstance->m_pContext = context;
+		SamplerStateManager::getInstance()->startUp(device, context);
 		
 	}
 

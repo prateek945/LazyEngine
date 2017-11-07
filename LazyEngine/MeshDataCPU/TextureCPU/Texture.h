@@ -5,6 +5,7 @@
 
 #include "../../Utils/DDS_Loader.h"
 #include "../../Memory/Handle.h"
+#include "SamplerState.h"
 //#include <D3D11tex.h>
 namespace LE {
 	enum TextureType : Primitives::Int16{
@@ -19,6 +20,7 @@ namespace LE {
 		ID3D11Device* m_device;
 		ID3D11DeviceContext* m_context;
 		TextureType textureType;
+		ESamplerState samplerState;
 	public:
 		Texture(ID3D11Device* device, ID3D11DeviceContext* context, std::string Path, std::string FileName,TextureType tt);
 		Texture(ID3D11Device* context);

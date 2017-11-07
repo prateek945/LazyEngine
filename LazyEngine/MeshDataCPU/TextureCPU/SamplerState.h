@@ -3,16 +3,13 @@
 #include <d3d11.h>
 
 namespace LE {
-	enum ESamplerState {
+	enum ESamplerState : UINT8 {
+
+		Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap
 
 	};
-	class SamplerState {
+	struct SamplerState {
 		ID3D11SamplerState* m_pSamplerState;
-	public:
-		SamplerState();
-		
-		void InitialiseSampler();
-
 	};
 
 };
