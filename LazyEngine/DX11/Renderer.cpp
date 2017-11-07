@@ -340,22 +340,22 @@ namespace LE {
 		}
 		if (kb.W) {
 			
-			mainCam->MoveUp(1.f);
+			mainCam->MoveUp(0.5f);
 
 		}
 		if (kb.S) {
 			
-			mainCam->MoveDown(1.f);
+			mainCam->MoveDown(0.5f);
 
 		}
 		if (kb.A) {
 			
-			mainCam->MoveLeft(1.f);
+			mainCam->MoveLeft(0.5f);
 
 		}
 		if (kb.D) {
 			
-			mainCam->MoveRight(1.f);
+			mainCam->MoveRight(0.5f);
 
 		}
 		if (kb.R) {
