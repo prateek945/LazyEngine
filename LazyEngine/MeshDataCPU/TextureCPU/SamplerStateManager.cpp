@@ -26,7 +26,7 @@ namespace LE {
 		memset(&desc, 0, sizeof(D3D11_SAMPLER_DESC));
 		//desc for Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap
 		desc.MaxAnisotropy = 16;
-		desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		desc.MaxLOD = D3D11_FLOAT32_MAX;
 		desc.MinLOD = 1;
 		desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -34,6 +34,7 @@ namespace LE {
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		FLOAT borderColor[] = { 0.0,0.0,0.0,1.0 };
 		memcpy(desc.BorderColor, borderColor, sizeof(FLOAT) * 4);
+		//desc.ComparisonFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_NEVER;
 		ESamplerState ESS = ESamplerState::Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap;
 		m_pDevice->CreateSamplerState(&desc, &ss.m_pSamplerState);
 		m_samplerStates[ESS] = ss;

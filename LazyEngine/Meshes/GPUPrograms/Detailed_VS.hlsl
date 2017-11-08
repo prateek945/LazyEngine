@@ -20,7 +20,7 @@ struct VS_OUTPUT
 	float4 Position : SV_POSITION; // Vertex shaders must output SV_POSITION
 	float3 Normal : NORMAL;
 	float3 PositionL : POSITION;
-	float4 Color    : COLOR0;
+	float2 TexCoord : TEXCOORD;
 };
 
 VS_OUTPUT main(VS_INPUT input) // main is the default function name
@@ -40,9 +40,9 @@ VS_OUTPUT main(VS_INPUT input) // main is the default function name
 	Output.Position = pos;
 	Output.Normal = normal.xyz;
 	Output.PositionL = posL;
-
+	Output.TexCoord = input.vTexCoord;
 	// Just pass through the color data
-	Output.Color = float4(color,alpha);
+	
 
 	return Output;
 }

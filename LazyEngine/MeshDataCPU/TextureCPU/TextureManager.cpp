@@ -22,8 +22,10 @@ namespace LE {
 		Handle h_texture(sizeof(Texture));
 		std::string path = string(base);
 		string text_name = string(name);
-		path.append(text_name);
+		
 		Texture* tex = new(h_texture.getAddress()) Texture(m_pDevice,m_pContext,path,text_name,tt);
+		tex->Initialize();
+		path.append(text_name);
 		m_hTextures[path] = h_texture;
 
 	}

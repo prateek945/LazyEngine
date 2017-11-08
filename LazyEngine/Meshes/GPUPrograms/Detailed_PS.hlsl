@@ -1,9 +1,13 @@
+Texture2D shaderTexture : register(t0);
+Texture2D bumpMapTexture : register(t1); 
+SamplerState SampleType : register(s0);
+
 struct PS_INPUT
 {
 	float4 Position : SV_POSITION; // Vertex shaders must output SV_POSITION
 	float3 Normal : NORMAL;
 	float3 PositionL : POSITION;
-	float4 Color    : COLOR0;
+	float2 TexCoord : TEXCOORD;
 };
 
 struct PS_OUTPUT
@@ -33,8 +37,9 @@ PS_OUTPUT main(PS_INPUT In)
 	PS_OUTPUT Output;
 	//Temp light info will come from LightObject afterwards
 	
-	float4 finalColor = float4(0,0,0,In.Color.w);
-	float3 litColor = LightRender(In.Normal,float3(0.0f, 0.0f, 6.5f),float3(-1.0,0.0,1.0),2.0,In.PositionL,In.Color.xyz);
+	float4 finalColor = float4(0, 0, 0, 1.0);
+	float4 textureColor = shaderTexture.Sample(SampleType,In.TexCoord);
+	float3 litColor = LightRender(In.Normal, float3(0.0f, 0.0f, 6.5f), float3(-1.0, 0.0, 1.0), 2.0, In.PositionL, textureColor.xyz);
 	finalColor += float4(litColor,0.0);
 	Output.RGBColor = finalColor;
 	

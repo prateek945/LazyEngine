@@ -402,7 +402,7 @@ namespace LE {
 			&renderTarget,
 			depthStencil
 		);
-		UINT stride = sizeof(VertexPositionNormal);
+		UINT stride = sizeof(VertexPositionNormalTangent);
 		UINT offset = 0;
 
 		context->IASetVertexBuffers(
@@ -488,14 +488,15 @@ namespace LE {
 				for (int i = 0; i < material->m_hTextures.getSize(); i++) {
 					Texture* currTexture = material->m_hTextures.getElement(i).getObject<Texture>();
 					ID3D11ShaderResourceView* currResource = currTexture->GetTexture();
-					context->VSSetShaderResources(1+i, 1,&currResource);
-					context->PSSetShaderResources(1 + i, 1, &currResource);
+					context->VSSetShaderResources(i, 1,&currResource);
+					context->PSSetShaderResources(i, 1, &currResource);
 					SamplerState currSampler = SamplerStateManager::getInstance()->getSamplerState(ESamplerState::Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap);
-					context->PSSetSamplers(1 + i, 1, &currSampler.m_pSamplerState);
-					context->VSSetSamplers(1 + i, 1, &currSampler.m_pSamplerState);
+					
 
 				}
-	
+				SamplerState currSampler = SamplerStateManager::getInstance()->getSamplerState(ESamplerState::Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap);
+				context->PSSetSamplers(0, 1, &currSampler.m_pSamplerState);
+				context->VSSetSamplers(0, 1, &currSampler.m_pSamplerState);
 				string key = levelLoader.get()->g_gameObjs[i].objectName;
 
 				UINT startIndexLocation = levelLoader.get()->m_GPUIndices.at(key).second;
