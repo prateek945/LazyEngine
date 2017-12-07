@@ -1,0 +1,14 @@
+1
+BeginObject
+Name
+nazicar
+Matrix
+0.1 0.0 0.0 0.0 
+0.0 0.1 0.0 0.0 
+0.0 0.0 0.1 0.0 
+0.0 0.0 0.0 1.0
+isVisible
+1
+Color
+0.0 1.0 0.0 1.0
+EndObject

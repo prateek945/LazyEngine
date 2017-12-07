@@ -11,12 +11,12 @@ namespace LE {
 		VertexBufferCPU* verts = mesh->m_hVertexBufferCPU.getObject<VertexBufferCPU>();
 		
 		IndexBufferCPU* indices = mesh->m_hIndexBufferCPU.getObject<IndexBufferCPU>();
-		TextureCoordBufferCPU* texCoords = mesh->m_hVertexBufferCPU.getObject<TextureCoordBufferCPU>();
+		TextureCoordBufferCPU* texCoords = mesh->m_hTextureCoordBufferCPU.getObject<TextureCoordBufferCPU>();
 		MaterialBufferCPU* material = mesh->m_hMaterialCPU.getObject<MaterialBufferCPU>();
 		NormalBufferCPU* normals = mesh->m_hNormalBufferCPU.getObject<NormalBufferCPU>();
 		NormalBufferCPU* tangents = nullptr;
 		if (material->isDetailedMesh()) {
-			tangents = mesh->m_hTangentBufferCPU.getObject<NormalBufferCPU>();
+			tangents = mesh->m_hNormalBufferCPU.getObject<NormalBufferCPU>();
 		}
 		if (m_instances.find(key) == m_instances.end()) {
 			std::string vertexshader; 
@@ -58,6 +58,7 @@ namespace LE {
 					gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(verts->getVertAtIndex(3 * j + 2));
 					gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2 * j)); gpubuffer.m_vertices.push_back(texCoords->getVertAtIndex(2 * j + 1));
 					gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j)); gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j + 1)); gpubuffer.m_vertices.push_back(normals->getVertAtIndex(3 * j + 2));
+					gpubuffer.m_vertices.push_back(0.0f); gpubuffer.m_vertices.push_back(0.0f); gpubuffer.m_vertices.push_back(0.0f);
 				}
 			}
 			for (unsigned int j = 0; j < indices->getNumVerts(); j++) {

@@ -201,18 +201,24 @@ namespace LE {
 
 		// Use the Direct3D device to load resources into graphics memory.
 		ID3D11Device* device = m_deviceResources->GetDevice();
-		vector<Primitives::Float32> allVerts ;
+		vector<VertexPositionNormalTangent> allVerts ;
 		// Create cube geometry.
 		int numgpuverts = (levelLoader.get()->gpubuffer.m_vertices.size());
-		//int vertsize = sizeof(VertexPositionColor) / 4;
-		for (unsigned int i = 0; i < numgpuverts; i++) {
-			allVerts.push_back(levelLoader.get()->gpubuffer.m_vertices[i]);
+		int vertsize = numgpuverts / (sizeof(VertexPositionNormalTangent) / 4);
+		for (unsigned int i = 0; i < numgpuverts; i += (sizeof(VertexPositionNormalTangent) / 4)) {
+			VertexPositionNormalTangent vert;
+			vert.pos = LEVector3(levelLoader.get()->gpubuffer.m_vertices[i], levelLoader.get()->gpubuffer.m_vertices[i + 1], levelLoader.get()->gpubuffer.m_vertices[i + 2]);
+			vert.textCoords[0] = levelLoader.get()->gpubuffer.m_vertices[i + 3];
+			vert.textCoords[1] = levelLoader.get()->gpubuffer.m_vertices[i + 4];
+			vert.normal = LEVector3(levelLoader.get()->gpubuffer.m_vertices[i + 5], levelLoader.get()->gpubuffer.m_vertices[i + 6], levelLoader.get()->gpubuffer.m_vertices[i + 7]);
+			vert.tangent = LEVector3(levelLoader.get()->gpubuffer.m_vertices[i + 8], levelLoader.get()->gpubuffer.m_vertices[i + 9], levelLoader.get()->gpubuffer.m_vertices[i + 10]);
+			allVerts.push_back(vert);
 		}
 
 		// Create vertex buffer:
 		
 		CD3D11_BUFFER_DESC vDesc(
-			allVerts.size(),
+			allVerts.size()* sizeof(VertexPositionNormalTangent),
 			D3D11_BIND_VERTEX_BUFFER
 		);
 		vDesc.ByteWidth;
@@ -267,7 +273,7 @@ namespace LE {
 		LEVector3 up(0.0f, 1.0f, 0.0f);
 		float aspectRatio = m_deviceResources->GetAspectRatio();
 		m_hMainCamera = new Handle(sizeof(Camera));
-		Camera *MainCamera = new(m_hMainCamera->getAddress()) Camera(eye, at, up, 90.0f, aspectRatio, 0.01f, 100.0f);
+		Camera *MainCamera = new(m_hMainCamera->getAddress()) Camera(eye, at, up, 60.0f, aspectRatio, 0.01f, 100.0f);
 		m_constantBufferData.view = MainCamera->getViewMatrix();//.getTranspose();
 		m_constantBufferData.projection = MainCamera->getProjectionMatrix();// .getTranspose();
 	}
@@ -500,7 +506,7 @@ namespace LE {
 				string key = levelLoader.get()->g_gameObjs[i].objectName;
 
 				UINT startIndexLocation = levelLoader.get()->m_GPUIndices.at(key).second;
-				UINT startVertexLocation = levelLoader.get()->m_GPUIndices.at(key).first;
+				UINT startVertexLocation = levelLoader.get()->m_GPUIndices.at(key).first/ stride;
 				UINT index_count = levelLoader.get()->g_gameObjs[i].m_hMeshCPU.getObject<MeshCPU>()->m_hIndexBufferCPU.getObject<IndexBufferCPU>()->getNumVerts();
 
 				// Calling Draw tells Direct3D to start sending commands to the graphics device.

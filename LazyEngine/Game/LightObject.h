@@ -3,6 +3,7 @@
 #define LIGHT_OBJECT_H_
 #include "../Includes/LazyIncludes.h"
 #include "../Math/LEVector.h"
+
 namespace LE {
 	enum LightType {
 		Directional = 0,
@@ -16,6 +17,6 @@ namespace LE {
 		LEVector3 color;
 		Primitives::Float32 spec;
 		LightType type;
-	};
+	}; 
 };
 #endif

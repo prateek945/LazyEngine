@@ -12,7 +12,7 @@ global_variable win32_buffer_info BackBuffer;
 	{
 		LE::MainWrapper();
 		
-		std::shared_ptr<LE::LevelLoader> levelLoader = std::shared_ptr<LE::LevelLoader>(new LE::LevelLoader("testLevel1.lvl"));
+		std::shared_ptr<LE::LevelLoader> levelLoader = std::shared_ptr<LE::LevelLoader>(new LE::LevelLoader("testLevelImrod.lvl"));
 		
 		std::string windowName = "LazyEngine";
 		
