@@ -172,8 +172,10 @@ namespace LE {
 			Quaternion q(vector), axis(*this);
 			axis.normalise();
 			axis.importTurnAngle(angle);
-			q = ((*axis) * q) * axis;
+			q = ((*axis) * q) * (axis);
 			return q.getVector();
+
+
 		}
 
 		Primitives::Float32 w, x, y, z;

@@ -42,7 +42,7 @@ namespace LE {
 		TextureType type;
 		for (unsigned int j = 0; j < num_textures; j++) {
 			fr.readNextNonEmptyLine(textureType, 256);
-			if (strcmp(textureType, "NormalMap")) {
+			if (strcmp(textureType, "NormalMap") == 0) {
 				type = TextureType::BumpMap;
 				m_bUseNormalMap = true;
 			}

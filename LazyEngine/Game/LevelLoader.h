@@ -23,7 +23,7 @@ namespace LE {
 		string levelName;
 		vector<GameObject> g_gameObjs;
 		vector<LightObject> g_lights;
-		Primitives::UInt32 num_gameObjs;
+		Primitives::UInt32 num_gameObjs,num_lights;
 		map<std::string, Handle> m_instances;
 		map<std::string, std::pair<Primitives::Int32, Primitives::Int32>> m_GPUIndices;
 		vector<pair<ShaderID, string>> m_pixelShaders;

@@ -31,7 +31,7 @@ namespace LE {
 		if (m_hMaterialCPU.getObject<MaterialBufferCPU>()->isDetailedMesh()) {
 			m_hTangentBufferCPU = Handle(sizeof(NormalBufferCPU));
 			NormalBufferCPU *tanb = new(m_hTangentBufferCPU.getAddress()) NormalBufferCPU(m_name);
-			tanb->ReadDataFromFile();
+			tanb->ReadDataFromFile(true);
 		}
 
 		

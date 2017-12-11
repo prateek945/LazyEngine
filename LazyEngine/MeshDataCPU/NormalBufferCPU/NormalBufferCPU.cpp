@@ -30,11 +30,17 @@ namespace LE {
 		m_name = name; return 1;
 	}
 
-	void NormalBufferCPU::ReadDataFromFile() {
+	void NormalBufferCPU::ReadDataFromFile(bool IsTangent) {
 		char base[1024];
-		strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
+		if(IsTangent)
+			strcpy(base, "..\\LazyEngine\\meshes\\TangentBuffer\\");
+		else
+			strcpy(base, "..\\LazyEngine\\meshes\\NormalBuffer\\");
 		strcat(base, m_name.c_str());
-		strcat(base, ".nb");
+		if (IsTangent)
+			strcat(base, ".tgb");
+		else
+			strcat(base, ".nb");
 		FileReader fr(base);
 
 

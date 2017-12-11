@@ -23,6 +23,6 @@ namespace LE {
 		std::string getMeshName();
 		//Function to set mesh name return 1 if successful else 0
 		Primitives::Int16 setMeshName(std::string name);
-		void ReadDataFromFile();
+		void ReadDataFromFile(bool IsTangent = false);
 	};
 };

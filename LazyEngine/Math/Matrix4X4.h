@@ -152,7 +152,9 @@ namespace LE {
 			return LEVector3(sX, sY, sZ);
 		}
 		void setRotation(Matrix3X3 &m) {
-			
+			setU(m.getU());
+			setV(m.getV());
+			setN(m.getN());
 		}
 		void setTranslation(LEVector3 t) {
 			m_values[3][0] = t.m_x;
@@ -301,23 +303,33 @@ namespace LE {
 		
 		void turnLeft(Primitives::Float32 angle) {
 			Quaternion axis(getV());
-			setU(axis.turnVectorAboutAxis(angle, getU()));
-			setN(axis.turnVectorAboutAxis(angle, getN()));
+			turnAboutAxis(-angle, getV());
 		}
 		void turnRight(Primitives::Float32 angle) {
 			Quaternion axis(getV());
-			setU(axis.turnVectorAboutAxis(-angle, getU()));
-			setN(axis.turnVectorAboutAxis(-angle, getN()));
+			turnAboutAxis(angle, getV());
 		}
 		void turnUp(Primitives::Float32 angle) {
 			Quaternion axis(getU());
 			setV(axis.turnVectorAboutAxis(angle, getV()));
 			setN(axis.turnVectorAboutAxis(angle, getN()));
+			
+
 		}
 		void turnDown(Primitives::Float32 angle) {
+			//Quaternion axis(getU());
 			Quaternion axis(getU());
 			setV(axis.turnVectorAboutAxis(-angle, getV()));
 			setN(axis.turnVectorAboutAxis(-angle, getN()));
+
+			
+		}
+		void turnAboutAxis(float angle, LEVector3 vectAxis)
+		{
+			Quaternion axis(vectAxis);
+			setU(axis.turnVectorAboutAxis(angle, getU()));
+			setV(axis.turnVectorAboutAxis(angle, getV()));
+			setN(axis.turnVectorAboutAxis(angle, getN()));
 		}
 	};
 	inline Matrix4X4 operator *(const Matrix4X4 &m0, const float &f)

@@ -27,7 +27,9 @@ namespace LE {
 		void CreateProjectionMatrix();
 		Matrix4X4 getViewMatrix();
 		Matrix4X4 getProjectionMatrix();
-		void ReCalculateView();
+		Matrix4X4 getWorldMatrix();
+		void GetEyePosition(float *);
+		void ReCalculateView(const LEVector3& eye, const LEVector3& lookAt, const LEVector3& up);
 		void ReCalculateProjection();
 		
 	};

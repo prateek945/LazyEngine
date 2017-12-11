@@ -30,7 +30,7 @@ namespace LE {
 		ID3D11DeviceContext*    GetDeviceContext() { return m_pd3dDeviceContext.Get(); };
 		ID3D11RenderTargetView* GetRenderTargets() { return m_pRenderTarget.Get(); }
 		ID3D11DepthStencilView* GetDepthStencil() { return m_pDepthStencilView.Get(); }
-
+		D3D11_VIEWPORT GetViewPort() { return m_viewport; }
 		void Present();
 
 	private:
@@ -49,7 +49,7 @@ namespace LE {
 		Microsoft::WRL::ComPtr < ID3D11Texture2D>        m_pBackBuffer;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTarget;
 
-
+		
 		//-----------------------------------------------------------------------------
 		// Direct3D device resources for the depth stencil
 		//-----------------------------------------------------------------------------

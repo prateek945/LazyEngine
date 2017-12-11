@@ -31,10 +31,11 @@ global_variable win32_buffer_info BackBuffer;
 
 			levelLoader->loadLevelGameObjs(deviceResources->GetDevice(), deviceResources->GetDeviceContext());
 			
-			renderer->CreateDeviceDependentResources(levelLoader);
+			
 
 			// We have a window, so initialize window size-dependent resources.
 			deviceResources->CreateWindowResources(winMain->getWindowHandle());
+			renderer->CreateDeviceDependentResources(levelLoader);
 			renderer->CreateWindowSizeDependentResources();
 			
 			// Go full-screen.

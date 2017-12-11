@@ -5,6 +5,7 @@ namespace LE {
 	enum ShaderID : Primitives::Int16 {
 		StandardShader = 0,
 		DetialedShader,
+		LightPass,
 		EndOfList
 	};
 };

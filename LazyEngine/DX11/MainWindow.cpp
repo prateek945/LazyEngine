@@ -92,11 +92,9 @@ namespace LE {
 		}break;
 		case WM_KEYDOWN:
 			DirectX::Keyboard::ProcessMessage(uMsg, wParam, lParam);
-			
 			break;
 		case WM_KEYUP:
 			DirectX::Keyboard::ProcessMessage(uMsg, wParam, lParam);
-			
 			break;
 		case WM_SYSKEYUP:
 			DirectX::Keyboard::ProcessMessage(uMsg, wParam, lParam);

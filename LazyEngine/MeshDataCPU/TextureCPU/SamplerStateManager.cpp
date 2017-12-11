@@ -38,6 +38,25 @@ namespace LE {
 		ESamplerState ESS = ESamplerState::Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap;
 		m_pDevice->CreateSamplerState(&desc, &ss.m_pSamplerState);
 		m_samplerStates[ESS] = ss;
+		
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.MipLODBias = 0.0f;
+		desc.MaxAnisotropy = 1;
+		desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		desc.BorderColor[0] = 0;
+		desc.BorderColor[1] = 0;
+		desc.BorderColor[2] = 0;
+		desc.BorderColor[3] = 0;
+		desc.MinLOD = 0;
+		desc.MaxLOD = D3D11_FLOAT32_MAX;
+
+		ESS = ESamplerState::Sampler_State_Min_Mag_Mip_Point_U_V_W_Wrap;
+		m_pDevice->CreateSamplerState(&desc, &ss.m_pSamplerState);
+		m_samplerStates[ESS] = ss;
+
 
 	}
 

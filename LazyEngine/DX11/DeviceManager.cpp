@@ -113,11 +113,7 @@ namespace LE {
 				(void**)&m_pBackBuffer);
 		
 			
-			hr = m_pd3dDevice->CreateRenderTargetView(
-				m_pBackBuffer.Get(),
-				nullptr,
-				&m_pRenderTarget
-			);
+			
 			
 		m_pBackBuffer->GetDesc(&m_bbDesc);
 
@@ -136,7 +132,11 @@ namespace LE {
 			nullptr,
 			&m_pDepthStencil
 		);
-
+		hr = m_pd3dDevice->CreateRenderTargetView(
+			m_pBackBuffer.Get(),
+			nullptr,
+			&m_pRenderTarget
+		);
 		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
 
 		m_pd3dDevice->CreateDepthStencilView(

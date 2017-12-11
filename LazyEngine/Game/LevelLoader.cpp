@@ -9,19 +9,19 @@ namespace LE {
 		MeshCPU* mesh = m_hMesh.getObject<MeshCPU>();
 		std::string key = mesh->m_name;
 		VertexBufferCPU* verts = mesh->m_hVertexBufferCPU.getObject<VertexBufferCPU>();
-		
+		m_GPUIndices[key] = make_pair(gpubuffer.m_vertices.size(), gpubuffer.m_indices.size());
 		IndexBufferCPU* indices = mesh->m_hIndexBufferCPU.getObject<IndexBufferCPU>();
 		TextureCoordBufferCPU* texCoords = mesh->m_hTextureCoordBufferCPU.getObject<TextureCoordBufferCPU>();
 		MaterialBufferCPU* material = mesh->m_hMaterialCPU.getObject<MaterialBufferCPU>();
 		NormalBufferCPU* normals = mesh->m_hNormalBufferCPU.getObject<NormalBufferCPU>();
 		NormalBufferCPU* tangents = nullptr;
 		if (material->isDetailedMesh()) {
-			tangents = mesh->m_hNormalBufferCPU.getObject<NormalBufferCPU>();
+			tangents = mesh->m_hTangentBufferCPU.getObject<NormalBufferCPU>();
 		}
 		if (m_instances.find(key) == m_instances.end()) {
 			std::string vertexshader; 
 			std::string pixelshader;
-			m_GPUIndices[key] = make_pair(gpubuffer.m_vertices.size(), gpubuffer.m_indices.size());
+			
 			
 			
 			char progBase[256] = PROJPATH;
@@ -61,7 +61,7 @@ namespace LE {
 					gpubuffer.m_vertices.push_back(0.0f); gpubuffer.m_vertices.push_back(0.0f); gpubuffer.m_vertices.push_back(0.0f);
 				}
 			}
-			for (unsigned int j = 0; j < indices->getNumVerts(); j++) {
+			for (unsigned int j = 0; j < indices->getNumVerts()*3; j++) {
 				gpubuffer.m_indices.push_back(indices->getVertAtIndex(j));
 			}
 			
@@ -69,6 +69,22 @@ namespace LE {
 	}
 	bool LevelLoader::loadLevelGameObjs(ID3D11Device* device, ID3D11DeviceContext* context) {
 		char base[1024];
+
+		char progBase[256] = PROJPATH;
+		string s = string(progBase);
+		for (int i = 0; i < s.length(); i++) {
+			if (progBase[i] == '\\') {
+				progBase[i] = '/';
+			}
+		}
+		strcat(progBase, "Meshes/GPUPrograms//");
+		char effectName[256] = "Detailed_LightPass";
+		Handle h = Handle(sizeof(Effect));
+		EffectManager* _EffectManager = EffectManager::getInstance();
+		
+		if (!_EffectManager->getEffect(progBase, effectName, h)) {
+			_EffectManager->addEffect(progBase, effectName, ShaderID::LightPass);
+		}
 		strcpy(base, "..\\LazyEngine\\levels\\");
 		//sprintf_s(base, 1000, "%s%s", base, "C:\\LazyEngine\\LazyEngine\\LazyEngine\\levels\\");
 		strcat(base, getLevelName());
@@ -209,8 +225,53 @@ namespace LE {
 					PhysicsManager::getInstance()->get()->objects[0].push_back(col);
 					PhysicsManager::getInstance()->get()->objects[1].push_back(col2);
 				}
+
+				
 			}
 			g_gameObjs.push_back(g);
+		}
+		fr.readNextNonEmptyLine(nextLine, 256);
+		
+			if (strcmp(nextLine, "BeginLights") == 0) {
+				fr.readNextUInt(num_lights);
+
+				for (int i = 0; i < num_lights; i++) {
+					LightObject newLight;
+					fr.readNextNonEmptyLine(nextLine,256);
+					while (strcmp(nextLine, "EndLight") != 0) {
+						if (strcmp(nextLine, "BeginLight") == 0) {
+							fr.readNextNonEmptyLine(nextLine, 256);
+						}
+						else if (strcmp(nextLine, "Type") == 0) {
+							fr.readNextNonEmptyLine(nextLine, 256);
+							if (strcmp(nextLine, "Directional") == 0) {
+								fr.readNextNonEmptyLine(nextLine, 256);
+								newLight.type = LightType::Directional;
+								newLight.position = LEVector3();
+							}
+						}
+						else if (strcmp(nextLine, "PointingAt") == 0) {
+							float num;
+							fr.readNextFloat(num);
+							newLight.direction.m_x = num;
+							fr.readNextFloat(num);
+							newLight.direction.m_y = num;
+							fr.readNextFloat(num);
+							newLight.direction.m_z = num;
+							fr.readNextNonEmptyLine(nextLine, 256);
+						}
+						else if (strcmp(nextLine, "Color") == 0) {
+							float num;
+							fr.readNextFloat(num);
+							newLight.color.m_x = num;
+							fr.readNextFloat(num);
+							newLight.color.m_y = num;
+							fr.readNextFloat(num);
+							newLight.color.m_z = num;
+							fr.readNextNonEmptyLine(nextLine, 256);
+						}
+					}
+				}
 		}
 		fr.readNextNonEmptyLine(nextLine, 256);
 		if (strcmp(nextLine, "BeginGlobalPhysics") == 0) {

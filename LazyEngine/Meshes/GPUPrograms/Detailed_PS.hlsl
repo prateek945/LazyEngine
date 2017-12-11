@@ -1,47 +1,76 @@
 Texture2D shaderTexture : register(t0);
-Texture2D bumpMapTexture : register(t1); 
+Texture2D bumpMapTexture : register(t1);
+Texture2D specularTexture : register(t2);
+
 SamplerState SampleType : register(s0);
 
+cbuffer ModelViewProjectionConstantBuffer : register(b0)
+{
+	matrix mWorld;       // world matrix for object
+	matrix View;        // view matrix
+	matrix Projection;  // projection matrix
+	float3 color;
+	float alpha;
+	float4 eyePos;
+	float4 detailedMesh;
+	float4 toggles_ADNS;
+};
 struct PS_INPUT
 {
 	float4 Position : SV_POSITION; // Vertex shaders must output SV_POSITION
 	float3 Normal : NORMAL;
+	float3 Tangent : TANGENT;
 	float3 PositionL : POSITION;
 	float2 TexCoord : TEXCOORD;
 };
 
 struct PS_OUTPUT
 {
-	float4 RGBColor : SV_TARGET;  // pixel color (your PS computes this system value)
+	float4 Diffuse : SV_TARGET0;
+	float4 Normal : SV_TARGET1;
+	float4 Specular : SV_TARGET2;
+	
 };
-float3 LightRender(float3 normal,float3 eyePos,float3 lightDirection,float spec,float3 posL,float3 diffuseColor){
-	
-	lightDirection = normalize(lightDirection);
-	float4 lightColor = float4(1.0,1.0,1.0,1.0);
-	
-	normal = normalize(normal);
-	float diffuseFactor = dot(normal,lightDirection);
-	float3 reflection = 2*dot(lightDirection,normal)*normal-lightDirection;
-	float3 viewDirection = (eyePos - posL);
-	viewDirection = normalize(viewDirection);
-	float specFactor = pow(max(dot(viewDirection,reflection),0.0),spec);
-	
-	float3 litColor = diffuseColor;
-	
-	litColor += diffuseFactor * diffuseColor;
-	litColor += specFactor * lightColor.xyz;
-	return litColor;
-}
+
 PS_OUTPUT main(PS_INPUT In)
 {
 	PS_OUTPUT Output;
 	//Temp light info will come from LightObject afterwards
 	
-	float4 finalColor = float4(0, 0, 0, 1.0);
+	float4 finalColor = float4(0, 0, 0, 0.0);
 	float4 textureColor = shaderTexture.Sample(SampleType,In.TexCoord);
-	float3 litColor = LightRender(In.Normal, float3(0.0f, 0.0f, 6.5f), float3(-1.0, 0.0, 1.0), 2.0, In.PositionL, textureColor.xyz);
-	finalColor += float4(litColor,0.0);
-	Output.RGBColor = finalColor;
+	float3 perPixelNormal = In.Normal;
+	float4 perPixelSpecular = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	if (detailedMesh.x > 0.1f) {
+		// retrieve the normal vector from bump map
+		perPixelNormal = bumpMapTexture.SampleLevel(SampleType,In.TexCoord,0).xyz;
+
+
+		//Uncompress from [0,1] to [-1,1]
+		perPixelNormal = 2.0*perPixelNormal - 1.0;
+
+		//Build orthonormal basis
+		float3 N = normalize(In.Normal);
+		float3 T = normalize(In.Tangent - dot(In.Tangent, N)*N);
+		float3 B = cross(N, T);
+
+		float3x3 TBN = float3x3(T, B, N);
+
+		// Tranform from tangent space to world space
+		perPixelNormal = normalize(mul(perPixelNormal, TBN));
+	}
+	else
+	{
+		perPixelNormal =  normalize(perPixelNormal);
+	}
+
+	if(detailedMesh.y > 0.1f)
+	{ 
+		perPixelSpecular = specularTexture.Sample(SampleType, In.TexCoord);
+	}
+	Output.Diffuse = textureColor;
+	Output.Normal = float4(perPixelNormal, 1.0f);
+	Output.Specular =perPixelSpecular;
 	
 	return Output;
 }

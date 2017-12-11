@@ -28,6 +28,7 @@ namespace LE {
 		worldMatrix.setU(X); worldMatrix.setV(Y); worldMatrix.setN(Z);
 		worldMatrix.setTranslation(eye);
 		//Create the viewMatrix from the worldMatrix.
+		
 		viewMatrix.setIdentity();
 		viewMatrix.m00 = worldMatrix.m00; viewMatrix.m11 = worldMatrix.m11; viewMatrix.m22 = worldMatrix.m22;
 		viewMatrix.m01 = worldMatrix.m10; viewMatrix.m02 = worldMatrix.m20; viewMatrix.m10 = worldMatrix.m01;
@@ -45,7 +46,7 @@ namespace LE {
 		projectionMatrix.setIdentity();
 		projectionMatrix.m00 = ScaleX;
 		projectionMatrix.m11 = ScaleY;
-		projectionMatrix.m22 = FarClip / (FarClip - NearClip);
+		projectionMatrix.m22 = (FarClip + NearClip) / (FarClip - NearClip);
 		projectionMatrix.m23 = 1.f;
 		projectionMatrix.m32 = -(NearClip * FarClip) / (FarClip - NearClip);
 		projectionMatrix.m33 = 0.f;
@@ -58,18 +59,33 @@ namespace LE {
 	Matrix4X4 Camera::getProjectionMatrix() {
 		return projectionMatrix;
 	}
+	Matrix4X4 Camera::getWorldMatrix() {
+		return worldMatrix;
+	}
+	void Camera::GetEyePosition(float *eyepos)
+	{
+		eyepos[0] = worldMatrix.getTranslation().m_x;
+		eyepos[1] = worldMatrix.getTranslation().m_y;
+		eyepos[2] = worldMatrix.getTranslation().m_z;
+		eyepos[3] = 0.0f;
+		return;
 
+	}
 	void Camera::TurnLeft(const Primitives::Float32& rad) {
-		worldMatrix.turnLeft(rad);
+		
+		worldMatrix.turnAboutAxis(rad,LEVector3(0.0f,1.0f,0.0f));
 	}
 	void Camera::TurnRight(const Primitives::Float32& rad) {
-		worldMatrix.turnRight(rad);
+		
+		worldMatrix.turnAboutAxis(-rad, LEVector3(0.0f, 1.0f, 0.0f));
 	}
 	void Camera::TurnUp(const Primitives::Float32& rad) {
 		worldMatrix.turnUp(rad);
+		
 	}
 	void Camera::TurnDown(const Primitives::Float32& rad) {
 		worldMatrix.turnDown(rad);
+		
 	}
 
 	void Camera::MoveLeft(const Primitives::Float32& distance){
@@ -99,14 +115,26 @@ namespace LE {
 		worldMatrix.setU(X); worldMatrix.setV(Y); worldMatrix.setN(Z);
 		worldMatrix.setTranslation(eye);
 	}
-	void Camera::ReCalculateView() {
+	void Camera::ReCalculateView(const LEVector3& eye, const LEVector3& lookAt, const LEVector3& up) {
+		LEVector3 Z = lookAt - eye;
+		Z.Normalize();
+		LEVector3 X, Y;
+		X.crossProduct(up, Z);
+		X.Normalize();
+		Y.crossProduct(Z, X);
+
+		worldMatrix.setIdentity();
+		worldMatrix.setU(X); worldMatrix.setV(Y); worldMatrix.setN(Z);
+		worldMatrix.setTranslation(eye);
+		//Create the viewMatrix from the worldMatrix.
+
 		viewMatrix.setIdentity();
 		viewMatrix.m00 = worldMatrix.m00; viewMatrix.m11 = worldMatrix.m11; viewMatrix.m22 = worldMatrix.m22;
 		viewMatrix.m01 = worldMatrix.m10; viewMatrix.m02 = worldMatrix.m20; viewMatrix.m10 = worldMatrix.m01;
 		viewMatrix.m12 = worldMatrix.m21; viewMatrix.m20 = worldMatrix.m02; viewMatrix.m21 = worldMatrix.m12;
-		viewMatrix.m30 = -(worldMatrix.getU().dotProduct(worldMatrix.getTranslation()));
-		viewMatrix.m31 = -(worldMatrix.getV().dotProduct(worldMatrix.getTranslation()));
-		viewMatrix.m32 = -(worldMatrix.getN().dotProduct(worldMatrix.getTranslation()));
+		viewMatrix.m30 = -(worldMatrix.getU().dotProduct(eye));
+		viewMatrix.m31 = -(worldMatrix.getV().dotProduct(eye));
+		viewMatrix.m32 = -(worldMatrix.getN().dotProduct(eye));
 	}
 	void Camera::ReCalculateProjection() {
 		Primitives::Float32 ScaleX, ScaleY;
@@ -115,7 +143,7 @@ namespace LE {
 		projectionMatrix.setIdentity();
 		projectionMatrix.m00 = ScaleX;
 		projectionMatrix.m11 = ScaleY;
-		projectionMatrix.m22 = FarClip / (FarClip - NearClip);
+		projectionMatrix.m22 = (FarClip + NearClip) / (FarClip - NearClip);
 		projectionMatrix.m23 = 1.f;
 		projectionMatrix.m32 = -(NearClip * FarClip) / (FarClip - NearClip);
 		projectionMatrix.m33 = 0.f;

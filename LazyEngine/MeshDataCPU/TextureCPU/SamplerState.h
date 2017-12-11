@@ -5,7 +5,8 @@
 namespace LE {
 	enum ESamplerState : UINT8 {
 
-		Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap
+		Sampler_State_Min_Mag_Mip_Linear_U_V_W_Wrap,
+		Sampler_State_Min_Mag_Mip_Point_U_V_W_Wrap
 
 	};
 	struct SamplerState {
