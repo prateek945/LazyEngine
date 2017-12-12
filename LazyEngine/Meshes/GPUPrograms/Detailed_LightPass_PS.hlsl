@@ -1,7 +1,7 @@
 Texture2D DiffuseTexture : register(t0);
 Texture2D NormalTexture : register(t1);
 Texture2D SpecularTexture : register(t2);
-
+Texture2D DepthTexture : register(t4);
 SamplerState SampleType : register(s0);
 
 cbuffer ModelViewProjectionConstantBuffer : register(b0)
@@ -13,7 +13,7 @@ cbuffer ModelViewProjectionConstantBuffer : register(b0)
 	float alpha;
 	float4 eyePos;
 	float4 detailedMesh;
-	float4 toggles_ADNS;
+	float4 toggles_ADNS[2];
 };
 struct PS_INPUT
 {
@@ -25,6 +25,8 @@ struct PS_OUTPUT
 {
 	float4 LightPass : SV_TARGET3;
 };
+
+//xxfloat4 lightRenderPoint()
 
 float4 LightRenderDirectional(float3 normal, float3 eyePos, float3 lightDirection, float spec, float3 posL, float4 diffuseColor ,float4 SpecularColor) {
 
@@ -53,27 +55,31 @@ float4 LightRenderDirectional(float3 normal, float3 eyePos, float3 lightDirectio
 PS_OUTPUT main(PS_INPUT In) {
 
 	PS_OUTPUT output;
-	float4 Diffuse = DiffuseTexture.Sample(SampleType, In.TexCoord);
-	float4 Normal = NormalTexture.Sample(SampleType, In.TexCoord);
-	float4 Specular = SpecularTexture.Sample(SampleType, In.TexCoord);
-
+	float4 Diffuse = DiffuseTexture.SampleLevel(SampleType, In.TexCoord,0);
+	float4 Normal = NormalTexture.SampleLevel(SampleType, In.TexCoord,0);
+	float4 Specular = SpecularTexture.SampleLevel(SampleType, In.TexCoord,0);
+	float4 depth = DepthTexture.SampleLevel(SampleType, In.TexCoord, 0);
 	float4 finalColor;
 	float4 litColor = LightRenderDirectional(Normal.xyz,eyePos.xyz,float3(-1.0f,-1.0f,0.0f), 16.0f, In.Position.xyz, Diffuse,Specular);
-	if (toggles_ADNS[0] > 0.1f)
+	if (toggles_ADNS[0].x > 0.1f)
 	{
 		output.LightPass = litColor;
 	}
-	else if (toggles_ADNS[1] > 0.1f)
+	else if (toggles_ADNS[0].y > 0.1f)
 	{
 		output.LightPass = Diffuse;
 	}
-	else if (toggles_ADNS[2] > 0.1f)
+	else if (toggles_ADNS[0].z > 0.1f)
 	{
 		output.LightPass = Normal;
 	}
-	else if (toggles_ADNS[3] > 0.1f)
+	else if (toggles_ADNS[0].w > 0.1f)
 	{
 		output.LightPass = Specular;
+	}
+	else if (toggles_ADNS[1].x > 0.1f)
+	{
+		output.LightPass = (1.0f - depth)*50.0f;
 	}
 	return output;
 

@@ -30,6 +30,8 @@ namespace LE {
 		ID3D11DeviceContext*    GetDeviceContext() { return m_pd3dDeviceContext.Get(); };
 		ID3D11RenderTargetView* GetRenderTargets() { return m_pRenderTarget.Get(); }
 		ID3D11DepthStencilView* GetDepthStencil() { return m_pDepthStencilView.Get(); }
+		ID3D11ShaderResourceView* GetSRVDepthStencil() { return m_pSRVDepthStencil.Get(); }
+
 		D3D11_VIEWPORT GetViewPort() { return m_viewport; }
 		void Present();
 
@@ -55,6 +57,7 @@ namespace LE {
 		//-----------------------------------------------------------------------------
 		Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_pDepthStencil;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_pDepthStencilView;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  m_pSRVDepthStencil;
 
 
 		//-----------------------------------------------------------------------------

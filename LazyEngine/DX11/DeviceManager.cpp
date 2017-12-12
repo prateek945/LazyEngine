@@ -118,17 +118,34 @@ namespace LE {
 		m_pBackBuffer->GetDesc(&m_bbDesc);
 
 		// Create a depth-stencil view for use with 3D rendering if needed.
-		CD3D11_TEXTURE2D_DESC depthStencilDesc(
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
-			static_cast<UINT> (m_bbDesc.Width),
-			static_cast<UINT> (m_bbDesc.Height),
-			1, // This depth stencil view has only one texture.
-			1, // Use a single mipmap level.
-			D3D11_BIND_DEPTH_STENCIL
-		);
+		
+	
+		//CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+		//CD3D11_SHADER_RESOURCE_VIEW_DESC SRVDepthStencilDesc(D3D11_SRV_DIMENSION_TEXTURE2D);
+		//m_pd3dDevice->CreateDepthStencilView(
+		//	m_pDepthStencil.Get(),
+		//	&depthStencilViewDesc,
+		//	&m_pDepthStencilView
+		//);
+
+		//m_pd3dDevice->CreateShaderResourceView(m_pDepthStencil.Get(), &SRVDepthStencilDesc, &m_pSRVDepthStencil);
+		////
+		D3D11_TEXTURE2D_DESC desc;
+		desc.ArraySize = 1;
+		desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+		desc.CPUAccessFlags = 0;
+		desc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+		desc.Height =static_cast<UINT> (m_bbDesc.Height) ;
+		desc.MipLevels = 1;
+		desc.MiscFlags = 0;
+		desc.SampleDesc.Count = 1;
+		desc.SampleDesc.Quality = 0;
+
+		desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+		desc.Width = static_cast<UINT> (m_bbDesc.Width);
 
 		m_pd3dDevice->CreateTexture2D(
-			&depthStencilDesc,
+			&desc,
 			nullptr,
 			&m_pDepthStencil
 		);
@@ -137,15 +154,29 @@ namespace LE {
 			nullptr,
 			&m_pRenderTarget
 		);
-		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+		
+
+		D3D11_DEPTH_STENCIL_VIEW_DESC ddesc;
+		ZeroMemory(&ddesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+		ddesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		ddesc.ViewDimension =  D3D11_DSV_DIMENSION_TEXTURE2D;
+		ddesc.Texture2D.MipSlice = 0;
 
 		m_pd3dDevice->CreateDepthStencilView(
-			m_pDepthStencil.Get(),
-			&depthStencilViewDesc,
-			&m_pDepthStencilView
-		);
+				m_pDepthStencil.Get(),
+				&ddesc,
+				&m_pDepthStencilView
+			);
 
+		
 
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+		ZeroMemory(&srvd, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		srvd.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+		srvd.ViewDimension =  D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvd.Texture2D.MipLevels = 1;
+
+		m_pd3dDevice->CreateShaderResourceView(m_pDepthStencil.Get(), &srvd, &m_pSRVDepthStencil);
 		ZeroMemory(&m_viewport, sizeof(D3D11_VIEWPORT));
 		m_viewport.Height = (float)m_bbDesc.Height;
 		m_viewport.Width = (float)m_bbDesc.Width;

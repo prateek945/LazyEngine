@@ -7,7 +7,7 @@ cbuffer ModelViewProjectionConstantBuffer : register(b0)
 	float alpha;
 	float4 eyePos;
 	float4 detailedMesh;
-	float4 toggles_ADNS;
+	float4 toggles_ADNS[2];
 };
 
 struct VS_INPUT

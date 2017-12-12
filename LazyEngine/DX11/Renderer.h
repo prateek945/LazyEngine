@@ -11,6 +11,8 @@
 #include "Mouse.h"
 #include <memory>
 #include <DirectXMath.h>
+
+
 namespace LE {
 
 
@@ -53,7 +55,7 @@ namespace LE {
 			float aplha;
 			float eyePos[4];
 			float detailedMesh[4];
-			float toggles[4];
+			float toggles[8];
 			
 		} ConstantBufferStruct;
 		
@@ -87,7 +89,7 @@ namespace LE {
 
 		//Toggle Values
 
-		bool toggleBuffers_ADNS[4] = { true,false,false, false };
+		bool toggleBuffers_ADNS[8] = { true,false,false, false,false,false,false,false };
 		//Global Object array
 
 		std::vector<WCHAR*> shaderFiles;
@@ -110,7 +112,7 @@ namespace LE {
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>			m_pRTGBufferSpecular;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>			m_pRTLightPass;
 
-		ID3D11ShaderResourceView* m_SRVArray[3];
+		ID3D11ShaderResourceView* m_SRVArray[4];
 		ID3D11RenderTargetView* m_renderTargetViewArray[4];
 
 		Microsoft::WRL::ComPtr<ID3D11Buffer>            m_pVertexBuffer;

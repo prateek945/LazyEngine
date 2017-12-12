@@ -356,11 +356,13 @@ namespace LE {
 		hr = device->CreateRenderTargetView(m_pGBufferSpecular.Get(), &renderTargetViewDesc, &m_pRTGBufferSpecular);
 		hr = device->CreateShaderResourceView(m_pGBufferSpecular.Get(), &shaderResourceViewDesc, &m_pSRVGBufferSpecular);
 		
+		
 		//Add SRVs to array
 
 		m_SRVArray[0] = m_pSRVGBufferDiffuse.Get();
 		m_SRVArray[1] = m_pSRVGBufferNormal.Get();
 		m_SRVArray[2] = m_pSRVGBufferSpecular.Get();
+		m_SRVArray[3] = m_deviceResources->GetSRVDepthStencil();
 	//	hr = device->CreateShaderResourceView(m_deviceResources->GetDepthStencil(),NULL, &m_pSRVGBufferDiffuse);
 		//LightPass
 		m_pRTLightPass = m_deviceResources->GetRenderTargets();
@@ -388,7 +390,7 @@ namespace LE {
 		LEVector3 up(0.0f, 1.0f, 0.0f);
 		float aspectRatio = m_deviceResources->GetAspectRatio();
 		m_hMainCamera = new Handle(sizeof(Camera));
-		Camera *MainCamera = new(m_hMainCamera->getAddress()) Camera(eye, at, up, 45.0f, aspectRatio, 0.01f, 1000.0f);
+		Camera *MainCamera = new(m_hMainCamera->getAddress()) Camera(eye, at, up, 45.0f, aspectRatio, 1.0f, 1000.f);
 		m_constantBufferData.view = MainCamera->getViewMatrix().getTranspose();
 		m_constantBufferData.projection = MainCamera->getProjectionMatrix().getTranspose();
 	}
@@ -438,6 +440,7 @@ namespace LE {
 			toggleBuffers_ADNS[1] = false;
 			toggleBuffers_ADNS[2] = false;
 			toggleBuffers_ADNS[3] = false;
+			toggleBuffers_ADNS[4] = false;
 		}
 		//Diffuse unlit
 		if (tracker->IsKeyReleased(DirectX::Keyboard::Get().X))
@@ -446,6 +449,7 @@ namespace LE {
 			toggleBuffers_ADNS[1] = true;
 			toggleBuffers_ADNS[2] = false;
 			toggleBuffers_ADNS[3] = false;
+			toggleBuffers_ADNS[4] = false;
 		}
 		//Normals
 		if (tracker->IsKeyReleased(DirectX::Keyboard::Get().C))
@@ -454,6 +458,7 @@ namespace LE {
 			toggleBuffers_ADNS[1] = false;
 			toggleBuffers_ADNS[2] = true;
 			toggleBuffers_ADNS[3] = false;
+			toggleBuffers_ADNS[4] = false;
 		}
 		//Specular
 		if (tracker->IsKeyReleased(DirectX::Keyboard::Get().V))
@@ -462,6 +467,15 @@ namespace LE {
 			toggleBuffers_ADNS[1] = false;
 			toggleBuffers_ADNS[2] = false;
 			toggleBuffers_ADNS[3] = true;
+			toggleBuffers_ADNS[4] = false;
+		}
+		if (tracker->IsKeyReleased(DirectX::Keyboard::Get().B))
+		{
+			toggleBuffers_ADNS[0] = false;
+			toggleBuffers_ADNS[1] = false;
+			toggleBuffers_ADNS[2] = false;
+			toggleBuffers_ADNS[3] = false;
+			toggleBuffers_ADNS[4] = true;
 		}
 		if (kb.NumPad4) {
 			int prevFrame = !(g_frameCount % 2);
@@ -603,7 +617,7 @@ namespace LE {
 				depthStencil
 		);
 		//GBuffer Pass
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			if (toggleBuffers_ADNS[i])
 				m_constantBufferData.toggles[i] = 1.0f;
@@ -728,14 +742,16 @@ namespace LE {
 		m_renderTargetViewArray[0] = NULL;
 		m_renderTargetViewArray[1] = NULL;
 		m_renderTargetViewArray[2] = NULL;
-		//ID3D11RenderTargetView* rTargets[4] = {NULL,NULL,NULL, m_pRTLightPass.Get() };
-		context->OMSetRenderTargets(4, m_renderTargetViewArray, depthStencil);
+		ID3D11RenderTargetView* rTargets[4] = {NULL,NULL,NULL, m_pRTLightPass.Get()};
+		
+		context->OMSetRenderTargets(4, rTargets, NULL);
 		
 		for (int i = 0; i < 3; i++)
 		{
 			//context->PSSetShaderResources(i, 1, nullptr);
 			context->PSSetShaderResources(i, 1, &m_SRVArray[i]);
 		}
+		context->PSSetShaderResources(4, 1, &m_SRVArray[3]);
 		stride = sizeof(VertexPositionTexCoord);
 		offset = 0;
 
@@ -761,13 +777,14 @@ namespace LE {
 		m_renderTargetViewArray[0] = m_pRTGBufferDiffuse.Get();
 		m_renderTargetViewArray[1] = m_pRTGBufferNormal.Get();
 		m_renderTargetViewArray[2] = m_pRTGBufferSpecular.Get();
-		ID3D11ShaderResourceView* SRV[3] = { NULL,NULL,NULL };
+		ID3D11ShaderResourceView* SRV[4] = { NULL,NULL,NULL,NULL };
 		for (int i = 0; i < 3; i++)
 		{
 			//context->PSSetShaderResources(i, 1, nullptr);
 			context->PSSetShaderResources(i, 1,&SRV[i]);
-		}
 
+		}
+		context->PSSetShaderResources(4, 1, &SRV[3]);
 	}
 
 
